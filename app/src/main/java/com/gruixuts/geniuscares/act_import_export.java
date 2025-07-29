@@ -43,7 +43,7 @@ public class act_import_export extends AppCompatActivity {
 
     static final int REQUEST_CODE_PICK_FOLDER = 42;  //ppp
     private ActivityResultLauncher<Intent> selectorDeCarpetaLauncher;//ppp
-    private static final String CONFIG_NAME = "GeniusCaresConfig";//ppp
+    private static final String CONFIG_NAME = "GeniusCaresConfig";
     private static final String CONFIG_URI = "carpetaUri";//ppp
     private static final String CONFIG_COPIA_DADES = "CopiaDades";//ppp
     private static final String CONFIG_COPIA_TXT = "CopiaTxt";//ppp
