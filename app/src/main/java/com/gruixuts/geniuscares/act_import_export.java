@@ -42,9 +42,6 @@ public class act_import_export extends AppCompatActivity {
     String CarpetaCopies; // Inicialitzada dinàmicament amb FileUtils
 
     static final int REQUEST_CODE_PICK_FOLDER = 42;  //ppp
-    private ActivityResultLauncher<Intent> selectorDeCarpetaLauncher;//ppp
-    private static final String CONFIG_NAME = "GeniusCaresConfig";
-    private static final String CONFIG_URI = "carpetaUri";//ppp
     private static final String CONFIG_COPIA_DADES = "CopiaDades";//ppp
     private static final String CONFIG_COPIA_TXT = "CopiaTxt";//ppp
     private static final String CONFIG_IMPORT_DADES = "ImportDades";//ppp
@@ -72,25 +69,12 @@ public class act_import_export extends AppCompatActivity {
         // No cal sol·licitar permisos per directoris específics de l'app
         // permisosOk = true; ja no val
 
-        selectorDeCarpetaLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == RESULT_OK) {
-                        Intent data = result.getData();
-                        if (data != null) {
-                            Uri uri = data.getData();
-                            guardarUriPersistent(uri);  // mètode que ja tens
-                         //   copiarBaseDeDadesAmbSAF(uri);  // mètode que ja tens
-                        }
-                    }
-                }
-        );
         /******* Carpeta Principal  *******/
         // carpetaUri és on hi pengen les carpetes de la app. És de la que demanem permisos
-        carpetaUri = recuperarUriPersistent();
+        carpetaUri = classGlobal.carpetaUri;
         if (carpetaUri == null) {
             // Seleccionar carpeta principal i demanar permís per accedir-ho
-            obrirSelectorDeCarpeta();  // Només es fa si no en tenim cap
+            classGlobal.mostraError(this, "Accés a carpeta","No hi ha carpetaUri");
             return;
         }
         // Obtenim el documentUri base
@@ -193,32 +177,6 @@ public class act_import_export extends AppCompatActivity {
     /** És pel primer cop que es vol accedir a la carpeta on hi haurà les dades.
      * Fa seleccionar a l'usuari quina carpeta, i demana permisos d'accés
      */
-    void obrirSelectorDeCarpeta() {
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION |
-                Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
-                Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION |
-                Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);  // Això dona permisos per a totes les subcarpetes
-        selectorDeCarpetaLauncher.launch(intent);
-    }
-
-    void guardarUriPersistent(Uri uri) {
-        getContentResolver().takePersistableUriPermission(
-                uri,
-                Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-        );
-        getSharedPreferences(CONFIG_NAME, MODE_PRIVATE)
-                .edit()
-                .putString(CONFIG_URI, uri.toString())
-                .apply();
-    }
-
-    @Nullable
-    Uri recuperarUriPersistent() {
-        String uriString = getSharedPreferences(CONFIG_NAME, MODE_PRIVATE)
-                .getString(CONFIG_URI, null);
-        return (uriString != null) ? Uri.parse(uriString) : null;
-    }
 
     public Integer ANum(String a) {
         // Resol un fallo del sistema que no tinc controlat, a cops cal posar substr i a cops no
