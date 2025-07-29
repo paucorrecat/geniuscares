@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.gruixuts.geniuscares.act_examen_sel">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <TableLayout
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nº Max"
+                android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+            <LinearLayout
+                android:orientation="horizontal">
+            <EditText
+                android:id="@+id/edtNumUlt"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+                <CheckBox
+                    android:id="@+id/chkAntigues"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Les més antigues" />
+            </LinearLayout>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Codis"
+                android:textAppearance="@android:style/TextAppearance.Material.Medium"/>
+            <LinearLayout
+                android:orientation="horizontal">
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sí:"
+                android:textAppearance="@android:style/TextAppearance.Material.Small" />
+
+                <EditText
+                    android:id="@+id/edtExmSiCodi"
+                    android:layout_width="69dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:imeOptions="actionDone"
+                    android:singleLine="true"
+                    android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No:"
+                android:textAppearance="@android:style/TextAppearance.Material.Small" />
+
+                <EditText
+                    android:id="@+id/edtExmNoCodi"
+                    android:layout_width="69dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:imeOptions="actionDone"
+                    android:singleLine="true"
+                    android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+            </LinearLayout>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Grup"
+                android:textAppearance="@android:style/TextAppearance.Material.Medium"/>
+            <LinearLayout
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sí:"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small" />
+
+                <EditText
+                    android:id="@+id/edtExmSiGrup"
+                    android:layout_width="69dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:imeOptions="actionDone"
+                    android:singleLine="true"
+                    android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No:"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small" />
+
+                <EditText
+                    android:id="@+id/edtExmNoGrup"
+                    android:layout_width="69dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:imeOptions="actionDone"
+                    android:singleLine="true"
+                    android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+            </LinearLayout>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textAppearance="@android:style/TextAppearance.Material.Small"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="        usar % i _"
+                android:textAppearance="@android:style/TextAppearance.Material.Small"/>
+        </TableRow>
+
+
+    </TableLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="GoToFerExamen"
+            android:text="Examen"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="GoToFerRevisio"
+            android:text="Revisió"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="GoToSeguir"
+            android:text="Seguir Ant"/>
+    </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
+
+

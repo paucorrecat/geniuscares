@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.gruixuts.geniuscares.act_memoritzar">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imgImatges"
+                android:layout_width="340dp"
+                android:layout_height="331dp"
+                android:src="@mipmap/ic_launcher" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/cmdModSegFoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="fotoSeguent"
+                    android:text=">" />
+
+                <Button
+                    android:id="@+id/cmdModAntFoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="fotoAnterior"
+                    android:text="Ant" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            android:layout_marginLeft="20dp"
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Nom:"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <EditText
+                    android:id="@+id/txtMemNom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:imeOptions="actionDone"
+                    android:keyboardNavigationCluster="false"
+                    android:singleLine="true"
+                    android:text="Nom"
+                    android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Curs:"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <EditText
+                    android:id="@+id/txtMemCurs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:imeOptions="actionDone"
+                    android:keyboardNavigationCluster="false"
+                    android:singleLine="true"
+                    android:text="Curs"
+                    android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Cog_1:"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <EditText
+                    android:id="@+id/txtMemCognom1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:imeOptions="actionDone"
+                    android:keyboardNavigationCluster="false"
+                    android:singleLine="true"
+                    android:text="Cognom1"
+                    android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Cog_2:"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <EditText
+                    android:id="@+id/txtMemCognom2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:imeOptions="actionDone"
+                    android:keyboardNavigationCluster="false"
+                    android:singleLine="true"
+                    android:text="Cognom2"
+                    android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+            </TableRow>
+        </TableLayout>
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PAV:"
+            android:textAppearance="@android:style/TextAppearance.Material.Small" />
+
+        <EditText
+            android:id="@+id/edtMemPAV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:singleLine="true"
+            android:imeOptions="actionDone"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Comentaris:"
+            android:textAppearance="@android:style/TextAppearance.Material.Small" />
+
+        <EditText
+            android:id="@+id/edtMemComentaris"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:singleLine="true"
+            android:imeOptions="actionDone"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/cmdMemOk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:onClick="MemOk"
+                android:text="Ok" />
+
+            <Button
+                android:id="@+id/cmdMemPasso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:onClick="MemPasso"
+                android:text="Passo" />
+
+            <Button
+                android:id="@+id/cmdMemEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:onClick="MemEdit"
+                android:text="Edit" />
+
+        </LinearLayout>
+        <TextView
+            android:id="@+id/txtCompt"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0/0"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+    </LinearLayout>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

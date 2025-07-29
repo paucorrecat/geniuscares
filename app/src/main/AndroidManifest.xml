@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Permisos d'emmagatzematge eliminats per compatibilitat Android 11+ -->
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity 
+            android:name=".act_import_sel"
+            android:exported="false"></activity>
+        <activity 
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity 
+            android:name=".act_examen_sel"
+            android:exported="false" />
+        <activity
+            android:name=".act_pregunta"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity 
+            android:name=".act_repas_sel"
+            android:exported="false" />
+        <activity 
+            android:name=".act_import_export"
+            android:exported="false" />
+        <activity 
+            android:name=".act_pregunta_val"
+            android:exported="false" />
+        <activity
+            android:name=".act_memoritzar"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity 
+            android:name=".act_manteniment_sel"
+            android:exported="false" />
+        <activity
+            android:name=".act_manteniment_llista"
+            android:label="@string/title_trobat_list"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false" />
+        <activity 
+            android:name=".act_manteniment_modificar"
+            android:exported="false" />
+        <activity 
+            android:name=".act_memoritzar_sel"
+            android:exported="false" />
+        <activity
+            android:name=".act_aux_Codi"
+            android:label="@string/title_activity_act_aux__codi"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false" />
+        <activity 
+            android:name=".act_estadistica"
+            android:exported="false" />
+    </application>
+
+</manifest>

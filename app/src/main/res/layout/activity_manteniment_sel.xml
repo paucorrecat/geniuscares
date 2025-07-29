@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.gruixuts.geniuscares.act_manteniment_sel">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TableLayout
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Id:"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small" />
+                <EditText
+                    android:id="@+id/edtMntId"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:text="0"
+                    android:singleLine="true"
+                    android:imeOptions="actionDone"
+                    android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Nom:"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small" />
+                <EditText
+                    android:id="@+id/edtMntNom"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:text="Nom"
+                    android:singleLine="true"
+                    android:imeOptions="actionDone"
+                    android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+            </TableRow>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:text="Cognom 1:"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small" />
+
+                <EditText
+                    android:id="@+id/edtMntCognom1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Cognom 1"
+                    android:singleLine="true"
+                    android:imeOptions="actionDone"
+                    android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+            </TableRow>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:text="Cognom 2:"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small" />
+
+                <EditText
+                    android:id="@+id/edtMntCognom2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Cognom 2"
+                    android:singleLine="true"
+                    android:imeOptions="actionDone"
+                    android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+            </TableRow>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:text="Curs:"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small" />
+
+                <EditText
+                    android:id="@+id/edtMntCurs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Curs"
+                    android:singleLine="true"
+                    android:imeOptions="actionDone"
+                    android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+            </TableRow>
+
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Codi:"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small" />
+                <LinearLayout
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sí:"
+                        android:textAppearance="@android:style/TextAppearance.Material.Small" />
+
+                    <EditText
+                        android:id="@+id/edtMntSiCodi"
+                        android:layout_width="69dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="5dp"
+                        android:text="0"
+                        android:singleLine="true"
+                        android:imeOptions="actionDone"
+                        android:textAppearance="@android:style/TextAppearance.Material.Medium"/>
+                    <TextView
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No:"
+                        android:textAppearance="@android:style/TextAppearance.Material.Small" />
+                <EditText
+                    android:id="@+id/edtMntNoCodi"
+                    android:layout_width="69dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:text="0"
+                    android:singleLine="true"
+                    android:imeOptions="actionDone"
+                    android:textAppearance="@android:style/TextAppearance.Material.Medium"/>
+                </LinearLayout>
+            </TableRow>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Grup:"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small" />
+                <LinearLayout
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sí:"
+                        android:textAppearance="@android:style/TextAppearance.Material.Small" />
+
+                    <EditText
+                        android:id="@+id/edtMntSiGrup"
+                        android:layout_width="69dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="5dp"
+                        android:imeOptions="actionDone"
+                        android:singleLine="true"
+                        android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+                    <TextView
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No:"
+                        android:textAppearance="@android:style/TextAppearance.Material.Small" />
+
+                    <EditText
+                        android:id="@+id/edtMntNoGrup"
+                        android:layout_width="69dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="5dp"
+                        android:imeOptions="actionDone"
+                        android:singleLine="true"
+                        android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+                </LinearLayout>
+            </TableRow>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="A memoritzar:"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small" />
+                <LinearLayout
+                    android:orientation="horizontal">
+                <CheckBox
+                    android:id="@+id/chkMntSiAMem"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="Sí" />
+                <CheckBox
+                    android:id="@+id/chkMntNoAMem"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="No" />
+                </LinearLayout>
+
+            </TableRow>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Apres:"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small" />
+                <LinearLayout
+                    android:orientation="horizontal">
+                    <CheckBox
+                        android:id="@+id/chkMntSiApres"
+                        android:layout_marginLeft="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="Sí" />
+                    <CheckBox
+                        android:id="@+id/chkMntNoApres"
+                        android:layout_marginLeft="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="No" />
+                </LinearLayout>
+
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ordre:"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small"/>
+                <RadioGroup
+                    android:id="@+id/grpOrdre"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/radNom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cat " />
+
+                    <RadioButton
+                        android:id="@+id/radCognom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Basc" />
+
+                    <RadioButton
+                        android:id="@+id/radCod"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Codi" />
+                </RadioGroup>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dates:"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="yyyy-MM-dd HH:mm:ss"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Textes:"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="        usar % i _"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small"/>
+            </TableRow>
+
+
+        </TableLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:orientation="horizontal">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="MntBusca"
+            android:text="Busca"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="MntCrea"
+                android:text="Crea"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

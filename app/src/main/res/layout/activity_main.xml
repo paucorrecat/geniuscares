@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.gruixuts.geniuscares.MainActivity">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation = "vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/cmdMemoritzar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="goToMemoritzar"
+            android:text="Memoritzar"
+            android:textAppearance="@android:style/TextAppearance.Material.Large" />
+
+        <Button
+            android:id="@+id/cmdRepas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="goToRepas"
+            android:text="Repàs"
+            android:textAppearance="@android:style/TextAppearance.Material.Large" />
+
+        <Button
+            android:id="@+id/cmdExamen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="goToExamen"
+            android:text="Examen"
+            android:textAppearance="@android:style/TextAppearance.Material.Large" />
+
+        <Button
+            android:id="@+id/cmdNousTermes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="goToManteniment"
+            android:text="Manteniment"
+            android:textAppearance="@android:style/TextAppearance.Material.Large" />
+
+        <Button
+            android:id="@+id/cmdImpExp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="goToImportExport"
+            android:text="Import/Export"
+            android:textAppearance="@android:style/TextAppearance.Material.Large" />
+
+        <Button
+            android:id="@+id/cmdStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="goToStats"
+            android:text="Estadístiques"
+            android:textAppearance="@android:style/TextAppearance.Material.Large" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

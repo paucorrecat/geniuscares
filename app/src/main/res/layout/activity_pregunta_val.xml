@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.gruixuts.GeniusCares.act_pregunta_val">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Resposta:"
+            android:textAppearance="@android:style/TextAppearance.Material.Small" />
+        <TextView
+            android:id="@+id/txtValResposta"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Resposta"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Resposta correcta:"
+            android:textAppearance="@android:style/TextAppearance.Material.Small" />
+        <TextView
+            android:id="@+id/txtValCorrecta"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Resposta"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/cmdValPer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:onClick="rstPer"
+                android:text="Ok" />
+
+            <Button
+                android:id="@+id/cmdValRev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:onClick="rstRev"
+                android:text="Rev" />
+
+            <Button
+                android:id="@+id/cmdValApr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:onClick="rstApr"
+                android:text="Apr" />
+
+            <Button
+                android:id="@+id/cmdValObl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:onClick="rstObl"
+                android:text="Obl" />
+        </LinearLayout>
+
+            <TextView
+                android:layout_marginTop="50dp"
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pregunta:"
+                android:textAppearance="@android:style/TextAppearance.Material.Small" />
+            <TextView
+                android:id="@+id/txtValPregunta"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Prova:"
+                android:textAppearance="@android:style/TextAppearance.Material.Small" />
+            <TextView
+                android:id="@+id/txtValProva"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="S'havia de repassar:"
+                android:textAppearance="@android:style/TextAppearance.Material.Small" />
+            <TextView
+                android:id="@+id/txtValNextData"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+        <Button
+            android:id="@+id/cmdValMod"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="rstMod"
+            android:text="Editar" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

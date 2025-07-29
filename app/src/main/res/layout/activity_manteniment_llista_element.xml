@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+
+    <TextView
+        android:id="@+id/ll_codi"
+        android:layout_width="70dp"
+        android:layout_height="20dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/ll_catala"
+        android:layout_width="150dp"
+        android:layout_height="25dp"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/ll_basc"
+        android:layout_width="400dp"
+        android:layout_height="25dp"
+        android:textAppearance="?attr/textAppearanceListItem" />
+
+    <TextView
+        android:id="@+id/ll_id"
+        android:layout_width="0dp"
+        android:layout_height="25dp"
+        android:layout_weight="0"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:visibility="invisible" />
+
+</LinearLayout>
