@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import androidx.appcompat.app.AlertDialog;
@@ -38,6 +39,8 @@ public class act_manteniment_modificar extends AppCompatActivity {
     GestorDB db;
     private ActivityResultLauncher<Intent> cameraLauncher;
     private ActivityResultLauncher<Intent> buscaCodiLauncher;
+    private ActivityResultLauncher<Intent> folderPickerLauncher;
+    private Uri carpetaImatgesUri;
     private String CarpetaImatges; // Inicialitzada dinàmicament amb FileUtils
     private Integer NumImg;
     private String nomImatge[];
@@ -68,31 +71,54 @@ public class act_manteniment_modificar extends AppCompatActivity {
                             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
                             String imageFileName = "JPEG_" + timeStamp + "_";
 
-                            File image = null;
-                            try {
-                                image = File.createTempFile(
-                                        imageFileName,
-                                        ".jpg",
-                                        new File(CarpetaImatges)
-                                );
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
 
-                            NumImg = nomImatge.length + 1;
-                            nomImatge = Arrays.copyOf(nomImatge, NumImg);
-                            nomImatge[NumImg - 1] = imageFileName + ".jpg";
-
-                            try {
-                                FileOutputStream fOut = new FileOutputStream(image);
-                                imgBitmap.compress(Bitmap.CompressFormat.JPEG, 85, fOut);
-                                fOut.flush();
-                                fOut.close();
-                            } catch (IOException ignored) {}
+                            desaImatgeSAF(imgBitmap, mItem.getImatges());
+//                            File image = null;
+//                            try {
+//                                image = File.createTempFile(
+//                                        imageFileName,
+//                                        ".jpg",
+//                                        new File(CarpetaImatges)
+//                                );
+//                            } catch (IOException e) {
+//                                e.printStackTrace();
+//                            }
+//
+//                            NumImg = nomImatge.length + 1;
+//                            nomImatge = Arrays.copyOf(nomImatge, NumImg);
+//                            nomImatge[NumImg - 1] = imageFileName + ".jpg";
+//
+//                            try {
+//                                FileOutputStream fOut = new FileOutputStream(image);
+//                                imgBitmap.compress(Bitmap.CompressFormat.JPEG, 85, fOut);
+//                                fOut.flush();
+//                                fOut.close();
+//                            } catch (IOException ignored) {}
                         }
                     }
                 }
         );
+
+        folderPickerLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        Uri uri = result.getData().getData();
+                        getContentResolver().takePersistableUriPermission(
+                                uri,
+                                Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                        );
+                        carpetaImatgesUri = uri;
+
+                        // Desa l’URI per ús futur (SharedPreferences o BD)
+                        getSharedPreferences("config", MODE_PRIVATE)
+                                .edit()
+                                .putString("imatgesUri", uri.toString())
+                                .apply();
+                    }
+                }
+        );
+
 
         buscaCodiLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -166,6 +192,13 @@ public class act_manteniment_modificar extends AppCompatActivity {
         }
 
 
+    }
+
+    public void triaCarpeta(View view) {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        folderPickerLauncher.launch(intent);
     }
 
     public void fotoSeguent(View view) {
