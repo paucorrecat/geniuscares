@@ -19,17 +19,25 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.TimeZone;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.documentfile.provider.DocumentFile;
 
 public class act_manteniment_modificar extends AppCompatActivity {
 
     public static final String ARG_ITEM_ID = "item_id";
     GestorDB db;
+    private ActivityResultLauncher<Intent> cameraLauncher;
+    private ActivityResultLauncher<Intent> buscaCodiLauncher;
     private String CarpetaImatges; // Inicialitzada dinàmicament amb FileUtils
     private Integer NumImg;
     private String nomImatge[];
@@ -38,13 +46,68 @@ public class act_manteniment_modificar extends AppCompatActivity {
     private classPersones mItem;
     Boolean ResetApres = false;
 
-    protected static final int REQUEST_CODE = 10;
+    //protected static final int REQUEST_CODE = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
          setContentView(R.layout.activity_manteniment_modificar);
-        
+
+        // Registre del launcher modern per a la càmera
+        cameraLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null && data.getExtras() != null) {
+                            Bitmap imgBitmap = (Bitmap) data.getExtras().get("data");
+                            ImageView imgView = findViewById(R.id.imgImatges);
+                            imgView.setImageBitmap(imgBitmap);
+
+                            // Crear nom de fitxer amb data
+                            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+                            String imageFileName = "JPEG_" + timeStamp + "_";
+
+                            File image = null;
+                            try {
+                                image = File.createTempFile(
+                                        imageFileName,
+                                        ".jpg",
+                                        new File(CarpetaImatges)
+                                );
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            NumImg = nomImatge.length + 1;
+                            nomImatge = Arrays.copyOf(nomImatge, NumImg);
+                            nomImatge[NumImg - 1] = imageFileName + ".jpg";
+
+                            try {
+                                FileOutputStream fOut = new FileOutputStream(image);
+                                imgBitmap.compress(Bitmap.CompressFormat.JPEG, 85, fOut);
+                                fOut.flush();
+                                fOut.close();
+                            } catch (IOException ignored) {}
+                        }
+                    }
+                }
+        );
+
+        buscaCodiLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null && data.hasExtra("Codi")) {
+                            String codi = data.getStringExtra("Codi");
+                            ((TextView) findViewById(R.id.edtModCodi)).setText(codi);
+                        }
+                    }
+                }
+        );
+
+
         // Inicialitzar carpeta d'imatges amb FileUtils (compatible Android 11+)
         CarpetaImatges = FileUtils.getCarpetaImatges(this);
         
@@ -120,67 +183,108 @@ public class act_manteniment_modificar extends AppCompatActivity {
         }
     }
 
-    public void fotoAfegeix(View view) {
-        Intent CameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if(CameraIntent.resolveActivity(getPackageManager()) != null){
-            startActivityForResult(CameraIntent, REQUEST_IMAGE_CAPTURE);
-        }
-    }
-    public void fotoElimina(View view) {
+//    public void fotoAfegeix(View view) {
+//        Intent CameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        if(CameraIntent.resolveActivity(getPackageManager()) != null){
+//            startActivityForResult(CameraIntent, REQUEST_IMAGE_CAPTURE);
+//        }
+//    }
 
+    public void fotoAfegeix(View view) {
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+            cameraLauncher.launch(cameraIntent);
+        }
     }
-    // Es crida després d'haver fet la foto
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Bitmap imgBitmap;
-        ImageView imgView = findViewById(R.id.imgImatges);
-        File image = null;
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            imgBitmap = (Bitmap) extras.get("data");
-            imgView.setImageBitmap(imgBitmap);
+
+
+
+    private void desaImatgeSAF(Bitmap bitmap, String nomSubcarpeta) {
+        if (carpetaImatgesUri == null) return;
+
+        DocumentFile carpetaBase = DocumentFile.fromTreeUri(this, carpetaImatgesUri);
+        if (carpetaBase == null || !carpetaBase.canWrite()) return;
+
+        // Buscar o crear la subcarpeta
+        DocumentFile subcarpeta = carpetaBase.findFile(nomSubcarpeta);
+        if (subcarpeta == null || !subcarpeta.isDirectory()) {
+            subcarpeta = carpetaBase.createDirectory(nomSubcarpeta);
         }
-        else {
-            return;
-        }
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        try {
-            image = File.createTempFile(
-                    imageFileName,  /* prefix */
-                    ".jpg",         /* suffix */
-                    new File(CarpetaImatges)      /* directory */
-            );
+        if (subcarpeta == null || !subcarpeta.canWrite()) return;
+
+        // Crear fitxer dins la subcarpeta
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = "IMG_" + timeStamp + ".jpg";
+
+        DocumentFile nouFitxer = subcarpeta.createFile("image/jpeg", imageFileName);
+        if (nouFitxer == null) return;
+
+        try (OutputStream out = getContentResolver().openOutputStream(nouFitxer.getUri())) {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        NumImg = nomImatge.length +1;
-        nomImatge = Arrays.copyOf(  nomImatge,NumImg);
-        nomImatge[NumImg-1]= imageFileName + ".jpg";
-        try {
-            FileOutputStream fOut = new FileOutputStream(image);
-
-            imgBitmap.compress(Bitmap.CompressFormat.JPEG, 85, fOut);
-            fOut.flush();
-            fOut.close();
-//            MakeSureFileWasCreatedThenMakeAvabile(file);
-//            AbleToSave();
-        }
-
-        catch(FileNotFoundException e) {
-            //          Toast.makeText(context, "¡No se ha podido guardar la imagen!", Toast.LENGTH_SHORT).show();
-        }
-        catch(IOException e) {
-//            Toast.makeText(context, "¡No se ha podido guardar la imagen!", Toast.LENGTH_SHORT).show();
-        }
+    }
 
 
 
-        // Save a file: path for use with ACTION_VIEW intents
-        //currentPhotoPath = image.getAbsolutePath();
+
+
+        public void fotoElimina(View view) {
 
     }
+    // Es crida després d'haver fet la foto
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        Bitmap imgBitmap;
+//        ImageView imgView = findViewById(R.id.imgImatges);
+//        File image = null;
+//        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+//            Bundle extras = data.getExtras();
+//            imgBitmap = (Bitmap) extras.get("data");
+//            imgView.setImageBitmap(imgBitmap);
+//        }
+//        else {
+//            return;
+//        }
+//        // Create an image file name
+//        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//        String imageFileName = "JPEG_" + timeStamp + "_";
+//        try {
+//            image = File.createTempFile(
+//                    imageFileName,  /* prefix */
+//                    ".jpg",         /* suffix */
+//                    new File(CarpetaImatges)      /* directory */
+//            );
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        NumImg = nomImatge.length +1;
+//        nomImatge = Arrays.copyOf(  nomImatge,NumImg);
+//        nomImatge[NumImg-1]= imageFileName + ".jpg";
+//        try {
+//            FileOutputStream fOut = new FileOutputStream(image);
+//
+//            imgBitmap.compress(Bitmap.CompressFormat.JPEG, 85, fOut);
+//            fOut.flush();
+//            fOut.close();
+////            MakeSureFileWasCreatedThenMakeAvabile(file);
+////            AbleToSave();
+//        }
+//
+//        catch(FileNotFoundException e) {
+//            //          Toast.makeText(context, "¡No se ha podido guardar la imagen!", Toast.LENGTH_SHORT).show();
+//        }
+//        catch(IOException e) {
+////            Toast.makeText(context, "¡No se ha podido guardar la imagen!", Toast.LENGTH_SHORT).show();
+//        }
+//
+//
+//
+//        // Save a file: path for use with ACTION_VIEW intents
+//        //currentPhotoPath = image.getAbsolutePath();
+//
+//    }
 
 
     public void PregEsborra(View view) {
@@ -296,11 +400,8 @@ public class act_manteniment_modificar extends AppCompatActivity {
 
     public void BuscaCodi(View view) {
         Intent intent = new Intent(act_manteniment_modificar.this, act_aux_Codi.class);
-
-        // Passem les cadenes a comparar ja normalitzades
-//        intent.putExtra("Codi", ((TextView) findViewById(R.id.edtModCodi)).getText());
         intent.putExtra("Codi", ((TextView) findViewById(R.id.edtModCodi)).getText());
-        startActivityForResult(intent, REQUEST_CODE);
-
+        buscaCodiLauncher.launch(intent);
     }
+
 }
