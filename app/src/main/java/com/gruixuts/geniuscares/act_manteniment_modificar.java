@@ -1,6 +1,5 @@
 package com.gruixuts.geniuscares;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -34,13 +33,13 @@ public class act_manteniment_modificar extends AppCompatActivity {
     GestorDB db;
     private ActivityResultLauncher<Intent> cameraLauncher;
     private ActivityResultLauncher<Intent> buscaCodiLauncher;
-    private ActivityResultLauncher<Intent> folderPickerLauncher;
-    private Uri carpetaImatgesUri;
+    private DocumentFile carpetaImatges = classGlobal.carpetaImatges;
+    private Uri carpetaUri; // p2
     private classPersones mItem;
     Boolean ResetApres = false;
 
-    private DocumentFile[] llistaImatgesSAF;
-    private int posicioImgSAF = 0;
+    private DocumentFile[] llistaImatges;
+    private int posicioImg = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,34 +55,15 @@ public class act_manteniment_modificar extends AppCompatActivity {
                             Bitmap imgBitmap = (Bitmap) data.getExtras().get("data");
                             ImageView imgView = findViewById(R.id.imgImatges);
                             imgView.setImageBitmap(imgBitmap);
-                            desaImatgeSAF(imgBitmap, mItem.getImatges());
+                            desaImatge(imgBitmap, mItem.getImatges());
 
                             // Actualitza la llista d’imatges després d’afegir-ne una nova
-                            llistaImatgesSAF = obtenirLlistaImatgesSAF(mItem.getImatges());
-                            posicioImgSAF = llistaImatgesSAF.length - 1;
+                            llistaImatges = obtenirLlistaImatgesSAF(mItem.getImatges());
+                            posicioImg = llistaImatges.length - 1;
                         }
                     }
                 }
         );
-
-        folderPickerLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == RESULT_OK) {
-                        Uri uri = result.getData().getData();
-                        getContentResolver().takePersistableUriPermission(
-                                uri,
-                                Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                        );
-                        carpetaImatgesUri = uri;
-                        getSharedPreferences("config", MODE_PRIVATE)
-                                .edit()
-                                .putString("imatgesUri", uri.toString())
-                                .apply();
-                    }
-                }
-        );
-
         buscaCodiLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -97,10 +77,13 @@ public class act_manteniment_modificar extends AppCompatActivity {
                 }
         );
 
-        String uriString = getSharedPreferences("config", MODE_PRIVATE).getString("imatgesUri", null);
-        if (uriString != null) {
-            carpetaImatgesUri = Uri.parse(uriString);
+//        carpetaImatgesUri = classGlobal.carpetaImatges;
+        if (carpetaImatges == null) {
+            classGlobal.mostraError(this,"Accés SAF", "No hi ha carpeta d'imatges amb permisos. Torna a iniciar la app");
+            finish();
+            return;
         }
+
 
         ResetApres = false;
         String Clau = getIntent().getStringExtra(ARG_ITEM_ID);
@@ -112,10 +95,10 @@ public class act_manteniment_modificar extends AppCompatActivity {
             mItem = new classPersones();
         }
 
-        llistaImatgesSAF = obtenirLlistaImatgesSAF(mItem.getImatges());
-        if (llistaImatgesSAF.length > 0) {
-            posicioImgSAF = 0;
-            mostraImatgeSAF(llistaImatgesSAF[posicioImgSAF]);
+        llistaImatges = obtenirLlistaImatgesSAF(mItem.getImatges());
+        if (llistaImatges.length > 0) {
+            posicioImg = 0;
+            mostraImatgeSAF(llistaImatges[posicioImg]);
         }
 
         if (mItem != null) {
@@ -144,15 +127,19 @@ public class act_manteniment_modificar extends AppCompatActivity {
     }
 
     private DocumentFile[] obtenirLlistaImatgesSAF(String nomSubcarpeta) {
-        if (carpetaImatgesUri == null) return new DocumentFile[0];
 
-        DocumentFile carpetaBase = DocumentFile.fromTreeUri(this, carpetaImatgesUri);
-        if (carpetaBase == null) return new DocumentFile[0];
+        // Si nom està buit
+        if (nomSubcarpeta==null || nomSubcarpeta.isEmpty()) {
+            classGlobal.mostraError(this,"Error","Aquesta persona no té nom de carpeta d'imatges");
+            return new DocumentFile[0];
+        }
+        // Miro si existeix
+        DocumentFile carpImg = carpetaImatges.findFile(nomSubcarpeta);
+        if (carpImg==null) {
+            return new DocumentFile[0]; // Si no existeix, torno llista buida
+        }
 
-        DocumentFile subcarpeta = carpetaBase.findFile(nomSubcarpeta);
-        if (subcarpeta == null || !subcarpeta.isDirectory()) return new DocumentFile[0];
-
-        return subcarpeta.listFiles();
+        return carpImg.listFiles();
     }
 
     private void mostraImatgeSAF(DocumentFile docFile) {
@@ -166,16 +153,16 @@ public class act_manteniment_modificar extends AppCompatActivity {
     }
 
     public void fotoSeguent(View view) {
-        if (llistaImatgesSAF != null && posicioImgSAF < llistaImatgesSAF.length - 1) {
-            posicioImgSAF++;
-            mostraImatgeSAF(llistaImatgesSAF[posicioImgSAF]);
+        if (llistaImatges != null && posicioImg < llistaImatges.length - 1) {
+            posicioImg++;
+            mostraImatgeSAF(llistaImatges[posicioImg]);
         }
     }
 
     public void fotoAnterior(View view) {
-        if (llistaImatgesSAF != null && posicioImgSAF > 0) {
-            posicioImgSAF--;
-            mostraImatgeSAF(llistaImatgesSAF[posicioImgSAF]);
+        if (llistaImatges != null && posicioImg > 0) {
+            posicioImg--;
+            mostraImatgeSAF(llistaImatges[posicioImg]);
         }
     }
 
@@ -186,23 +173,30 @@ public class act_manteniment_modificar extends AppCompatActivity {
         }
     }
 
-    private void desaImatgeSAF(Bitmap bitmap, String nomSubcarpeta) {
-        if (carpetaImatgesUri == null) return;
+    private void desaImatge(Bitmap bitmap, String nomSubcarpeta) {
 
-        DocumentFile carpetaBase = DocumentFile.fromTreeUri(this, carpetaImatgesUri);
-        if (carpetaBase == null || !carpetaBase.canWrite()) return;
-
-        DocumentFile subcarpeta = carpetaBase.findFile(nomSubcarpeta);
-        if (subcarpeta == null || !subcarpeta.isDirectory()) {
-            subcarpeta = carpetaBase.createDirectory(nomSubcarpeta);
+        if (carpetaImatges == null) {
+            return;
         }
-        if (subcarpeta == null || !subcarpeta.canWrite()) return;
+
+        // Miro si existeix
+        DocumentFile carpImg = carpetaImatges.findFile(nomSubcarpeta);
+        if (carpImg==null) {
+            carpImg = carpetaImatges.createDirectory(nomSubcarpeta);
+        }
+        if (carpImg==null) {
+            classGlobal.mostraError(this,"Error", "No s'ha pogut crear carpeta d'imatges");
+            return;
+        }
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String imageFileName = "IMG_" + timeStamp + ".jpg";
 
-        DocumentFile nouFitxer = subcarpeta.createFile("image/jpeg", imageFileName);
-        if (nouFitxer == null) return;
+        DocumentFile nouFitxer = carpImg.createFile("image/jpeg", imageFileName);
+        if (nouFitxer == null) {
+            classGlobal.mostraError(this,"Error", "No s'ha pogut crear carpeta d'imatges");
+            return;
+        }
 
         try (OutputStream out = getContentResolver().openOutputStream(nouFitxer.getUri())) {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
@@ -211,14 +205,7 @@ public class act_manteniment_modificar extends AppCompatActivity {
         }
     }
 
-    public void triaCarpeta(View view) {
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        folderPickerLauncher.launch(intent);
-    }
-
-    public void fotoElimina(View view) {
+       public void fotoElimina(View view) {
         // Implementar eliminació d'imatge si cal
     }
 

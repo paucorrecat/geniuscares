@@ -6,6 +6,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.documentfile.provider.DocumentFile;
 
 import android.database.Cursor;
 import android.net.Uri;
@@ -24,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
      */
     private ActivityResultLauncher<Intent> selectorDeCarpetaLauncher;
     Uri carpetaUri = null; // ppp
+    DocumentFile carpetaExterna = null;
+    DocumentFile carpetaBase = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +40,9 @@ public class MainActivity extends AppCompatActivity {
                         Intent data = result.getData();
                         if (data != null) {
                             Uri uri = data.getData();
-                            guardarUriPersistent(uri);  // mètode que ja tens
-                            //   copiarBaseDeDadesAmbSAF(uri);  // mètode que ja tens
+                            guardarUriPersistent(uri); // Ho desa a preferences
+                            carpetaExterna = DocumentFile.fromTreeUri(this,uri); // Assigna valor local
+                            classGlobal.carpetaExterna = carpetaExterna; // Desa valor a classGlobal per a us desde les altres activitats
                         }
                     }
                 }
@@ -52,45 +56,20 @@ public class MainActivity extends AppCompatActivity {
             obrirSelectorDeCarpeta();  // Només es fa si no en tenim cap
             //return;
         } else {
-            classGlobal.carpetaUri = carpetaUri;
+            carpetaExterna = DocumentFile.fromTreeUri(this, carpetaUri);
+            classGlobal.carpetaExterna = carpetaExterna;
+            //DocumentFile carpeta = DocumentFile.fromTreeUri(context, uri);
         }
+        assert carpetaExterna != null: "carpetaExterna ha quedat indefinida";
+
+
         // comprovem que existeix la carpeta Imatges i si no, la creem
-        // Mirem si existeix, si no existeix, la creem
-        String treeDocumentId = DocumentsContract.getTreeDocumentId(carpetaUri);
-        try (Cursor cursor = getContentResolver().query(
-                DocumentsContract.buildChildDocumentsUriUsingTree(carpetaUri, treeDocumentId),
-                new String[]{DocumentsContract.Document.COLUMN_DOCUMENT_ID, DocumentsContract.Document.COLUMN_DISPLAY_NAME, DocumentsContract.Document.COLUMN_MIME_TYPE},
-                null, null, null)) {
+        DocumentFile carpetaImatges = carpetaExterna.findFile("Imatges");
 
-            Uri carpetaImg = null;
-            if (cursor != null) {
-                while (cursor.moveToNext()) {
-                    String documentId = cursor.getString(0);
-                    String nom = cursor.getString(1);
-                    String mime = cursor.getString(2);
-
-                    if ("Imatges".equals(nom) && DocumentsContract.Document.MIME_TYPE_DIR.equals(mime)) {
-                        carpetaImg = DocumentsContract.buildDocumentUriUsingTree(carpetaUri, documentId);
-                        break;
-                    }
-                }
-            }
-            if (carpetaImg == null) {  // La hem de crtear
-                try {
-                    carpetaImg = DocumentsContract.createDocument(
-                            getContentResolver(),
-                            carpetaUri,
-                            DocumentsContract.Document.MIME_TYPE_DIR,
-                            "Imatges"
-                    );
-                } catch (IOException e) {
-                    classGlobal.mostraError(this,"Error","No s'ha pogut crear la carpeta Imatges \n\n" + e.toString());
-                    e.printStackTrace();
-                    finish();
-                }
-            }
-            classGlobal.carpetaImatges = carpetaImg;
+        if (carpetaImatges == null || !carpetaImatges.isDirectory()) {
+            carpetaImatges = carpetaExterna.createDirectory("Imatges");
         }
+        classGlobal.carpetaImatges = carpetaImatges;
 
     }
 
@@ -112,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
                 .edit()
                 .putString(classGlobal.configUri, uri.toString())
                 .apply();
-        classGlobal.carpetaUri = uri;
     }
 
     @Nullable

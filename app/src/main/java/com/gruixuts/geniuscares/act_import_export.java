@@ -9,6 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.documentfile.provider.DocumentFile;
 
 import android.os.Environment;
 import android.util.Log;
@@ -46,11 +47,15 @@ public class act_import_export extends AppCompatActivity {
     private static final String CONFIG_COPIA_TXT = "CopiaTxt";//ppp
     private static final String CONFIG_IMPORT_DADES = "ImportDades";//ppp
     private static final String CONFIG_IMPORT_TXT = "ImportTxt";//ppp
+    private static final String CONFIG_AIMPORTAR_DB = "AImportar.db";//ppp
+    private static final String CONFIG_AIMPORTAR_TXT = "AImportar.txt";//ppp
+
     Uri carpetaUri = null; // ppp
-    Uri carpetaCopiaDades = null;
-    Uri carpetaCopiaTxt = null;
-    Uri carpetaImportDades = null;
-    Uri carpetaImportTxt = null;
+    DocumentFile carpExt = null; // Carpeta externa (Pau/GeniusCares)
+    DocumentFile carpCopiaDades = null;
+    DocumentFile carpCopiaTxt = null;
+    DocumentFile carpImportDades = null;
+    DocumentFile carpImportTxt = null;
 
     // Boolean permisosOk = true; // Sempre true per Android 11+
 
@@ -71,104 +76,34 @@ public class act_import_export extends AppCompatActivity {
 
         /******* Carpeta Principal  *******/
         // carpetaUri és on hi pengen les carpetes de la app. És de la que demanem permisos
-        carpetaUri = classGlobal.carpetaUri;
-        if (carpetaUri == null) {
+        carpExt = classGlobal.carpetaExterna;
+        if (carpExt == null) {
             // Seleccionar carpeta principal i demanar permís per accedir-ho
             classGlobal.mostraError(this, "Accés a carpeta","No hi ha carpetaUri");
             return;
         }
         // Obtenim el documentUri base
-        String treeDocumentId = DocumentsContract.getTreeDocumentId(carpetaUri);
-        carpetaUri = DocumentsContract.buildDocumentUriUsingTree(carpetaUri, treeDocumentId);
-
-        estat.setText("Directori inicialitzat: " + carpetaUri.toString());
+        estat.setText("Directori inicialitzat: " + carpExt.toString());
 
         /******* Carpeta de CopiaDades  *******/
         // Obtenim el documentUri base
 
-        // Mirem si existeix, si no existeix, la creem
-        try (Cursor cursor = getContentResolver().query(
-                DocumentsContract.buildChildDocumentsUriUsingTree(carpetaUri, treeDocumentId),
-                new String[]{DocumentsContract.Document.COLUMN_DOCUMENT_ID, DocumentsContract.Document.COLUMN_DISPLAY_NAME, DocumentsContract.Document.COLUMN_MIME_TYPE},
-                null, null, null)) {
-
-            if (cursor != null) {
-                while (cursor.moveToNext()) {
-                    String documentId = cursor.getString(0);
-                    String nom = cursor.getString(1);
-                    String mime = cursor.getString(2);
-
-                    if (CONFIG_COPIA_DADES.equals(nom) && DocumentsContract.Document.MIME_TYPE_DIR.equals(mime)) {
-                        carpetaCopiaDades = DocumentsContract.buildDocumentUriUsingTree(carpetaUri, documentId);
-                    }
-                    if (CONFIG_COPIA_TXT.equals(nom) && DocumentsContract.Document.MIME_TYPE_DIR.equals(mime)) {
-                        carpetaCopiaTxt = DocumentsContract.buildDocumentUriUsingTree(carpetaUri, documentId);
-                    }
-                    if (CONFIG_IMPORT_DADES.equals(nom) && DocumentsContract.Document.MIME_TYPE_DIR.equals(mime)) {
-                        carpetaImportDades = DocumentsContract.buildDocumentUriUsingTree(carpetaUri, documentId);
-                    }
-                    if (CONFIG_IMPORT_TXT.equals(nom) && DocumentsContract.Document.MIME_TYPE_DIR.equals(mime)) {
-                        carpetaImportTxt = DocumentsContract.buildDocumentUriUsingTree(carpetaUri, documentId);
-                    }
-                }
-            }
+        // comprovem que existeix la carpeta Imatges i si no, la creem
+        carpCopiaDades = carpExt.findFile(CONFIG_COPIA_DADES);
+        if (carpCopiaDades == null || !carpCopiaDades.isDirectory()) {
+            carpCopiaDades = carpExt.createDirectory(CONFIG_COPIA_DADES);
         }
-
-        // Si no existeix, la creem
-        if (carpetaCopiaDades == null) {
-            try {
-                carpetaCopiaDades = DocumentsContract.createDocument(
-                        getContentResolver(),
-                        carpetaUri,
-                        DocumentsContract.Document.MIME_TYPE_DIR,
-                        CONFIG_COPIA_DADES
-                );
-            } catch (IOException e) {
-                classGlobal.mostraError(this,"Error","No s'ha pogut crear la carpeta CopiaDades \n\n" + e.toString());
-                e.printStackTrace();
-            }
+        carpCopiaTxt = carpExt.findFile(CONFIG_COPIA_TXT);
+        if (carpCopiaTxt == null || !carpCopiaTxt.isDirectory()) {
+            carpCopiaTxt = carpExt.createDirectory(CONFIG_COPIA_TXT);
         }
-        // Si no existeix, la creem
-        if (carpetaCopiaTxt == null) {
-            try {
-                carpetaCopiaTxt = DocumentsContract.createDocument(
-                        getContentResolver(),
-                        carpetaUri,
-                        DocumentsContract.Document.MIME_TYPE_DIR,
-                        CONFIG_COPIA_TXT
-                );
-            } catch (IOException e) {
-                classGlobal.mostraError(this,"Error","No s'ha pogut crear la carpeta CopiaTxt \n\n" + e.toString());
-                e.printStackTrace();
-            }
+        carpImportDades = carpExt.findFile(CONFIG_IMPORT_DADES);
+        if (carpImportDades == null || !carpImportDades.isDirectory()) {
+            carpImportDades = carpExt.createDirectory(CONFIG_IMPORT_DADES);
         }
-        // Si no existeix, la creem
-        if (carpetaImportDades == null) {
-            try {
-                carpetaImportDades = DocumentsContract.createDocument(
-                        getContentResolver(),
-                        carpetaUri,
-                        DocumentsContract.Document.MIME_TYPE_DIR,
-                        CONFIG_IMPORT_DADES
-                );
-            } catch (IOException e) {
-                classGlobal.mostraError(this,"Error","No s'ha pogut crear la carpeta ImportTxt \n\n" + e.toString());
-                e.printStackTrace();
-            }
-        }
-        // Si no existeix, la creem
-        if (carpetaImportTxt == null) {
-            try {
-                carpetaImportTxt = DocumentsContract.createDocument(
-                        getContentResolver(),
-                        carpetaUri,
-                        DocumentsContract.Document.MIME_TYPE_DIR,
-                        CONFIG_IMPORT_TXT
-                );
-            } catch (IOException e) {
-                classGlobal.mostraError(this,"Error","No s'ha pogut crear la carpeta ImportDB \n\n" + e.toString());
-                e.printStackTrace();
-            }
+        carpImportTxt = carpExt.findFile(CONFIG_IMPORT_TXT);
+        if (carpImportTxt == null || !carpImportTxt.isDirectory()) {
+            carpImportTxt = carpExt.createDirectory(CONFIG_IMPORT_TXT);
         }
         // carpetaCopiaDades ja està creada
 
@@ -205,7 +140,7 @@ public class act_import_export extends AppCompatActivity {
         long NumLin = 0;
 
         // Provisional, per a fer proves:
-        nomfit.setText("AImportar.txt");
+        nomfit.setText(CONFIG_AIMPORTAR_TXT);
         elim.setText("ELIMINAR");
         // Miro si s'ha escrit la paraula ELIMINAR (per seguretat)
         if (elim.getText().toString().compareTo("ELIMINAR") == 0) {
@@ -397,25 +332,25 @@ public class act_import_export extends AppCompatActivity {
 
     }
 
-    void copiarBaseDeDadesAmbSAF(Uri carpetaDesti) {
+    void copiarBaseDeDadesAmbSAF() {
         String nomFitxer = "GeniusCares_" +
                 new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date()) +
                 ".db";
 
         try {
             // 1. Crear el fitxer a la carpeta de destí
-            Uri destiUri = DocumentsContract.createDocument(
-                    getContentResolver(),
-                    carpetaDesti,  // Ara utilitzem la carpeta específica CopiaDades
-                    "application/vnd.sqlite3",
-                    nomFitxer
-            );
+//            Uri destiUri = DocumentsContract.createDocument(
+//                    getContentResolver(),
+//                    carpCopiaDades.getUri(),  // Ara utilitzem la carpeta específica CopiaDades
+//                    "application/vnd.sqlite3",
+//                    nomFitxer
+//            );
 
-            if (destiUri != null) {
+            if (carpCopiaDades != null) {
                 // 2. Obrir la base de dades local (forma correcta)
                 File dbFile = new File(getApplicationInfo().dataDir + "/databases/GeniusCares.db");
                 InputStream input = new FileInputStream(dbFile);
-                OutputStream output = getContentResolver().openOutputStream(destiUri);
+                OutputStream output = getContentResolver().openOutputStream(carpCopiaDades.getUri());
 
                 // 3. Copiar el contingut
                 byte[] buf = new byte[1024];
@@ -437,53 +372,41 @@ public class act_import_export extends AppCompatActivity {
         }
     }
 
+
     void ImportaBaseDeDadesAmbSAF() {
-        if (carpetaImportDades == null) {
+        if (carpImportDades == null) {
             estat.setText("Error: carpeta d'importació no inicialitzada.");
             return;
         }
 
-        try (Cursor cursor = getContentResolver().query(
-                DocumentsContract.buildChildDocumentsUriUsingTree(carpetaImportDades,
-                        DocumentsContract.getDocumentId(carpetaImportDades)),
-                new String[]{DocumentsContract.Document.COLUMN_DOCUMENT_ID,
-                        DocumentsContract.Document.COLUMN_DISPLAY_NAME},
-                null, null, null)) {
+        DocumentFile AImportar= carpImportDades.findFile(CONFIG_AIMPORTAR_DB);
 
-            if (cursor != null) {
-                while (cursor.moveToNext()) {
-                    String documentId = cursor.getString(0);
-                    String nom = cursor.getString(1);
+        if (AImportar==null) {
+            classGlobal.mostraError(this,"Error","Cal posar AImportar.db a /Pau/GeniusCares/ImportDades");
+            return;
+        }
 
-                    if ("AImportar.db".equals(nom)) {
-                        Uri origenUri = DocumentsContract.buildDocumentUriUsingTree(carpetaImportDades, documentId);
+        try {
+            File destiBD = new File(getApplicationInfo().dataDir + "/databases/GeniusCares.db");
+            InputStream input = getContentResolver().openInputStream(AImportar.getUri());
+            OutputStream output = new FileOutputStream(destiBD, false);
 
-                        File destiBD = new File(getApplicationInfo().dataDir + "/databases/GeniusCares.db");
-                        InputStream input = getContentResolver().openInputStream(origenUri);
-                        OutputStream output = new FileOutputStream(destiBD, false);
-
-                        byte[] buf = new byte[1024];
-                        int len;
-                        while ((len = input.read(buf)) > 0) {
-                            output.write(buf, 0, len);
-                        }
-
-                        input.close();
-                        output.close();
-
-                        estat.setText("Base de dades importada correctament.");
-                        Log.i(classGlobal.TAG, "Base de dades importada des de AImportar.db");
-                        return;
-                    }
-                }
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = input.read(buf)) > 0) {
+                output.write(buf, 0, len);
             }
 
-            estat.setText("Fitxer AImportar.db no trobat a ImportDades.");
-
+            input.close();
+            output.close();
         } catch (Exception e) {
-            estat.setText("Error important la base de dades: " + e.getMessage());
-            Log.e(classGlobal.TAG, "Error en ImportaBaseDeDadesAmbSAF", e);
+            classGlobal.mostraError(this,"Error","Error al llegir o escrure la base de dades");
+            estat.setText("Base de dades no importada.");
+            return;
         }
+
+        estat.setText("Base de dades importada correctament.");
+        Log.i(classGlobal.TAG, "Base de dades importada des de AImportar.db");
     }
 
 
@@ -506,7 +429,7 @@ public class act_import_export extends AppCompatActivity {
             // Crear el fitxer dins la carpeta CopiaDades que ja has creat
             Uri destiUri = DocumentsContract.createDocument(
                     getContentResolver(),
-                    carpetaCopiaTxt,
+                    carpCopiaTxt.getUri(),
                     "text/plain",
                     nomFitxer
             );
@@ -619,7 +542,7 @@ public class act_import_export extends AppCompatActivity {
         }
 
         // Copiar la base de dades
-        copiarBaseDeDadesAmbSAF(carpetaCopiaDades);
+        copiarBaseDeDadesAmbSAF();
     }
 
 }
