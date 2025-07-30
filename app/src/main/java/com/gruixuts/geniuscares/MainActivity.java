@@ -1,18 +1,128 @@
 package com.gruixuts.geniuscares;
 
 import android.content.Intent;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.view.View;
+
+import java.io.IOException;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    /** Sistema d'accés SAF (Storage Access Framework)
+     * Selector de carpeta on hi ha copies, importació, imatges, ...
+     * Normalment cal seleccionar /Pau/GeniusCares, però l'usuari podrà triar el primer cop i donar permisos
+     */
+    private ActivityResultLauncher<Intent> selectorDeCarpetaLauncher;
+    Uri carpetaUri = null; // ppp
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Registrem el launcher que demana la carpeta, per si l'hem de menester
+        selectorDeCarpetaLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null) {
+                            Uri uri = data.getData();
+                            guardarUriPersistent(uri);  // mètode que ja tens
+                            //   copiarBaseDeDadesAmbSAF(uri);  // mètode que ja tens
+                        }
+                    }
+                }
+        );
+        // Registrat el Launcher
+        // Intentem recuperar la carpetaUri. Si ja la tenim autoritzada, actualitzem el valor a classGlobal. Si no li
+        // hem de demanar a l'usuari que la seleccioni i ens doni permisos
+        carpetaUri = recuperarUriPersistent();
+        if (carpetaUri == null) {
+            // Seleccionar carpeta principal i demanar permís per accedir-ho
+            obrirSelectorDeCarpeta();  // Només es fa si no en tenim cap
+            //return;
+        } else {
+            classGlobal.carpetaUri = carpetaUri;
+        }
+        // comprovem que existeix la carpeta Imatges i si no, la creem
+        // Mirem si existeix, si no existeix, la creem
+        String treeDocumentId = DocumentsContract.getTreeDocumentId(carpetaUri);
+        try (Cursor cursor = getContentResolver().query(
+                DocumentsContract.buildChildDocumentsUriUsingTree(carpetaUri, treeDocumentId),
+                new String[]{DocumentsContract.Document.COLUMN_DOCUMENT_ID, DocumentsContract.Document.COLUMN_DISPLAY_NAME, DocumentsContract.Document.COLUMN_MIME_TYPE},
+                null, null, null)) {
+
+            Uri carpetaImg = null;
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    String documentId = cursor.getString(0);
+                    String nom = cursor.getString(1);
+                    String mime = cursor.getString(2);
+
+                    if ("Imatges".equals(nom) && DocumentsContract.Document.MIME_TYPE_DIR.equals(mime)) {
+                        carpetaImg = DocumentsContract.buildDocumentUriUsingTree(carpetaUri, documentId);
+                        break;
+                    }
+                }
+            }
+            if (carpetaImg == null) {  // La hem de crtear
+                try {
+                    carpetaImg = DocumentsContract.createDocument(
+                            getContentResolver(),
+                            carpetaUri,
+                            DocumentsContract.Document.MIME_TYPE_DIR,
+                            "Imatges"
+                    );
+                } catch (IOException e) {
+                    classGlobal.mostraError(this,"Error","No s'ha pogut crear la carpeta Imatges \n\n" + e.toString());
+                    e.printStackTrace();
+                    finish();
+                }
+            }
+            classGlobal.carpetaImatges = carpetaImg;
+        }
+
     }
+
+    void obrirSelectorDeCarpeta() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION |
+                Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
+                Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION |
+                Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);  // Això dona permisos per a totes les subcarpetes
+        selectorDeCarpetaLauncher.launch(intent);
+    }
+
+    void guardarUriPersistent(Uri uri) {
+        getContentResolver().takePersistableUriPermission(
+                uri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+        );
+        getSharedPreferences(classGlobal.configNom, MODE_PRIVATE)
+                .edit()
+                .putString(classGlobal.configUri, uri.toString())
+                .apply();
+        classGlobal.carpetaUri = uri;
+    }
+
+    @Nullable
+    Uri recuperarUriPersistent() {
+        String uriString = getSharedPreferences(classGlobal.configNom, MODE_PRIVATE)
+                .getString(classGlobal.configUri, null);
+        return (uriString != null) ? Uri.parse(uriString) : null;
+    }
+
+
 
     public void goToExamen(View view) {
         Intent myIntent = new Intent(MainActivity.this, act_examen_sel.class);
