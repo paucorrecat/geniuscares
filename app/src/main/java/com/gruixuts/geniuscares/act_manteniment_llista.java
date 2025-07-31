@@ -128,7 +128,7 @@ public class act_manteniment_llista extends AppCompatActivity {
             holder.mIdView.setText(mValues.get(position).getId().toString());
             holder.mCodiView.setText(mValues.get(position).getCodi());
             holder.mCatalaView.setText(mValues.get(position).getNom());
-            holder.mBascView.setText(mValues.get(position).getCognom1());
+            holder.mBascView.setText(mValues.get(position).getCognom());
 
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);

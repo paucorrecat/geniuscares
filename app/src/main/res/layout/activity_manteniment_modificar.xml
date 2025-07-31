@@ -146,12 +146,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="5dp"
-                    android:text="Cognom1:"
+                    android:text="Cognom:"
                     android:textAppearance="@android:style/TextAppearance.Material.Small"
                     app:layout_constraintEnd_toEndOf="parent" />
 
                 <EditText
-                    android:id="@+id/edtModCognom1"
+                    android:id="@+id/edtModCognom"
                     style="@style/Widget.AppCompat.EditText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -160,19 +160,19 @@
                     android:imeOptions="actionDone"
                     android:keyboardNavigationCluster="false"
                     android:singleLine="true"
-                    android:text="Cognom1"
+                    android:text="Cognom"
                     android:textAppearance="@android:style/TextAppearance.Material.Medium" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="5dp"
-                    android:text="Cognom2:"
+                    android:text="Num:"
                     android:textAppearance="@android:style/TextAppearance.Material.Small"
                     app:layout_constraintEnd_toEndOf="parent" />
 
                 <EditText
-                    android:id="@+id/edtModCognom2"
+                    android:id="@+id/edtModNum"
                     style="@style/Widget.AppCompat.EditText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -181,7 +181,7 @@
                     android:imeOptions="actionDone"
                     android:keyboardNavigationCluster="false"
                     android:singleLine="true"
-                    android:text="Cognom2"
+                    android:text="Num"
                     android:textAppearance="@android:style/TextAppearance.Material.Medium" />
             </TableRow>
             </TableLayout>

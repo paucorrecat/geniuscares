@@ -14,8 +14,8 @@ public class act_memoritzar_sel extends AppCompatActivity {
         setContentView(R.layout.activity_memoritzar_sel);
         ((TextView) findViewById(R.id.edtMmrId)).setText("");
         ((TextView) findViewById(R.id.edtMmrNom)).setText("");
-        ((TextView) findViewById(R.id.edtMmrCognom1)).setText("");
-        ((TextView) findViewById(R.id.edtMmrCognom2)).setText("");
+        ((TextView) findViewById(R.id.edtMmrCognom)).setText("");
+        ((TextView) findViewById(R.id.edtMmrNum)).setText("");
         ((TextView) findViewById(R.id.edtMmrCurs)).setText("");
         ((TextView) findViewById(R.id.edtMmrSiCodi)).setText("");
         ((TextView) findViewById(R.id.edtMmrNoCodi)).setText("");
@@ -32,11 +32,11 @@ public class act_memoritzar_sel extends AppCompatActivity {
         if (((TextView) findViewById(R.id.edtMmrNom)).getText().length()!=0) {
             Filtre += " and (Nom like '" + ((TextView) findViewById(R.id.edtMmrNom)).getText() + "' )";
         }
-        if (((TextView) findViewById(R.id.edtMmrCognom1)).getText().length()!=0) {
-            Filtre += " and (Cognom1 like '" + ((TextView) findViewById(R.id.edtMmrCognom1)).getText() + "' )";
+        if (((TextView) findViewById(R.id.edtMmrCognom)).getText().length()!=0) {
+            Filtre += " and (Cognom like '" + ((TextView) findViewById(R.id.edtMmrCognom)).getText() + "' )";
         }
-        if (((TextView) findViewById(R.id.edtMmrCognom2)).getText().length()!=0) {
-            Filtre += " and (Cognom2 like '" + ((TextView) findViewById(R.id.edtMmrCognom2)).getText() + "' )";
+        if (((TextView) findViewById(R.id.edtMmrNum)).getText().length()!=0) {
+            Filtre += " and (Num like '" + ((TextView) findViewById(R.id.edtMmrNum)).getText() + "' )";
         }
         if (((TextView) findViewById(R.id.edtMmrCurs)).getText().length()!=0) {
             Filtre += " and (Curs like '" + ((TextView) findViewById(R.id.edtMmrCurs)).getText() + "' )";

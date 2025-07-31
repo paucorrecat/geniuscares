@@ -105,7 +105,7 @@ public class act_pregunta extends AppCompatActivity {
         String Resposta = ((EditText) findViewById(R.id.edtBasc)).getText().toString();
         // ADAPTACIONS PENDENTS
         //Todo:1 String Diccionari = Llista.get(Actual).getBasc();
-        String Diccionari = Llista.get(Actual).getNom() + " " + Llista.get(Actual).getCognom1();
+        String Diccionari = Llista.get(Actual).getNom() + " " + Llista.get(Actual).getCognom();
         //Todo:1 String Pregunta = Llista.get(Actual).getCatala();
         String Pregunta = "Foto ¿2?";
         String tProva = TipusProva;
@@ -133,7 +133,7 @@ public class act_pregunta extends AppCompatActivity {
             Intent intent = new Intent(act_pregunta.this, act_pregunta_val.class);
 
             // Passem les cadenes a comparar ja normalitzades
-            intent.putExtra("IdEntDic", Llista.get(Actual).getId());
+            intent.putExtra("IdPers", Llista.get(Actual).getId());
             intent.putExtra("Resposta", Resposta);
             intent.putExtra("Correcta", Diccionari);
             intent.putExtra("Pregunta", Pregunta);
@@ -238,17 +238,17 @@ public class act_pregunta extends AppCompatActivity {
         classResultats Result = new classResultats();
         EditText edtBasc = (EditText) findViewById(R.id.edtBasc);
         TextView txtCat = (TextView) findViewById(R.id.txtCatala);
-        classPersones EntDic;
+        classPersones Pers;
         Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("Europe/Madrid"));
 
         //Crea Resultat
         Result.setDia(new Date());
         Result.setIdProva(NumProva);
-        Result.setIdEntDic(Llista.get(Actual).getId());
+        Result.setIdPers(Llista.get(Actual).getId());
         Result.setPregunta(txtCat.getText().toString());
         // Todo: Habilitar el registre de resultats a la resposta múltiple
         Result.setResposta(edtBasc.getText().toString());
-        Result.setCorrecta(Llista.get(Actual).getNom() + "," + Llista.get(Actual).getCognom1() + "," +
+        Result.setCorrecta(Llista.get(Actual).getNom() + "," + Llista.get(Actual).getCognom() + "," +
                            Llista.get(Actual).getNum() + "," + Llista.get(Actual).getCurs());
         Result.setTemps(TempsPregunta);
         Result.setValoracio(Resultat);
@@ -260,43 +260,43 @@ public class act_pregunta extends AppCompatActivity {
         ProvaActual.setNumRespostes(NumBe + NumRev + NumApr + NumObl);
         db.actProves(ProvaActual);
         // Actualitza Diccionari
-        EntDic = Llista.get(Actual);
+        Pers = Llista.get(Actual);
         cal.setTime(new Date());
-        if ((Resultat.equals(classResultats.VAL_PERFECTE)) && (cal.getTime().after(EntDic.getNextData()))) {
+        if ((Resultat.equals(classResultats.VAL_PERFECTE)) && (cal.getTime().after(Pers.getNextData()))) {
             if (TipusProva.equals( classProves.TIP_REPAS)) {
 
-                switch (EntDic.getNextTipus()) {
+                switch (Pers.getNextTipus()) {
                     case "1h":
-                        EntDic.setNextTipus("1d");
+                        Pers.setNextTipus("1d");
                         cal.add(Calendar.HOUR, 23);
                         break;
                     case "1d":
-                        EntDic.setNextTipus("1s");
+                        Pers.setNextTipus("1s");
                         cal.add(Calendar.DATE, 6);
                         break;
                     case "1s":
-                        EntDic.setNextTipus("1m");
+                        Pers.setNextTipus("1m");
                         cal.add(Calendar.DATE, 21);
                         break;
                     case "1m":
-                        EntDic.setNextTipus("6m");
+                        Pers.setNextTipus("6m");
                         cal.add(Calendar.DATE, 28 * 5);
                         break;
                     case "6m":
                         cal.add(Calendar.DATE, 28 * 6);
                 }
-                EntDic.setNextData(cal.getTime());
-                db.actDiccionari(EntDic);
+                Pers.setNextData(cal.getTime());
+                db.actDiccionari(Pers);
             }
         } else if (Resultat.equals(classResultats.VAL_APRES)) {
-            EntDic.setNextTipus("1h");
+            Pers.setNextTipus("1h");
             cal.add(Calendar.HOUR, 1);
-            EntDic.setNextData(cal.getTime());
-            db.actDiccionari(EntDic);
+            Pers.setNextData(cal.getTime());
+            db.actDiccionari(Pers);
         } else if (Resultat.equals(classResultats.VAL_OBLIDAT)) {
-            EntDic.setNextTipus("a");
-            EntDic.setNextData("");
-            db.actDiccionari(EntDic);
+            Pers.setNextTipus("a");
+            Pers.setNextData("");
+            db.actDiccionari(Pers);
         }
         // si és VAL_REVISIO no s'ha de gravar res
 

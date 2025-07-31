@@ -16,8 +16,8 @@ public class act_manteniment_sel extends AppCompatActivity {
         setContentView(R.layout.activity_manteniment_sel);
         ((TextView) findViewById(R.id.edtMntId)).setText("");
         ((TextView) findViewById(R.id.edtMntNom)).setText("");
-        ((TextView) findViewById(R.id.edtMntCognom1)).setText("");
-        ((TextView) findViewById(R.id.edtMntCognom2)).setText("");
+        ((TextView) findViewById(R.id.edtMntCognom)).setText("");
+        ((TextView) findViewById(R.id.edtMntNum)).setText("");
         ((TextView) findViewById(R.id.edtMntCurs)).setText("");
         ((TextView) findViewById(R.id.edtMntSiCodi)).setText("");
         ((TextView) findViewById(R.id.edtMntNoCodi)).setText("");
@@ -35,11 +35,11 @@ public class act_manteniment_sel extends AppCompatActivity {
         if (((TextView) findViewById(R.id.edtMntNom)).getText().length()!=0) {
             Filtre += " and (Nom like '" + ((TextView) findViewById(R.id.edtMntNom)).getText() + "%' )";
         }
-        if (((TextView) findViewById(R.id.edtMntCognom1)).getText().length()!=0) {
-            Filtre += " and (Cognom1 like '" + ((TextView) findViewById(R.id.edtMntCognom1)).getText() + "%' )";
+        if (((TextView) findViewById(R.id.edtMntCognom)).getText().length()!=0) {
+            Filtre += " and (Cognom like '" + ((TextView) findViewById(R.id.edtMntCognom)).getText() + "%' )";
         }
-        if (((TextView) findViewById(R.id.edtMntCognom2)).getText().length()!=0) {
-            Filtre += " and (Cognom2 like '" + ((TextView) findViewById(R.id.edtMntCognom2)).getText() + "%' )";
+        if (((TextView) findViewById(R.id.edtMntNum)).getText().length()!=0) {
+            Filtre += " and (Num like '" + ((TextView) findViewById(R.id.edtMntNum)).getText() + "%' )";
         }
         if (((TextView) findViewById(R.id.edtMntCurs)).getText().length()!=0) {
             Filtre += " and (Curs like '" + ((TextView) findViewById(R.id.edtMntCurs)).getText() + "%' )";
@@ -74,7 +74,7 @@ public class act_manteniment_sel extends AppCompatActivity {
         if (rb==R.id.radNom ) {
             Ordre = "Nom";
         } else if (rb==R.id.radCognom ) {
-            Ordre = "Cognom1";
+            Ordre = "Cognom";
         } else if (rb==R.id.radCod ) {
             Ordre = "Codi";
         } else {

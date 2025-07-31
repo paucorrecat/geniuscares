@@ -35,15 +35,15 @@ public class GestorDB {
     // Definició de les taules
     private static abstract class PersonaDef implements BaseColumns {
         public static final String TABLE_NAME = "Diccionari";
-        public static final String LLISTA_CAMPS = "Id,Imatges,Nom,Cognom1,Cognom2,Curs,Codi,PAV,Comentaris,Grup,NextTipus,NextData,AMemoritzar";
-        // urgent: cognom2 -> num i afegir teimatge
+        public static final String LLISTA_CAMPS = "Id,Imatges,Nom,Cognom,Num,Curs,Codi,PAV,Comentaris,Grup,NextTipus,NextData,AMemoritzar,TeImatge";
+        // urgent:  afegir teimatge
 
         public static final String Id = "Id";
         //public static final String Catala = "Catala";  // A eliminar
         //public static final String Basc = "Basc";   // A eliminar
         public static final String Imatges = "Imatges";
         public static final String Nom = "Nom";
-        public static final String Cognom1 = "Cognom1";
+        public static final String Cognom = "Cognom";
         public static final String Num = "Num"; // urgent: canviar el nom del camp a Bum
         public static final String Curs = "Curs";
         public static final String Codi = "Codi";
@@ -54,6 +54,7 @@ public class GestorDB {
         public static final String NextData = "NextData";
         public static final String AMemoritzar = "AMemoritzar"; // A eliminar
 
+        public static final String TeImatge = "TeImatge"; // A eliminar
     }
 
     private static abstract class ProvesDef implements BaseColumns {
@@ -73,17 +74,17 @@ public class GestorDB {
 
     private static abstract class ResultatsDef implements BaseColumns {
         public static final String TABLE_NAME = "Resultats";
-//        public static final String LLISTA_CAMPS = "Dia,IdProva,IdEntDic,Pregunta,Resposta,Correcta,Errors,Temps,Valoracio";
-        public static final String LLISTA_CAMPS = "Dia,IdProva,IdEntDic,Resposta,Errors,Temps,Valoracio";
+//        public static final String LLISTA_CAMPS = "Dia,IdProva,IdPers,Pregunta,Resposta,Correcta,Errors,Temps,Valoracio";
+        public static final String LLISTA_CAMPS = "Dia,IdProva,IdPers,Resposta,Errors,Temps,Valoracio";
 
         public static final String Dia = "Dia";
         public static final String IdProva = "IdProva";
-        public static final String IdEntDic = "IdEntDic";
+        public static final String IdPers = "IdPers";
         //public static final String Pregunta = "Pregunta";
-        public static final String Resposta = "Resposta";  // Nom,Cognom1,Cognom2,Curs
+        public static final String Resposta = "Resposta";  // Nom,Cognom,Num,Curs
         //public static final String Correcta = "Correcta"; // A Eliminar --> Errors
         public static final String Errors = "Errors";  // 0 => Correcta
-                                                       // Errors comesos: Nom, Cognom1,... Es tracta de tipificar-los
+                                                       // Errors comesos: Nom, Cognom,... Es tracta de tipificar-los
         public static final String Temps = "Temps";
         public static final String Valoracio = "Valoracio";  // Per a prioritzar i veure progrés
     }
@@ -95,7 +96,7 @@ public class GestorDB {
             //+ DiccionariDef.Basc + " text, "
             + PersonaDef.Imatges + " text, "
             + PersonaDef.Nom + " text, "
-            + PersonaDef.Cognom1 + " text, "
+            + PersonaDef.Cognom + " text, "
             + PersonaDef.Num + " text, "
             + PersonaDef.Curs + " text, "
             + PersonaDef.Codi + " text, "
@@ -104,7 +105,8 @@ public class GestorDB {
             + PersonaDef.Comentaris + " text, "
             + PersonaDef.NextTipus + " text, "
             + PersonaDef.NextData + " text, "
-            + PersonaDef.AMemoritzar + " integer ); ";
+            + PersonaDef.AMemoritzar + " integer, "
+            + PersonaDef.TeImatge + " integer ); ";
 
     private static final String Proves_TABLE_CREATE = "create table " + ProvesDef.TABLE_NAME
             + "(" + ProvesDef.Id + " integer primary key, "
@@ -119,7 +121,7 @@ public class GestorDB {
     private static final String Resultats_TABLE_CREATE = "create table " + ResultatsDef.TABLE_NAME
             + "(" + ResultatsDef.Dia + " text, "
             + ResultatsDef.IdProva + " integer, "
-            + ResultatsDef.IdEntDic + " integer, "
+            + ResultatsDef.IdPers + " integer, "
 //            + ResultatsDef.Pregunta + " text, "
             + ResultatsDef.Resposta + " text, "
 //            + ResultatsDef.Correcta + " text, "
@@ -209,7 +211,7 @@ public class GestorDB {
         }
     }
 
-    public classPersones selEntDic(Integer Id) {
+    public classPersones selPers(Integer Id) {
         String SQLtxt;
 
         SQLtxt = "Select " + PersonaDef.LLISTA_CAMPS + " from " + PersonaDef.TABLE_NAME + " where Id=" + Id + ";";
@@ -237,9 +239,9 @@ public class GestorDB {
 
         SQLtxt = "Select ";
         SQLtxt += "Diccionari.* from ((select * from ( ";
-        SQLtxt += "( SELECT Max(Dia) AS UltDeDia, IdEntDic as UltIdEntDic FROM Resultats GROUP BY Resultats.IdEntDic ) as Ult ";
-        SQLtxt += "INNER JOIN Resultats as Rst ON (Ult.UltIdEntDic = Rst.IdEntDic) AND (Ult.UltDeDia = Rst.Dia))) as pp ";
-        SQLtxt += "INNER JOIN Diccionari on IdEntDic=Diccionari.Id) where ((Valoracio <> 'Obl') ";
+        SQLtxt += "( SELECT Max(Dia) AS UltDeDia, IdPers as UltIdPers FROM Resultats GROUP BY Resultats.IdPers ) as Ult ";
+        SQLtxt += "INNER JOIN Resultats as Rst ON (Ult.UltIdPers = Rst.IdPers) AND (Ult.UltDeDia = Rst.Dia))) as pp ";
+        SQLtxt += "INNER JOIN Diccionari on IdPers=Diccionari.Id) where ((Valoracio <> 'Obl') ";
         if (Filtre.length() > 0) {
             SQLtxt += " and " + Filtre + ") ";
         } else {
@@ -281,9 +283,9 @@ public class GestorDB {
 
         SQLtxt = "Select ";
         SQLtxt += "Diccionari.* from ((select * from ( ";
-        SQLtxt += "( SELECT Max(Dia) AS UltDeDia, IdEntDic as UltIdEntDic FROM Resultats GROUP BY Resultats.IdEntDic ) as Ult ";
-        SQLtxt += "INNER JOIN Resultats as Rst ON (Ult.UltIdEntDic = Rst.IdEntDic) AND (Ult.UltDeDia = Rst.Dia))) as pp ";
-        SQLtxt += "INNER JOIN Diccionari on IdEntDic=Diccionari.Id) where Valoracio = 'Rev' ";
+        SQLtxt += "( SELECT Max(Dia) AS UltDeDia, IdPers as UltIdPers FROM Resultats GROUP BY Resultats.IdPers ) as Ult ";
+        SQLtxt += "INNER JOIN Resultats as Rst ON (Ult.UltIdPers = Rst.IdPers) AND (Ult.UltDeDia = Rst.Dia))) as pp ";
+        SQLtxt += "INNER JOIN Diccionari on IdPers=Diccionari.Id) where Valoracio = 'Rev' ";
         if (Ordre == "Ant") {
             SQLtxt += " ORDER BY Dia";
         }
@@ -335,9 +337,9 @@ public class GestorDB {
 
         SQLtxt = "Select ";
         SQLtxt += "Diccionari.* from ((select * from ( ";
-        SQLtxt += "( SELECT Max(Dia) AS UltDeDia, IdEntDic as UltIdEntDic FROM Resultats GROUP BY Resultats.IdEntDic ) as Ult ";
-        SQLtxt += "INNER JOIN Resultats as Rst ON (Ult.UltIdEntDic = Rst.IdEntDic) AND (Ult.UltDeDia = Rst.Dia))) as pp ";
-        SQLtxt += "INNER JOIN Diccionari on IdEntDic=Diccionari.Id) where Valoracio = 'Rev' ";
+        SQLtxt += "( SELECT Max(Dia) AS UltDeDia, IdPers as UltIdPers FROM Resultats GROUP BY Resultats.IdPers ) as Ult ";
+        SQLtxt += "INNER JOIN Resultats as Rst ON (Ult.UltIdPers = Rst.IdPers) AND (Ult.UltDeDia = Rst.Dia))) as pp ";
+        SQLtxt += "INNER JOIN Diccionari on IdPers=Diccionari.Id) where Valoracio = 'Rev' ";
         SQLtxt += ";";
 
         try {
@@ -509,7 +511,7 @@ public class GestorDB {
     public void delDiccionari() {
         db.delete(PersonaDef.TABLE_NAME, "-1", null);
     }
-    public void delEntDic(Integer Id) {
+    public void delPers(Integer Id) {
         db.delete(PersonaDef.TABLE_NAME, "Id=" + Id, null);
     }
     public void delProves() {
@@ -527,7 +529,7 @@ public class GestorDB {
         values.put(PersonaDef.Id, ent.getId());
         values.put(PersonaDef.Imatges, ent.getImatges());
         values.put(PersonaDef.Nom, ent.getNom());
-        values.put(PersonaDef.Cognom1, ent.getCognom1());
+        values.put(PersonaDef.Cognom, ent.getCognom());
         values.put(PersonaDef.Num, ent.getNum());
         values.put(PersonaDef.Curs, ent.getCurs());
         values.put(PersonaDef.Codi, ent.getCodi());
@@ -541,6 +543,7 @@ public class GestorDB {
             values.put(PersonaDef.NextData, ent.getNextDataTxt());
         }
         values.put(PersonaDef.AMemoritzar, ent.getAMemoritzar());
+        values.put(PersonaDef.TeImatge, ent.getTeImatge());
         // Insertar...
         db.insert(PersonaDef.TABLE_NAME, null, values);
     }
@@ -593,7 +596,7 @@ public class GestorDB {
         // Parells clau-valor
         values.put(ResultatsDef.Dia, Rslt.getDiaTxt());
         values.put(ResultatsDef.IdProva, Rslt.getIdProva());
-        values.put(ResultatsDef.IdEntDic, Rslt.getIdEntDic());
+        values.put(ResultatsDef.IdPers, Rslt.getIdPers());
         //values.put(ResultatsDef.Pregunta, Rslt.getPregunta());
         values.put(ResultatsDef.Resposta, Rslt.getResposta());
         //values.put(ResultatsDef.Correcta, Rslt.getCorrecta());
@@ -666,8 +669,8 @@ public class GestorDB {
         ContentValues values = new ContentValues();
         values.put(PersonaDef.Imatges, ent.getImatges());
         values.put(PersonaDef.Nom, ent.getNom());
-        values.put(PersonaDef.Cognom1, ent.getCognom1());
-        values.put(PersonaDef.Num, ent.getNum());
+        values.put(PersonaDef.Cognom, ent.getCognom());
+        values.put(PersonaDef.Num, ent.getNum());  // Compre camps DB
         values.put(PersonaDef.Curs, ent.getCurs());
         values.put(PersonaDef.Codi, ent.getCodi());
         values.put(PersonaDef.Grup, ent.getGrup());
@@ -676,7 +679,18 @@ public class GestorDB {
         values.put(PersonaDef.NextTipus, ent.getNextTipus());
         values.put(PersonaDef.NextData, ent.getNextDataTxt());
         values.put(PersonaDef.AMemoritzar, ent.getAMemoritzar());
-        db.update(PersonaDef.TABLE_NAME, values, "Id=" + ent.getId(), null);
+        values.put(PersonaDef.TeImatge, ent.getTeImatge());
+        try {
+            db.update(
+                    PersonaDef.TABLE_NAME,
+                    values,
+                    "Id = ?",
+                    new String[]{String.valueOf(ent.getId())}
+            );
+        }
+        catch (Exception e) {
+            Log.d("DB","Error al update " + e.toString());
+        }
 
     }
 

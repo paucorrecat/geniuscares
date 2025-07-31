@@ -90,7 +90,7 @@ public class act_manteniment_modificar extends AppCompatActivity {
         db = new GestorDB(getApplicationContext());
         db.open();
         if (Clau.length() > 0) {
-            mItem = db.selEntDic(Integer.parseInt(Clau));
+            mItem = db.selPers(Integer.parseInt(Clau));
         } else {
             mItem = new classPersones();
         }
@@ -104,8 +104,8 @@ public class act_manteniment_modificar extends AppCompatActivity {
         if (mItem != null) {
             ((TextView) findViewById(R.id.txtModId)).setText("" + mItem.getId());
             ((TextView) findViewById(R.id.edtModNom)).setText(mItem.getNom());
-            ((TextView) findViewById(R.id.edtModCognom1)).setText(mItem.getCognom1());
-            ((TextView) findViewById(R.id.edtModCognom2)).setText(mItem.getNum());
+            ((TextView) findViewById(R.id.edtModCognom)).setText(mItem.getCognom());
+            ((TextView) findViewById(R.id.edtModNum)).setText(mItem.getNum());
             ((TextView) findViewById(R.id.edtModCurs)).setText(mItem.getCurs());
             ((TextView) findViewById(R.id.edtModCodi)).setText(mItem.getCodi());
             ((Switch) findViewById(R.id.schTraduible)).setChecked(mItem.getAMemoritzar());
@@ -218,7 +218,7 @@ public class act_manteniment_modificar extends AppCompatActivity {
         builder.setPositiveButton("Sí", (dialog, id) -> {
             db.open();
             if (mItem.getId() != 0) {
-                db.delEntDic(mItem.getId());
+                db.delPers(mItem.getId());
             }
             db.close();
             dialog.cancel();
@@ -230,8 +230,8 @@ public class act_manteniment_modificar extends AppCompatActivity {
     public void Grava(View view) {
         db.open();
         mItem.setNom(((TextView) findViewById(R.id.edtModNom)).getText().toString());
-        mItem.setCognom1(((TextView) findViewById(R.id.edtModCognom1)).getText().toString());
-        mItem.setNum(((TextView) findViewById(R.id.edtModCognom2)).getText().toString());
+        mItem.setCognom(((TextView) findViewById(R.id.edtModCognom)).getText().toString());
+        mItem.setNum(((TextView) findViewById(R.id.edtModNum)).getText().toString());
         mItem.setCurs(((TextView) findViewById(R.id.edtModCurs)).getText().toString());
         mItem.setCodi(((TextView) findViewById(R.id.edtModCodi)).getText().toString());
         mItem.setAMemoritzar(((Switch) findViewById(R.id.schTraduible)).isChecked());

@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 public class act_pregunta_val extends AppCompatActivity {
 
-    Integer IdEntDic;
+    Integer IdPers;
     private static final int OK_RESULT_CODE = 1;
 
     @Override
@@ -21,7 +21,7 @@ public class act_pregunta_val extends AppCompatActivity {
         TextView txtPreg = findViewById(R.id.txtValPregunta);
         TextView txtTipus = findViewById(R.id.txtValProva);
         TextView txtData = findViewById(R.id.txtValNextData);
-        IdEntDic = getIntent().getIntExtra("IdEntDic",0);
+        IdPers = getIntent().getIntExtra("IdPers",0);
         String Resposta = getIntent().getStringExtra("Resposta");
         String Diccionari = getIntent().getStringExtra("Correcta");
         String Pregunta = getIntent().getStringExtra("Pregunta");
@@ -45,7 +45,7 @@ public class act_pregunta_val extends AppCompatActivity {
     public void rstMod(View view) {
         Context context = view.getContext();
         Intent intent = new Intent(context, act_manteniment_modificar.class);
-        intent.putExtra(act_manteniment_modificar.ARG_ITEM_ID, IdEntDic.toString());
+        intent.putExtra(act_manteniment_modificar.ARG_ITEM_ID, IdPers.toString());
 
         context.startActivity(intent);
 

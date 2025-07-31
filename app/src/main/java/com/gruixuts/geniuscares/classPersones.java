@@ -25,7 +25,7 @@ public class classPersones {
     private String Nom;
 
     /** Primer cognom de l'alumne. */
-    private String Cognom1;
+    private String Cognom;
 
     /** Curs escolar (ex: "3ESO", "2Btx"). */
     private String Curs;
@@ -100,7 +100,7 @@ public class classPersones {
      * @param id identificador
      * @param imatges nom de carpeta d'imatges
      * @param nom nom de l'alumne
-     * @param cognom1 primer cognom
+     * @param Cognom primer cognom
      * @param num número d'ordre (com a string)
      * @param curs curs escolar
      * @param codi codi identificador
@@ -113,7 +113,7 @@ public class classPersones {
      * @param teimatge si hi ha imatges
      */
 
-    public classPersones(Integer id, String imatges, String nom, String cognom1, String num, String curs, String codi, String pav, String comentaris, String grup, String nexttipus, Date nextdata, Boolean amemoritzar, Boolean teimatge) {
+    public classPersones(Integer id, String imatges, String nom, String Cognom, String num, String curs, String codi, String pav, String comentaris, String grup, String nexttipus, Date nextdata, Boolean amemoritzar, Boolean teimatge) {
         Id = id;
         if (imatges == null) {
             Imatges = NovaImatge();
@@ -123,11 +123,11 @@ public class classPersones {
             Imatges = imatges;
         }
         Nom = nom;
-        Cognom1 = cognom1;
+        Cognom = Cognom;
         try {
             int Num = Integer.parseInt(num);
         } catch (NumberFormatException e) {
-            System.out.println(nom + " " + cognom1 + " No és té una nombre vàlid");
+            System.out.println(nom + " " + Cognom + " No és té una nombre vàlid");
         }
         Num = num;
         Curs = curs;
@@ -149,7 +149,7 @@ public class classPersones {
         Id = cursor.getInt(0);
         Imatges = cursor.getString(1);
         Nom = cursor.getString(2);
-        Cognom1 = cursor.getString(3);
+        Cognom = cursor.getString(3);
         Num = cursor.getString(4);
         Curs = cursor.getString(5);
         Codi = cursor.getString(6);
@@ -159,28 +159,28 @@ public class classPersones {
         NextTipus = cursor.getString(10);
         NextData = cursor.getString(11) == null ? null : GestorDB.AData(cursor.getString(11));
         AMemoritzar = cursor.getInt(12) == 0 ? false : true;
+        TeImatge = cursor.getInt(13) == 0 ? false : true;
     }
-
-    ;
 
     /**
      * Constructor amb id, nom i cognom.
      * @param id identificador
      * @param nom nom de l'alumne
-     * @param cognom1 primer cognom
+     * @param Cognom primer cognom
      */
-    public classPersones(Integer id, String nom, String cognom1) {
+    public classPersones(Integer id, String nom, String Cognom) {
         Id = id;
         Codi = "";
         Imatges = NovaImatge();
         Nom = nom;
-        Cognom1=cognom1;
+        Cognom =Cognom;
         this.PAV = "";
         Comentaris = "";
         Grup = "";
         NextTipus = "a";
         NextData = null;
         AMemoritzar = true;
+        TeImatge = false;
 
     }
 
@@ -190,7 +190,7 @@ public class classPersones {
         Codi = "";
         Imatges = NovaImatge();
         Nom = "";
-        Cognom1 = "";
+        Cognom = "";
         Num = "";
         Curs = "";
         PAV = "";
@@ -240,11 +240,11 @@ public class classPersones {
 
     public void setNom(String nom) { Nom = nom; }
 
-    public String getCognom1() {
-        return Cognom1;
+    public String getCognom() {
+        return Cognom;
     }
 
-    public void setCognom1(String cognom1) { Cognom1 = cognom1; }
+    public void setCognom(String cognom) { Cognom = cognom; }
 
     public String getNum() {
         return Num;
@@ -336,4 +336,12 @@ public class classPersones {
     public void setAMemoritzar(Boolean amemoritzar) {
         AMemoritzar = amemoritzar;
     }
+    public Boolean getTeImatge() {
+        return AMemoritzar;
+    }
+
+    public void setTeImatge(Boolean amemoritzar) {
+        AMemoritzar = amemoritzar;
+    }
+
 }

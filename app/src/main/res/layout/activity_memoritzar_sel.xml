@@ -74,7 +74,7 @@
                 android:textAppearance="@android:style/TextAppearance.Material.Small" />
 
             <EditText
-                android:id="@+id/edtMmrCognom1"
+                android:id="@+id/edtMmrCognom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -97,7 +97,7 @@
                 android:textAppearance="@android:style/TextAppearance.Material.Small" />
 
             <EditText
-                android:id="@+id/edtMmrCognom2"
+                android:id="@+id/edtMmrNum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"

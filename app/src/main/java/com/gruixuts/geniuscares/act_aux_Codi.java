@@ -45,7 +45,7 @@ public class act_aux_Codi extends ListActivity {
         String Filtre;
         llistaVisible = new ArrayList();
         llistaCodis = new ArrayList();
-        classPersones EntDic;
+        classPersones Pers;
         Integer n;
         db.open();
         Filtre = "Codi like " + Pare + "_";

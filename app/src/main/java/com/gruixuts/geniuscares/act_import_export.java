@@ -1,12 +1,8 @@
 package com.gruixuts.geniuscares;
 
 import android.content.DialogInterface;
-import android.database.Cursor;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.documentfile.provider.DocumentFile;
@@ -20,7 +16,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -30,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.provider.DocumentsContract;
 
@@ -176,8 +170,8 @@ public class act_import_export extends AppCompatActivity {
                                     ANum(camps[1]), //Id
                                     camps[2],                   //Imatges
                                     camps[3],                   //Nom
-                                    camps[4],                   //Cognom1
-                                    camps[5],                   //Cognom2
+                                    camps[4],                   //Cognom
+                                    camps[5],                   //Num
                                     camps[6],                   //Curs
                                     camps[7],                   //Codi
                                     camps[8],                   //PAV
@@ -259,8 +253,8 @@ public class act_import_export extends AppCompatActivity {
         String txtVer = "001";
         int Id;
         String txt;
-        classPersones nEntDic;
-        classPersones antEntDic;
+        classPersones nPers;
+        classPersones antPers;
         String Tip;
 
         estat.setText("Buscant fitxers");
@@ -301,7 +295,7 @@ public class act_import_export extends AppCompatActivity {
                 } catch (Exception e) {
                     Id = Integer.parseInt(camps[0].substring(1));
                 }
-                antEntDic = db.selEntDic(Id);
+                antPers = db.selPers(Id);
                     if (camps[2].length() == 0) {
                         Tip = "t";
                     } else {
@@ -311,7 +305,7 @@ public class act_import_export extends AppCompatActivity {
                             Id,                        //Id
                             camps[1],                   //Imatges
                             camps[2],                   //Nom
-                            camps[3],                   //Cognom1
+                            camps[3],                   //Cognom
                             camps[4],                   //Num
                             camps[5],                   //Curs
                             camps[6],                   //Codi
@@ -445,7 +439,7 @@ public class act_import_export extends AppCompatActivity {
                         fout.write(LlistaDiccionari.get(n).getId().toString() + Separador);
                         fout.write(LlistaDiccionari.get(n).getImatges().toString() + Separador);
                         fout.write(LlistaDiccionari.get(n).getNom().toString() + Separador);
-                        fout.write(LlistaDiccionari.get(n).getCognom1().toString() + Separador);
+                        fout.write(LlistaDiccionari.get(n).getCognom().toString() + Separador);
                         fout.write(LlistaDiccionari.get(n).getNum().toString() + Separador);
                         fout.write(LlistaDiccionari.get(n).getCurs().toString() + Separador);
                         fout.write(LlistaDiccionari.get(n).getCodi().toString() + Separador);
@@ -509,7 +503,7 @@ public class act_import_export extends AppCompatActivity {
                         fout.write("R" + Separador);
                         fout.write(LlistaResultats.get(n).getDiaTxt().toString() + Separador);
                         fout.write(LlistaResultats.get(n).getIdProva().toString() + Separador);
-                        fout.write(LlistaResultats.get(n).getIdEntDic().toString() + Separador);
+                        fout.write(LlistaResultats.get(n).getIdPers().toString() + Separador);
                         fout.write(LlistaResultats.get(n).getPregunta().toString() + Separador);
                         fout.write(LlistaResultats.get(n).getResposta().toString() + Separador);
                         fout.write(LlistaResultats.get(n).getCorrecta().toString() + Separador);

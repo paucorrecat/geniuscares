@@ -28,14 +28,14 @@ public class act_memoritzar extends AppCompatActivity {
     classPersones ParaulaActual;
     classProves Prova = null;
     String Filtre="";
-    Integer IdEntDic;
+    Integer IdPers;
     Long TempsIniciProva;
     Long TempsIniciPregunta;
     Long TempsProva;
 
     TextView txtNom;
-    TextView txtCognom1;
-    TextView txtCognom2;
+    TextView txtCognom;
+    TextView txtNum;
     TextView txtCurs;
     TextView edtMemPAV;
     TextView edtMemComentaris;
@@ -55,8 +55,8 @@ public class act_memoritzar extends AppCompatActivity {
         CarpetaImatges = FileUtils.getCarpetaImatges(this);
         
         txtNom = (TextView) findViewById(R.id.txtMemNom);
-        txtCognom1 = (TextView) findViewById(R.id.txtMemCognom1);
-        txtCognom2 = (TextView) findViewById(R.id.txtMemCognom2);
+        txtCognom = (TextView) findViewById(R.id.txtMemCognom);
+        txtNum = (TextView) findViewById(R.id.txtMemNum);
         txtCurs = (TextView) findViewById(R.id.txtMemCurs);
         edtMemPAV = (TextView) findViewById(R.id.edtMemPAV);
         edtMemComentaris = (TextView) findViewById(R.id.edtMemComentaris);
@@ -78,7 +78,7 @@ public class act_memoritzar extends AppCompatActivity {
         Actual++;
         if (Actual<Llista.size()) {
             ParaulaActual=Llista.get(Actual);
-            IdEntDic= ParaulaActual.getId();
+            IdPers= ParaulaActual.getId();
             File carpeta = new File(CarpetaImatges + "/" + ParaulaActual.getImatges());
             NumImg = 0;
             if (carpeta.exists()) {
@@ -89,8 +89,8 @@ public class act_memoritzar extends AppCompatActivity {
             }
             fotoPrimera();
             txtNom.setText(ParaulaActual.getNom());
-            txtCognom1.setText(ParaulaActual.getCognom1());
-            txtCognom2.setText(ParaulaActual.getNum());
+            txtCognom.setText(ParaulaActual.getCognom());
+            txtNum.setText(ParaulaActual.getNum());
             txtCurs.setText(ParaulaActual.getCurs());
             edtMemPAV.setText(ParaulaActual.getPAV());
             edtMemComentaris.setText(ParaulaActual.getComentaris());
@@ -105,8 +105,8 @@ public class act_memoritzar extends AppCompatActivity {
             Button bt2 = (Button) findViewById(R.id.cmdMemPasso);
             Button bt3 = (Button) findViewById(R.id.cmdMemEdit);
             txtNom.setText("");
-            txtCognom1.setText("");
-            txtCognom2.setText("");
+            txtCognom.setText("");
+            txtNum.setText("");
             txtCurs.setText("");
             edtMemPAV.setText("");
             edtMemComentaris.setText("");
@@ -175,7 +175,7 @@ public class act_memoritzar extends AppCompatActivity {
         classResultats rslt = new classResultats();
         rslt.setDia(Ara);
         rslt.setIdProva(Prova.getId());
-        rslt.setIdEntDic(ParaulaActual.getId());
+        rslt.setIdPers(ParaulaActual.getId());
 //Todo:1        rslt.setPregunta(ParaulaActual.getCatala());
 //Todo:1        rslt.setResposta(ParaulaActual.getBasc());
 //Todo:1        rslt.setCorrecta(ParaulaActual.getBasc());
@@ -193,7 +193,7 @@ public class act_memoritzar extends AppCompatActivity {
     public void MemEdit(View view) {
         Context context = view.getContext();
         Intent intent = new Intent(context, act_manteniment_modificar.class);
-        intent.putExtra(act_manteniment_modificar.ARG_ITEM_ID, IdEntDic.toString());
+        intent.putExtra(act_manteniment_modificar.ARG_ITEM_ID, IdPers.toString());
         context.startActivity(intent);
     }
 

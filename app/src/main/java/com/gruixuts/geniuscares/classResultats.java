@@ -34,7 +34,7 @@ public class classResultats {
 
     private Date Dia_;
     private Integer IdProva_;
-    private Integer IdEntDic_;
+    private Integer IdPers_;
     private String Pregunta_;
     private String Resposta_;
     private String Correcta_;
@@ -44,7 +44,7 @@ public class classResultats {
 
     public classResultats(Date dia,
                           Integer idprova,
-                          Integer identdic,
+                          Integer idpers,
                           String pregunta,
                           String resposta,
                           String correcta,
@@ -52,7 +52,7 @@ public class classResultats {
                           String valoracio) {
         setDia(dia);
         setIdProva(idprova);
-        setIdEntDic(identdic);
+        setIdPers(idpers);
         setPregunta(pregunta);
         setResposta(resposta);
         setCorrecta(correcta);
@@ -71,7 +71,7 @@ public class classResultats {
     public classResultats(Cursor cursor) {
         Dia_ = cursor.getString(0) == null ? null : GestorDB.AData(cursor.getString(0));
         IdProva_ = cursor.getInt(1);
-        IdEntDic_ = cursor.getInt(2);
+        IdPers_ = cursor.getInt(2);
         Pregunta_ = cursor.getString(3);
         Resposta_ = cursor.getString(4);
         Correcta_ = cursor.getString(5);
@@ -104,12 +104,12 @@ public class classResultats {
         IdProva_ = idProva;
     }
 
-    public Integer getIdEntDic() {
-        return IdEntDic_;
+    public Integer getIdPers() {
+        return IdPers_;
     }
 
-    public void setIdEntDic(Integer idEntDic) {
-        IdEntDic_ = idEntDic;
+    public void setIdPers(Integer idPers) {
+        IdPers_ = idPers;
     }
 
     public String getPregunta() {
@@ -156,7 +156,7 @@ public class classResultats {
         String rslt="";
         rslt += getDiaTxt() + Separador;
         rslt += IdProva_.toString() + Separador;
-        rslt += IdEntDic_.toString() + Separador;
+        rslt += IdPers_.toString() + Separador;
         rslt += Pregunta_ + Separador;
         rslt += Resposta_ + Separador;
         rslt += Correcta_ + Separador;
@@ -178,9 +178,9 @@ public class classResultats {
             IdProva_ = Integer.parseInt(camps[1].substring(1));
         }
         try {
-            IdEntDic_ = Integer.parseInt(camps[2]);
+            IdPers_ = Integer.parseInt(camps[2]);
         } catch (Exception e) {
-            IdEntDic_ = Integer.parseInt(camps[2].substring(1));
+            IdPers_ = Integer.parseInt(camps[2].substring(1));
         }
         Pregunta_=camps[3];
         Resposta_=camps[4];
