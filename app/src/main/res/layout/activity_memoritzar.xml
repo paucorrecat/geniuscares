@@ -36,14 +36,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:onClick="fotoSeguent"
-                    android:text=">" />
+                    android:text="-->" />
 
                 <Button
                     android:id="@+id/cmdModAntFoto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:onClick="fotoAnterior"
-                    android:text="Ant" />
+                    android:text="&lt;--" />
 
             </LinearLayout>
         </LinearLayout>
@@ -83,33 +83,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="5dp"
-                    android:text="Curs:"
-                    android:textAppearance="@android:style/TextAppearance.Material.Small"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <EditText
-                    android:id="@+id/txtMemCurs"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp"
-                    android:imeOptions="actionDone"
-                    android:keyboardNavigationCluster="false"
-                    android:singleLine="true"
-                    android:text="Curs"
-                    android:textAppearance="@android:style/TextAppearance.Material.Medium" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp"
-                    android:text="Cog_1:"
+                    android:text="Cognom:"
                     android:textAppearance="@android:style/TextAppearance.Material.Small"
                     app:layout_constraintEnd_toEndOf="parent" />
 
@@ -124,20 +98,66 @@
                     android:singleLine="true"
                     android:text="Cognom"
                     android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="5dp"
-                    android:text="Cog_2:"
+                    android:text="Curs:"
                     android:textAppearance="@android:style/TextAppearance.Material.Small"
                     app:layout_constraintEnd_toEndOf="parent" />
 
+                <LinearLayout>
+                    <EditText
+                        android:id="@+id/txtMemCurs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="5dp"
+                        android:imeOptions="actionDone"
+                        android:keyboardNavigationCluster="false"
+                        android:singleLine="true"
+                        android:text="Curs"
+                        android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="-"
+                        android:textAppearance="@android:style/TextAppearance.Material.Small"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                    <EditText
+                        android:id="@+id/txtMemGrup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="5dp"
+                        android:imeOptions="actionDone"
+                        android:keyboardNavigationCluster="false"
+                        android:singleLine="true"
+                        android:text="Grup"
+                        android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+                </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Grup-Num:"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small"
+                    app:layout_constraintEnd_toEndOf="parent" />
                 <EditText
                     android:id="@+id/txtMemNum"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="2dp"
                     android:layout_marginTop="5dp"
                     android:imeOptions="actionDone"
                     android:keyboardNavigationCluster="false"

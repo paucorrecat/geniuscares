@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.gruixuts.GeniusCares.act_manteniment_modificar">
+    tools:context="com.gruixuts.geniuscares.act_manteniment_modificar">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -59,20 +59,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:onClick="fotoSeguent"
-                    android:text=">" />
+                    android:text="-->" />
 
                 <Button
                     android:id="@+id/cmdModAntFoto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:onClick="fotoAnterior"
-                    android:text="Ant" />
+                    android:text="&lt;--" />
 
                 <Button
                     android:id="@+id/cmdModAddFoto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:onClick="fotoAfegeix"
+                    android:textAppearance="@android:style/TextAppearance.Material.Headline"
                     android:text="+" />
                 <Button
                     android:id="@+id/cmdModEliFoto"
@@ -119,33 +120,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="5dp"
-                    android:text="Curs:"
-                    android:textAppearance="@android:style/TextAppearance.Material.Small"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <EditText
-                    android:id="@+id/edtModCurs"
-                    style="@style/Widget.AppCompat.EditText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp"
-                    android:imeOptions="actionDone"
-                    android:keyboardNavigationCluster="false"
-                    android:singleLine="true"
-                    android:text="Curs"
-                    android:textAppearance="@android:style/TextAppearance.Material.Medium" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp"
                     android:text="Cognom:"
                     android:textAppearance="@android:style/TextAppearance.Material.Small"
                     app:layout_constraintEnd_toEndOf="parent" />
@@ -162,21 +136,73 @@
                     android:singleLine="true"
                     android:text="Cognom"
                     android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="5dp"
-                    android:text="Num:"
+                    android:text="Curs:"
                     android:textAppearance="@android:style/TextAppearance.Material.Small"
                     app:layout_constraintEnd_toEndOf="parent" />
 
+                <EditText
+                    android:id="@+id/edtModCurs"
+                    style="@style/Widget.AppCompat.EditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:imeOptions="actionDone"
+                    android:keyboardNavigationCluster="false"
+                    android:singleLine="true"
+                    android:text="Curs"
+                    android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Grup-Num:"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/edtModGrup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="5dp"
+                        android:imeOptions="actionDone"
+                        android:singleLine="true"
+                        android:text="Grup"
+                        android:textAppearance="@android:style/TextAppearance.Material.Medium"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+                </LinearLayout>
                 <EditText
                     android:id="@+id/edtModNum"
                     style="@style/Widget.AppCompat.EditText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="0dp"
                     android:layout_marginTop="5dp"
                     android:imeOptions="actionDone"
                     android:keyboardNavigationCluster="false"
@@ -202,8 +228,6 @@
                     android:text="Codi:"
                     android:textAppearance="@android:style/TextAppearance.Material.Small" />
 
-                <LinearLayout>
-
                     <EditText
                         android:id="@+id/edtModCodi"
                         style="@android:style/Widget.EditText"
@@ -213,19 +237,14 @@
                         android:layout_marginTop="5dp"
                         android:imeOptions="actionDone"
                         android:singleLine="true"
-                        android:text="0"
+                        android:text="email sense @rovira..."
                         android:textAppearance="@android:style/TextAppearance.Material.Medium"
                         app:layout_constraintEnd_toEndOf="parent" />
 
-                    <Button
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        android:gravity="right"
-                        android:onClick="BuscaCodi"
-                        android:text="..." />
-                </LinearLayout>
             </TableRow>
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
             <TableRow
                 android:layout_width="324dp"
                 android:layout_height="wrap_content">
@@ -245,31 +264,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:layout_marginLeft="20dp" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="367dp"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp"
-                    android:text="Grup:"
-                    android:textAppearance="@android:style/TextAppearance.Material.Small" />
-
-                <EditText
-                    android:id="@+id/edtModGrup"
-                    android:layout_width="248dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp"
-                    android:imeOptions="actionDone"
-                    android:singleLine="true"
-                    android:text=""
-                    android:textAppearance="@android:style/TextAppearance.Material.Medium"
-                    app:layout_constraintEnd_toEndOf="parent" />
             </TableRow>
 
             <TableRow
@@ -345,17 +339,28 @@
                             android:layout_height="wrap_content"
                             android:text="6m" />
                     </RadioGroup>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Data:"
+                        android:textAppearance="@android:style/TextAppearance.Material.Small" />
 
                     <EditText
                         android:id="@+id/edtModNextData"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="20dp"
                         android:layout_weight="1"
                         android:ems="10"
                         android:inputType="text|date"
                         android:textAppearance="@android:style/TextAppearance.Material.Medium" />
-
+                    </LinearLayout>
 
                 </LinearLayout>
 
