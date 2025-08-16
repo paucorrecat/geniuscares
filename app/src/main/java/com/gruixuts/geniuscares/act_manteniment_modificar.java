@@ -264,8 +264,8 @@ public class act_manteniment_modificar extends AppCompatActivity {
             }
         }
 
-        if (mItem.getId() == 0) db.creaDiccionari(mItem);
-        else db.actDiccionari(mItem);
+        if (mItem.getId() == 0) db.creaPersones(mItem);
+        else db.actPersones(mItem);
 
         db.close();
         finish();

@@ -38,7 +38,7 @@ public class act_manteniment_llista extends AppCompatActivity {
         db.open();
         for ( classPersones itm : items) {
             itm.setGrup(strNouGrup);
-            db.actDiccionari(itm);
+            db.actPersones(itm);
         }
         db.close();
     }
@@ -49,7 +49,7 @@ public class act_manteniment_llista extends AppCompatActivity {
         db.open();
         for ( classPersones itm : items) {
             itm.setGrup("");
-            db.actDiccionari(itm);
+            db.actPersones(itm);
         }
         db.close();
     }

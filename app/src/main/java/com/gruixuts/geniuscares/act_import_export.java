@@ -128,6 +128,88 @@ public class act_import_export extends AppCompatActivity {
         TextView estat = findViewById(R.id.txtEstat);
         TextView nomfit = findViewById(R.id.edtNomFitxerImport);
         String[] camps;
+        String txt;
+        long NumLin = 0;
+
+        // tEMPORAL, PER A FER PROVES
+        nomfit.setText(CONFIG_AIMPORTAR_TXT);
+        nomfit.setText(CONFIG_AIMPORTAR_TXT);
+        elim.setText("ELIMINAR");
+
+        if (!"ELIMINAR".equals(elim.getText().toString())) return;
+
+        estat.setText("Buscant fitxers");
+
+        try {
+            DocumentFile fitxerDoc = carpImportTxt.findFile(nomfit.getText().toString());
+            if (fitxerDoc == null || !fitxerDoc.exists()) {
+                estat.setText("El fitxer no existeix");
+                return;
+            }
+
+            estat.setText("Important de " + nomfit.getText().toString());
+
+            try (InputStream inputStream = getContentResolver().openInputStream(fitxerDoc.getUri());
+                 BufferedReader Buf = new BufferedReader(new InputStreamReader(inputStream))) {
+
+                db.open();
+                db.delPersones();
+
+                while ((txt = Buf.readLine()) != null) {
+                    NumLin++;
+                    camps = txt.split(Separador);
+
+                    switch (camps[0]) {
+                        case "V":
+                            break;
+                        case "A":
+                            db.insPersones(new classPersones(
+                                    ANum(camps[1]),
+                                    camps[2],
+                                    camps[3],
+                                    camps[4],
+                                    camps[5],
+                                    camps[6],
+                                    camps[7],
+                                    camps[8],
+                                    camps[9],
+                                    camps[10],
+                                    camps[11],
+                                    camps[12].equals("") ? null : frmtData.parse(camps[12]),
+                                    camps[13].equals("true"),
+                                    camps[14].equals("true"))
+                            );
+                            break;
+                        case "P":
+                            // pendent
+                            break;
+                        case "R":
+                            // pendent
+                            break;
+                        default:
+                            estat.setText("Error a la línia " + NumLin + ": tipus desconegut");
+                            break;
+                    }
+                }
+
+                db.close();
+                estat.setText("Importació completada");
+
+            } catch (Exception e) {
+                estat.setText("Error de lectura: " + e.getMessage());
+            }
+
+        } catch (Exception e) {
+            estat.setText("Error: " + e.getMessage());
+        }
+    }
+
+    public void ImportarTxt_vell(View view) {
+        GestorDB db = new GestorDB(getApplicationContext());
+        TextView elim = findViewById(R.id.edtEliminarOk);
+        TextView estat = findViewById(R.id.txtEstat);
+        TextView nomfit = findViewById(R.id.edtNomFitxerImport);
+        String[] camps;
         File fitxer;
         BufferedReader Buf; // Buffer del fitxer
         String txt; // On es llegeix cada línia
@@ -157,7 +239,7 @@ public class act_import_export extends AppCompatActivity {
                 // Llegim les dades
                 Buf = new BufferedReader((new InputStreamReader(new FileInputStream(fitxer))));
                 db.open();
-                db.delDiccionari();  //Buidem tot lo anterior
+                db.delPersones();  //Buidem tot lo anterior
                 while ((txt = Buf.readLine()) != null) {
                     // Todo: Posar nº de línia en el missatges d'error
                     NumLin++;
@@ -166,7 +248,7 @@ public class act_import_export extends AppCompatActivity {
                         case "V": // Versió
                             break; // Mentre no fem noves versions, no cal
                         case "A": // Alumne o persona a recordar
-                            db.insDiccionari(new classPersones(
+                            db.insPersones(new classPersones(
                                     ANum(camps[1]), //Id
                                     camps[2],                   //Imatges
                                     camps[3],                   //Nom
@@ -180,7 +262,7 @@ public class act_import_export extends AppCompatActivity {
                                     camps[11],                   //NextTipus
                                     camps[12].equals("") ? null : frmtData.parse(camps[12]), //NextData
                                     camps[13].equals("true"),
-                                    camps[14].equals("false"))
+                                    camps[14].equals("true"))
                             );  //urgent: revisar l'estructura de import per a que contingui TeImatge
                             break; // Mentre no fem noves versions, no cal
                         case "P": // Proves
@@ -260,18 +342,18 @@ public class act_import_export extends AppCompatActivity {
         estat.setText("Buscant fitxers");
         try {
             // Buscant la versió correcta
-            fitxer = new File(Carpeta, "PcDiccionari001.txt");
+            fitxer = new File(Carpeta, "PcPersones001.txt");
             while (!fitxer.exists() && NumVer < 1000) {
                 NumVer++;
                 txtVer = ("000" + NumVer);
                 txtVer = txtVer.substring(txtVer.length() - 3, txtVer.length());
-                fitxer = new File(Carpeta, "PcDiccionari" + txtVer + ".txt");
+                fitxer = new File(Carpeta, "PcPersones" + txtVer + ".txt");
             }
             while (fitxer.exists() && NumVer < 1000) {
                 NumVer++;
                 txtVer = ("000" + NumVer);
                 txtVer = txtVer.substring(txtVer.length() - 3, txtVer.length());
-                fitxer = new File(Carpeta, "PcDiccionari" + txtVer + ".txt");
+                fitxer = new File(Carpeta, "PcPersones" + txtVer + ".txt");
             }
             if (NumVer < 1000) {
                 txtVer = ("000" + (NumVer - 1));
@@ -282,10 +364,10 @@ public class act_import_export extends AppCompatActivity {
         } catch (Exception e) {
             estat.setText("Error al buscar fitxers: " + e.getMessage());
         }
-        estat.setText("Important de PcDiccionari" + txtVer + ".txt");
+        estat.setText("Important de PcPersones" + txtVer + ".txt");
         try {
-            // Diccionari
-            fitxer = new File(Carpeta, "PcDiccionari" + txtVer + ".txt");
+            // Persones
+            fitxer = new File(Carpeta, "PcPersones" + txtVer + ".txt");
             Buf = new BufferedReader((new InputStreamReader(new FileInputStream(fitxer))));
             db.open();
             while ((txt = Buf.readLine()) != null) {
@@ -301,7 +383,7 @@ public class act_import_export extends AppCompatActivity {
                     } else {
                         Tip = "a";
                     }
-                    db.creaDiccionari(new classPersones(
+                    db.creaPersones(new classPersones(
                             Id,                        //Id
                             camps[1],                   //Imatges
                             camps[2],                   //Nom
@@ -319,9 +401,9 @@ public class act_import_export extends AppCompatActivity {
             }
             db.close();
         } catch (Exception e) {
-            estat.setText("Diccionari no carregat: " + e.getMessage());
+            estat.setText("Persones no carregat: " + e.getMessage());
         }
-        estat.setText("Importat de PcDiccionari" + txtVer + ".txt");
+        estat.setText("Importat de PcPersones" + txtVer + ".txt");
 
 
     }
@@ -406,7 +488,7 @@ public class act_import_export extends AppCompatActivity {
 
     public void exportar(View view) {
         GestorDB db = new GestorDB(getApplicationContext());
-        ArrayList<classPersones> LlistaDiccionari;
+        ArrayList<classPersones> LlistaPersones;
         ArrayList<classProves> LlistaProves;
         ArrayList<classResultats> LlistaResultats;
         estat.setText("Exportant ");
@@ -415,7 +497,7 @@ public class act_import_export extends AppCompatActivity {
 
         try {
             db.open();
-            LlistaDiccionari = db.selDiccionari("", "Id");
+            LlistaPersones = db.selPersones("", "Id");
             LlistaProves = db.selProves("", "");
             LlistaResultats = db.selResultats("", "");
             db.close();
@@ -433,28 +515,28 @@ public class act_import_export extends AppCompatActivity {
                         getContentResolver().openOutputStream(destiUri));
 
                 // Escriure les dades com ho feies abans
-                for (int n = 0; n < LlistaDiccionari.size(); n++) {
+                for (int n = 0; n < LlistaPersones.size(); n++) {
                     try {
                         fout.write("A" + Separador);
-                        fout.write(LlistaDiccionari.get(n).getId().toString() + Separador);
-                        fout.write(LlistaDiccionari.get(n).getImatges().toString() + Separador);
-                        fout.write(LlistaDiccionari.get(n).getNom().toString() + Separador);
-                        fout.write(LlistaDiccionari.get(n).getCognom().toString() + Separador);
-                        fout.write(LlistaDiccionari.get(n).getNum().toString() + Separador);
-                        fout.write(LlistaDiccionari.get(n).getCurs().toString() + Separador);
-                        fout.write(LlistaDiccionari.get(n).getCodi().toString() + Separador);
-                        fout.write(LlistaDiccionari.get(n).getPAV().toString() + Separador);
-                        fout.write(LlistaDiccionari.get(n).getComentaris().toString() + Separador);
-                        fout.write(LlistaDiccionari.get(n).getGrup().toString() + Separador);
-                        fout.write(LlistaDiccionari.get(n).getNextTipus().toString() + Separador);
-                        fout.write(LlistaDiccionari.get(n).getNextDataTxt().toString() + Separador);
-                        fout.write(LlistaDiccionari.get(n).getAMemoritzar().toString() + "\r\n");
+                        fout.write(LlistaPersones.get(n).getId().toString() + Separador);
+                        fout.write(LlistaPersones.get(n).getImatges().toString() + Separador);
+                        fout.write(LlistaPersones.get(n).getNom().toString() + Separador);
+                        fout.write(LlistaPersones.get(n).getCognom().toString() + Separador);
+                        fout.write(LlistaPersones.get(n).getNum().toString() + Separador);
+                        fout.write(LlistaPersones.get(n).getCurs().toString() + Separador);
+                        fout.write(LlistaPersones.get(n).getCodi().toString() + Separador);
+                        fout.write(LlistaPersones.get(n).getPAV().toString() + Separador);
+                        fout.write(LlistaPersones.get(n).getComentaris().toString() + Separador);
+                        fout.write(LlistaPersones.get(n).getGrup().toString() + Separador);
+                        fout.write(LlistaPersones.get(n).getNextTipus().toString() + Separador);
+                        fout.write(LlistaPersones.get(n).getNextDataTxt().toString() + Separador);
+                        fout.write(LlistaPersones.get(n).getAMemoritzar().toString() + "\r\n");
                         fout.flush();  // Per localitzar errors, quan vagi bé cal treure-ho per accelerar
                     } catch (Exception e) {
-                        estat.setText("Diccionari Fallo linia:" + n + " no exportada " + e.getMessage());
+                        estat.setText("Persones Fallo linia:" + n + " no exportada " + e.getMessage());
                         // MsgBox ¿?
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                        builder.setMessage("Diccionari Fallo linia:" + n + " no exportada " + e.getMessage());
+                        builder.setMessage("Persones Fallo linia:" + n + " no exportada " + e.getMessage());
                         builder.setTitle("Atenció!!");
                         builder.setCancelable(false);
                         builder.setNeutralButton("Acceptar",
@@ -481,7 +563,7 @@ public class act_import_export extends AppCompatActivity {
                     fout.write(LlistaProves.get(n).getAcabada().toString() + "\r\n");
                     fout.flush();
                     } catch (Exception e) {
-                        estat.setText("Diccionari Fallo linia:" + n + " no exportada " + e.getMessage());
+                        estat.setText("Persones Fallo linia:" + n + " no exportada " + e.getMessage());
                         // MsgBox ¿?
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         builder.setMessage("Proves Fallo linia:" + n + " no exportada " + e.getMessage());
@@ -511,7 +593,7 @@ public class act_import_export extends AppCompatActivity {
                         fout.write(LlistaResultats.get(n).getValoracio().toString() + "\r\n");
                         fout.flush();
                     } catch (Exception e) {
-                        estat.setText("Diccionari Fallo linia:" + n + " no exportada " + e.getMessage());
+                        estat.setText("Persones Fallo linia:" + n + " no exportada " + e.getMessage());
                         // MsgBox ¿?
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         builder.setMessage("Resultats Fallo linia:" + n + " no exportada " + e.getMessage());

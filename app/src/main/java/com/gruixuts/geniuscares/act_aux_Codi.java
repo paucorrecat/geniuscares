@@ -49,7 +49,7 @@ public class act_aux_Codi extends ListActivity {
         Integer n;
         db.open();
         Filtre = "Codi like " + Pare + "_";
-        Llista = db.selDiccionari(Filtre, "Codi");
+        Llista = db.selPersones(Filtre, "Codi");
         db.close();
 
         if (Llista.size() > 0) {

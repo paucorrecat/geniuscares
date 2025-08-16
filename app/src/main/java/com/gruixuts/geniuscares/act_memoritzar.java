@@ -64,7 +64,7 @@ public class act_memoritzar extends AppCompatActivity {
         Filtre = getIntent().getStringExtra("Filtre");
         db=  new GestorDB(getApplicationContext());
         db.open();
-        Llista = db.selDiccionari(Filtre,"");
+        Llista = db.selPersones(Filtre,"");
         db.close();
         Actual=-1;
         TempsIniciProva = SystemClock.currentThreadTimeMillis();
@@ -151,13 +151,13 @@ public class act_memoritzar extends AppCompatActivity {
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));
         Date Ara = cal.getTime();
         db.open();
-        // Diccionari
+        // Persones
         ParaulaActual.setNextTipus("1h");
         cal.add(Calendar.HOUR,1);
         ParaulaActual.setNextData(cal.getTime());
         ParaulaActual.setPAV(((TextView) findViewById(R.id.edtMemPAV)).getText().toString());
         ParaulaActual.setComentaris(((TextView) findViewById(R.id.edtMemComentaris)).getText().toString());
-        db.actDiccionari(ParaulaActual);
+        db.actPersones(ParaulaActual);
         // Prova
         if (Prova == null) {
             Prova = new classProves();

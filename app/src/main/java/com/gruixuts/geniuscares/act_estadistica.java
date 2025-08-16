@@ -23,59 +23,59 @@ public class act_estadistica extends AppCompatActivity {
 
         db = new GestorDB(getApplicationContext());
         db.open();
-        N1=db.selDiccionari("","").size();
+        N1=db.selPersones("","").size();
         ((TextView) findViewById(R.id.TauTotal)).setText(""+N1);
 
-        N2=db.selDiccionari("AMemoritzar","").size();  // TODO: Estadístiques
+        N2=db.selPersones("AMemoritzar","").size();  // TODO: Estadístiques
         ((TextView) findViewById(R.id.TauTrbSi)).setText("" + N2);
 
         ((TextView) findViewById(R.id.TauTrbNo)).setText("" + (N1-N2));
 
-        N1=db.selDiccionari("((Basc <> '') and Traduible)","").size();
+        N1=db.selPersones("((Basc <> '') and Traduible)","").size();
         ((TextView) findViewById(R.id.TauTraSi)).setText(""+N1);
 
-        N2=db.selDiccionari("((Basc = '') and Traduible)","").size();
+        N2=db.selPersones("((Basc = '') and Traduible)","").size();
         ((TextView) findViewById(R.id.TauTraNo)).setText("" + N2);
 
-        N1=db.selDiccionari("((Basc <> '') and NextTipus='a')","").size();
+        N1=db.selPersones("((Basc <> '') and NextTipus='a')","").size();
         ((TextView) findViewById(R.id.TauAprNo)).setText(""+N1);
 
-        N2=db.selDiccionari("((Basc <> '') and NextTipus<>'a')","").size();
+        N2=db.selPersones("((Basc <> '') and NextTipus<>'a')","").size();
         ((TextView) findViewById(R.id.TauAprSi)).setText("" + N2);
 
         /*
         // Errors
-        N2=db.selDiccionari("(Not(Traduible) and (Basc<>''))","").size();
-        N2=db.selDiccionari("(Not(Traduible) and (NextTipus<>''))","").size();
-        N2=db.selDiccionari("((Traduible) and (NextTipus=''))","").size();
-        N2=db.selDiccionari("((Basc<>'') and (NextTipus=''))","").size();
-        N2=db.selDiccionari("((Basc<>'') and (NextTipus='t'))","").size();
-        N2=db.selDiccionari("((Traduible) and (Basc='') and (NextTipus<>'t'))","").size();
+        N2=db.selPersones("(Not(Traduible) and (Basc<>''))","").size();
+        N2=db.selPersones("(Not(Traduible) and (NextTipus<>''))","").size();
+        N2=db.selPersones("((Traduible) and (NextTipus=''))","").size();
+        N2=db.selPersones("((Basc<>'') and (NextTipus=''))","").size();
+        N2=db.selPersones("((Basc<>'') and (NextTipus='t'))","").size();
+        N2=db.selPersones("((Traduible) and (Basc='') and (NextTipus<>'t'))","").size();
 
         */
 
-        N1=db.selDiccionari("(NextTipus='1h')","").size();
-        N2=db.selDiccionari("((NextTipus='1h') and (NextData < '" + frmtData.format(new Date()) + "'))","").size();
+        N1=db.selPersones("(NextTipus='1h')","").size();
+        N2=db.selPersones("((NextTipus='1h') and (NextData < '" + frmtData.format(new Date()) + "'))","").size();
         ((TextView) findViewById(R.id.TauRp1hM)).setText(""+N2);
         ((TextView) findViewById(R.id.TauRp1hB)).setText(""+(N1-N2));
 
-        N1=db.selDiccionari("(NextTipus='1d')","").size();
-        N2=db.selDiccionari("((NextTipus='1d') and (NextData < '" + frmtData.format(new Date()) + "'))","").size();
+        N1=db.selPersones("(NextTipus='1d')","").size();
+        N2=db.selPersones("((NextTipus='1d') and (NextData < '" + frmtData.format(new Date()) + "'))","").size();
         ((TextView) findViewById(R.id.TauRp1dM)).setText(""+N2);
         ((TextView) findViewById(R.id.TauRp1dB)).setText(""+(N1-N2));
 
-        N1=db.selDiccionari("(NextTipus='1s')","").size();
-        N2=db.selDiccionari("((NextTipus='1s') and (NextData < '" + frmtData.format(new Date()) + "'))","").size();
+        N1=db.selPersones("(NextTipus='1s')","").size();
+        N2=db.selPersones("((NextTipus='1s') and (NextData < '" + frmtData.format(new Date()) + "'))","").size();
         ((TextView) findViewById(R.id.TauRp1sM)).setText(""+N2);
         ((TextView) findViewById(R.id.TauRp1sB)).setText(""+(N1-N2));
 
-        N1=db.selDiccionari("(NextTipus='1m')","").size();
-        N2=db.selDiccionari("((NextTipus='1m') and (NextData < '" + frmtData.format(new Date()) + "'))","").size();
+        N1=db.selPersones("(NextTipus='1m')","").size();
+        N2=db.selPersones("((NextTipus='1m') and (NextData < '" + frmtData.format(new Date()) + "'))","").size();
         ((TextView) findViewById(R.id.TauRp1mM)).setText(""+N2);
         ((TextView) findViewById(R.id.TauRp1mB)).setText(""+(N1-N2));
 
-        N1=db.selDiccionari("(NextTipus='6m')","").size();
-        N2=db.selDiccionari("((NextTipus='6m') and (NextData < '" + frmtData.format(new Date()) + "'))","").size();
+        N1=db.selPersones("(NextTipus='6m')","").size();
+        N2=db.selPersones("((NextTipus='6m') and (NextData < '" + frmtData.format(new Date()) + "'))","").size();
         ((TextView) findViewById(R.id.TauRp6mM)).setText(""+N2);
         ((TextView) findViewById(R.id.TauRp6mB)).setText(""+(N1-N2));
 

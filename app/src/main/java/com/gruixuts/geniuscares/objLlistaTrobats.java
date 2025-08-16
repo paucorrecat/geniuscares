@@ -40,7 +40,7 @@ public class objLlistaTrobats {
         db= new GestorDB(c);
         ArrayList<classPersones> Llista;
         db.open();
-        Llista = db.selDiccionari(filtre,ordre);
+        Llista = db.selPersones(filtre,ordre);
         db.close();
         for (Integer i = 1; i <= Llista.size(); i++) {
             addItem(i.toString(), Llista.get(i-1));
@@ -54,8 +54,8 @@ public class objLlistaTrobats {
         ITEM_MAP.put(item.getId().toString(), item);
     }
 /*
-    private static Diccionari CreaTrobat(int position, String cat, String basc) {
-        return new Diccionari(String.valueOf(position), cat, basc);
+    private static Persones CreaTrobat(int position, String cat, String basc) {
+        return new Persones(String.valueOf(position), cat, basc);
     }
     */
 /*
@@ -72,12 +72,12 @@ public class objLlistaTrobats {
      * A dummy item representing a piece of content.
      */
     /*
-    public static class Diccionari {
+    public static class Persones {
         public final String Id;
         public final String Catala;
         public final String Basc;
 
-        public Diccionari(String id, String cat, String basc) {
+        public Persones(String id, String cat, String basc) {
             this.Id = id;
             this.Catala = cat;
             this.Basc = basc;

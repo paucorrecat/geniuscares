@@ -55,12 +55,12 @@ public class act_pregunta extends AppCompatActivity {
 
         if (TipusProva.equals(classProves.TIP_EXAMEN) || TipusProva.equals(classProves.TIP_REPAS)) {
             if (Ordre.equals("Ant")) {
-                Llista = db.selDiccionariAntiguetat(Filtre, "", Top);
+                Llista = db.selPersonesAntiguetat(Filtre, "", Top);
             } else {
-                Llista = db.selDiccionari(Filtre, "");
+                Llista = db.selPersones(Filtre, "");
             }
         } else if (TipusProva.equals(classProves.TIP_REVISIO)) {
-            Llista = db.selDiccionariRevisar(Filtre, Ordre, Top);
+            Llista = db.selPersonesRevisar(Filtre, Ordre, Top);
         }
 
         ProvaActual = new classProves(NumProva,
@@ -104,8 +104,8 @@ public class act_pregunta extends AppCompatActivity {
     public void Valorar(View view) {
         String Resposta = ((EditText) findViewById(R.id.edtBasc)).getText().toString();
         // ADAPTACIONS PENDENTS
-        //Todo:1 String Diccionari = Llista.get(Actual).getBasc();
-        String Diccionari = Llista.get(Actual).getNom() + " " + Llista.get(Actual).getCognom();
+        //Todo:1 String Persones = Llista.get(Actual).getBasc();
+        String Persones = Llista.get(Actual).getNom() + " " + Llista.get(Actual).getCognom();
         //Todo:1 String Pregunta = Llista.get(Actual).getCatala();
         String Pregunta = "Foto ¿2?";
         String tProva = TipusProva;
@@ -123,7 +123,7 @@ public class act_pregunta extends AppCompatActivity {
         PreguntaSeguent();
 
         /*
-        if (SonIguals(Resposta, Diccionari)) {
+        if (SonIguals(Resposta, Persones)) {
             TextView txtCnt = (TextView) findViewById(R.id.txtPrePer);
             NumBe++;
             txtCnt.setText("Bé: " + NumBe);
@@ -135,7 +135,7 @@ public class act_pregunta extends AppCompatActivity {
             // Passem les cadenes a comparar ja normalitzades
             intent.putExtra("IdPers", Llista.get(Actual).getId());
             intent.putExtra("Resposta", Resposta);
-            intent.putExtra("Correcta", Diccionari);
+            intent.putExtra("Correcta", Persones);
             intent.putExtra("Pregunta", Pregunta);
             intent.putExtra("Prova", tProva);
             intent.putExtra("Next", Next);
@@ -187,9 +187,9 @@ public class act_pregunta extends AppCompatActivity {
     }
 
 
-    private Boolean SonIguals(String Resposta, String Diccionari) {
+    private Boolean SonIguals(String Resposta, String Persones) {
 
-        if (Resposta == Diccionari) {
+        if (Resposta == Persones) {
             return true;
         }
 
@@ -199,19 +199,19 @@ public class act_pregunta extends AppCompatActivity {
         Resposta = Resposta.replaceAll(" ,", ",");
         Resposta = Resposta.toLowerCase();
         Resposta = Resposta.trim();
-        Diccionari = Diccionari.replaceAll("( )+", " ");
-        Diccionari = Diccionari.replaceAll(", ", ",");
-        Diccionari = Diccionari.replaceAll(" ,", ",");
-        Diccionari = Diccionari.toLowerCase();
-        Diccionari = Diccionari.trim();
-        if (Resposta.equals(Diccionari)) {
+        Persones = Persones.replaceAll("( )+", " ");
+        Persones = Persones.replaceAll(", ", ",");
+        Persones = Persones.replaceAll(" ,", ",");
+        Persones = Persones.toLowerCase();
+        Persones = Persones.trim();
+        if (Resposta.equals(Persones)) {
             return true;
         }
         if (Resposta.contains(",")) {
             String[] Respostes;
             String[] Entrades;
             Respostes = Resposta.split(",");
-            Entrades = Diccionari.split(",");
+            Entrades = Persones.split(",");
             int ln = Respostes.length;
             if (ln == Entrades.length) {
                 int Iguals = 0;
@@ -259,7 +259,7 @@ public class act_pregunta extends AppCompatActivity {
         ProvaActual.setTemps(TempsProva);
         ProvaActual.setNumRespostes(NumBe + NumRev + NumApr + NumObl);
         db.actProves(ProvaActual);
-        // Actualitza Diccionari
+        // Actualitza Persones
         Pers = Llista.get(Actual);
         cal.setTime(new Date());
         if ((Resultat.equals(classResultats.VAL_PERFECTE)) && (cal.getTime().after(Pers.getNextData()))) {
@@ -286,17 +286,17 @@ public class act_pregunta extends AppCompatActivity {
                         cal.add(Calendar.DATE, 28 * 6);
                 }
                 Pers.setNextData(cal.getTime());
-                db.actDiccionari(Pers);
+                db.actPersones(Pers);
             }
         } else if (Resultat.equals(classResultats.VAL_APRES)) {
             Pers.setNextTipus("1h");
             cal.add(Calendar.HOUR, 1);
             Pers.setNextData(cal.getTime());
-            db.actDiccionari(Pers);
+            db.actPersones(Pers);
         } else if (Resultat.equals(classResultats.VAL_OBLIDAT)) {
             Pers.setNextTipus("a");
             Pers.setNextData("");
-            db.actDiccionari(Pers);
+            db.actPersones(Pers);
         }
         // si és VAL_REVISIO no s'ha de gravar res
 

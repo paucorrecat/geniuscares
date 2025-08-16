@@ -23,7 +23,7 @@ import java.util.TimeZone;
 public class GestorDB {
 
 
-    public static final int DATABASE_VERSION = 5;
+    public static final int DATABASE_VERSION = 6;
     public static final String DATABASE_NAME = "GeniusCares.db";
 
     public static SimpleDateFormat frmtData = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -34,7 +34,7 @@ public class GestorDB {
 
     // Definició de les taules
     private static abstract class PersonaDef implements BaseColumns {
-        public static final String TABLE_NAME = "Diccionari";
+        public static final String TABLE_NAME = "Persones";
         public static final String LLISTA_CAMPS = "Id,Imatges,Nom,Cognom,Num,Curs,Codi,PAV,Comentaris,Grup,NextTipus,NextData,AMemoritzar,TeImatge";
         // urgent:  afegir teimatge
 
@@ -90,10 +90,10 @@ public class GestorDB {
     }
 
     // Sentencies per a la creació de taules
-    private static final String Diccionari_TABLE_CREATE = "create table " + PersonaDef.TABLE_NAME
+    private static final String Persones_TABLE_CREATE = "create table " + PersonaDef.TABLE_NAME
             + " (" + PersonaDef.Id + " integer primary key, "
-            //+ DiccionariDef.Catala + " text, "
-            //+ DiccionariDef.Basc + " text, "
+            //+ PersonesDef.Catala + " text, "
+            //+ PersonesDef.Basc + " text, "
             + PersonaDef.Imatges + " text, "
             + PersonaDef.Nom + " text, "
             + PersonaDef.Cognom + " text, "
@@ -138,7 +138,7 @@ public class GestorDB {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            db.execSQL(Diccionari_TABLE_CREATE);
+            db.execSQL(Persones_TABLE_CREATE);
             db.execSQL(Proves_TABLE_CREATE);
             db.execSQL(Resultats_TABLE_CREATE);
         }
@@ -177,7 +177,7 @@ public class GestorDB {
 
     //Selecció
 
-    public ArrayList<classPersones> selDiccionari(String Filtre, String Ordre) {
+    public ArrayList<classPersones> selPersones(String Filtre, String Ordre) {
         ArrayList<classPersones> list = new ArrayList<classPersones>();
         String SQLtxt;
 
@@ -188,7 +188,7 @@ public class GestorDB {
         if (Ordre.length() > 0) {
             SQLtxt += " order by " + Ordre;
         }
-        SQLtxt += " ;";
+        SQLtxt += ";";
         Cursor cursor = this.db.rawQuery(SQLtxt, null);
         if (cursor.moveToFirst()) {
             do {
@@ -196,7 +196,7 @@ public class GestorDB {
                     classPersones entrada = new classPersones(cursor);
                     list.add(entrada);
                 } catch (Exception ex) {
-                    Log.e("GestorDB", "selDiccionari: Error al crear Diccionari");
+                    Log.e("GestorDB", "selPersones: Error al crear Persones");
                 }
             } while (cursor.moveToNext());
         }
@@ -222,7 +222,7 @@ public class GestorDB {
                     cursor.close();
                     return entrada;
                 } catch (Exception ex) {
-                    Log.e("GestorDB", "selDiccionari: Error al crear Diccionari");
+                    Log.e("GestorDB", "selPersones: Error al crear Persones");
                 }
         }
 
@@ -232,16 +232,16 @@ public class GestorDB {
         return null;
     }
 
-    public ArrayList<classPersones> selDiccionariAntiguetat(String Filtre, String Ordre, Integer NumEntrades) {
+    public ArrayList<classPersones> selPersonesAntiguetat(String Filtre, String Ordre, Integer NumEntrades) {
         ArrayList<classPersones> list = new ArrayList<classPersones>();
         String SQLtxt;
 
 
         SQLtxt = "Select ";
-        SQLtxt += "Diccionari.* from ((select * from ( ";
+        SQLtxt += "Persones.* from ((select * from ( ";
         SQLtxt += "( SELECT Max(Dia) AS UltDeDia, IdPers as UltIdPers FROM Resultats GROUP BY Resultats.IdPers ) as Ult ";
         SQLtxt += "INNER JOIN Resultats as Rst ON (Ult.UltIdPers = Rst.IdPers) AND (Ult.UltDeDia = Rst.Dia))) as pp ";
-        SQLtxt += "INNER JOIN Diccionari on IdPers=Diccionari.Id) where ((Valoracio <> 'Obl') ";
+        SQLtxt += "INNER JOIN Persones on IdPers=Persones.Id) where ((Valoracio <> 'Obl') ";
         if (Filtre.length() > 0) {
             SQLtxt += " and " + Filtre + ") ";
         } else {
@@ -260,7 +260,7 @@ public class GestorDB {
                     classPersones entrada = new classPersones(cursor);
                     list.add(entrada);
                 } catch (Exception ex) {
-                    Log.e("GestorDB", "selDiccionari: Error al crear Diccionari");
+                    Log.e("GestorDB", "selPersones: Error al crear Persones");
                 }
             } while (cursor.moveToNext());
         }
@@ -276,16 +276,16 @@ public class GestorDB {
     }
 
 
-    public ArrayList<classPersones> selDiccionariRevisar(String Filtre, String Ordre, Integer NumEntrades) {
+    public ArrayList<classPersones> selPersonesRevisar(String Filtre, String Ordre, Integer NumEntrades) {
         ArrayList<classPersones> list = new ArrayList<classPersones>();
         String SQLtxt;
         Cursor cursor;
 
         SQLtxt = "Select ";
-        SQLtxt += "Diccionari.* from ((select * from ( ";
+        SQLtxt += "Persones.* from ((select * from ( ";
         SQLtxt += "( SELECT Max(Dia) AS UltDeDia, IdPers as UltIdPers FROM Resultats GROUP BY Resultats.IdPers ) as Ult ";
         SQLtxt += "INNER JOIN Resultats as Rst ON (Ult.UltIdPers = Rst.IdPers) AND (Ult.UltDeDia = Rst.Dia))) as pp ";
-        SQLtxt += "INNER JOIN Diccionari on IdPers=Diccionari.Id) where Valoracio = 'Rev' ";
+        SQLtxt += "INNER JOIN Persones on IdPers=Persones.Id) where Valoracio = 'Rev' ";
         if (Ordre == "Ant") {
             SQLtxt += " ORDER BY Dia";
         }
@@ -297,7 +297,7 @@ public class GestorDB {
         try {
              cursor = this.db.rawQuery(SQLtxt, null);
         } catch (Exception ex) {
-            Log.e("GestorDB", "selDiccionariRevisar: Error al obrir el cursor del Diccionari");
+            Log.e("GestorDB", "selPersonesRevisar: Error al obrir el cursor del Persones");
             return list;
         }
         if (cursor.moveToFirst()) {
@@ -306,7 +306,7 @@ public class GestorDB {
                     classPersones entrada = new classPersones(cursor);
                     list.add(entrada);
                 } catch (Exception ex) {
-                    Log.e("GestorDB", "selDiccionariRevisar: Error al crear Diccionari");
+                    Log.e("GestorDB", "selPersonesRevisar: Error al crear Persones");
                 }
             } while (cursor.moveToNext());
         }
@@ -322,7 +322,7 @@ public class GestorDB {
     }
 
 
-    public ArrayList<classPersones> selDiccionariSeguir() {
+    public ArrayList<classPersones> selPersonesSeguir() {
         ArrayList<classPersones> list = new ArrayList<classPersones>();
         String SQLtxt;
         Cursor cursor;
@@ -336,16 +336,16 @@ public class GestorDB {
 
 
         SQLtxt = "Select ";
-        SQLtxt += "Diccionari.* from ((select * from ( ";
+        SQLtxt += "Persones.* from ((select * from ( ";
         SQLtxt += "( SELECT Max(Dia) AS UltDeDia, IdPers as UltIdPers FROM Resultats GROUP BY Resultats.IdPers ) as Ult ";
         SQLtxt += "INNER JOIN Resultats as Rst ON (Ult.UltIdPers = Rst.IdPers) AND (Ult.UltDeDia = Rst.Dia))) as pp ";
-        SQLtxt += "INNER JOIN Diccionari on IdPers=Diccionari.Id) where Valoracio = 'Rev' ";
+        SQLtxt += "INNER JOIN Persones on IdPers=Persones.Id) where Valoracio = 'Rev' ";
         SQLtxt += ";";
 
         try {
             cursor = this.db.rawQuery(SQLtxt, null);
         } catch (Exception ex) {
-            Log.e("GestorDB", "selDiccionariRevisar: Error al obrir el cursor del Diccionari");
+            Log.e("GestorDB", "selPersonesRevisar: Error al obrir el cursor del Persones");
             return list;
         }
         if (cursor.moveToFirst()) {
@@ -354,7 +354,7 @@ public class GestorDB {
                     classPersones entrada = new classPersones(cursor);
                     list.add(entrada);
                 } catch (Exception ex) {
-                    Log.e("GestorDB", "selDiccionariRevisar: Error al crear Diccionari");
+                    Log.e("GestorDB", "selPersonesRevisar: Error al crear Persones");
                 }
             } while (cursor.moveToNext());
         }
@@ -451,7 +451,7 @@ public class GestorDB {
         cursor = this.db.rawQuery(SQLtxt, null);
         if (cursor.moveToFirst()) {
             do {
-                SQLtxt = "Select Id,Catala,Basc from Diccionari where (Id = " + cursor.getInt(0) + ");";
+                SQLtxt = "Select Id,Catala,Basc from Persones where (Id = " + cursor.getInt(0) + ");";
                 Cursor cursor2 = this.db.rawQuery(SQLtxt, null);
                 cursor2.moveToFirst();
 
@@ -508,7 +508,7 @@ public class GestorDB {
     }
 
     //Eliminació
-    public void delDiccionari() {
+    public void delPersones() {
         db.delete(PersonaDef.TABLE_NAME, "-1", null);
     }
     public void delPers(Integer Id) {
@@ -522,7 +522,7 @@ public class GestorDB {
     }
 
     //Insertar
-    public void insDiccionari(classPersones ent) {
+    public void insPersones(classPersones ent) {
         ContentValues values = new ContentValues();
 
         // Parells clau-valor
@@ -608,7 +608,7 @@ public class GestorDB {
 
     }
 
-    public void creaDiccionari(classPersones ent) {
+    public void creaPersones(classPersones ent) {
         Cursor cursor;
         if (ent.getId() != 0) {
             String SQLtxt = "select Id from " + PersonaDef.TABLE_NAME + " where (Id=" + ent.getId() + ")" ;
@@ -624,7 +624,7 @@ public class GestorDB {
         int NouId = cursor.getInt(0);
         ent.setId(NouId + 1);
         }
-        insDiccionari(ent);
+        insPersones(ent);
     }
 
     //Actualitzar
@@ -665,7 +665,7 @@ public class GestorDB {
     }
 
 
-    public void actDiccionari(classPersones ent) {
+    public void actPersones(classPersones ent) {
         ContentValues values = new ContentValues();
         values.put(PersonaDef.Imatges, ent.getImatges());
         values.put(PersonaDef.Nom, ent.getNom());

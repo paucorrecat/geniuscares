@@ -113,7 +113,7 @@ public class classPersones {
      * @param teimatge si hi ha imatges
      */
 
-    public classPersones(Integer id, String imatges, String nom, String Cognom, String num, String curs, String codi, String pav, String comentaris, String grup, String nexttipus, Date nextdata, Boolean amemoritzar, Boolean teimatge) {
+    public classPersones(Integer id, String imatges, String nom, String cognom, String num, String curs, String codi, String pav, String comentaris, String grup, String nexttipus, Date nextdata, Boolean amemoritzar, Boolean teimatge) {
         Id = id;
         if (imatges == null) {
             Imatges = NovaImatge();
@@ -123,7 +123,7 @@ public class classPersones {
             Imatges = imatges;
         }
         Nom = nom;
-        Cognom = Cognom;
+        Cognom = cognom;
         try {
             int Num = Integer.parseInt(num);
         } catch (NumberFormatException e) {
@@ -319,7 +319,7 @@ public class classPersones {
             try {
                 NextData = frmtData.parse(nextdata);
             } catch (Exception ex) {
-                Log.d("class Diccionari", "setNextData: Error al parse");
+                Log.d("class Persones", "setNextData: Error al parse");
                 NextData=null;
             }
         }

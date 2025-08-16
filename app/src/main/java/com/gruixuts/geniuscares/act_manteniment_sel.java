@@ -17,12 +17,15 @@ public class act_manteniment_sel extends AppCompatActivity {
         ((TextView) findViewById(R.id.edtMntId)).setText("");
         ((TextView) findViewById(R.id.edtMntNom)).setText("");
         ((TextView) findViewById(R.id.edtMntCognom)).setText("");
-        ((TextView) findViewById(R.id.edtMntNum)).setText("");
+        ((TextView) findViewById(R.id.edtMntCodi)).setText("");
         ((TextView) findViewById(R.id.edtMntCurs)).setText("");
-        ((TextView) findViewById(R.id.edtMntSiCodi)).setText("");
-        ((TextView) findViewById(R.id.edtMntNoCodi)).setText("");
-        ((TextView) findViewById(R.id.edtMntSiGrup)).setText("");
-        ((TextView) findViewById(R.id.edtMntNoGrup)).setText("");
+        ((TextView) findViewById(R.id.edtMntGrup)).setText("");
+        ((CheckBox) findViewById(R.id.chkMntSiImatge)).setChecked(false);
+        ((CheckBox) findViewById(R.id.chkMntNoImatge)).setChecked(false);
+        ((CheckBox) findViewById(R.id.chkMntSiAMem)).setChecked(false);
+        ((CheckBox) findViewById(R.id.chkMntNoAMem)).setChecked(false);
+        ((CheckBox) findViewById(R.id.chkMntSiApres)).setChecked(false);
+        ((CheckBox) findViewById(R.id.chkMntNoApres)).setChecked(false);
         ((RadioGroup) findViewById(R.id.grpOrdre)).clearCheck();
     }
 
@@ -38,23 +41,20 @@ public class act_manteniment_sel extends AppCompatActivity {
         if (((TextView) findViewById(R.id.edtMntCognom)).getText().length()!=0) {
             Filtre += " and (Cognom like '" + ((TextView) findViewById(R.id.edtMntCognom)).getText() + "%' )";
         }
-        if (((TextView) findViewById(R.id.edtMntNum)).getText().length()!=0) {
-            Filtre += " and (Num like '" + ((TextView) findViewById(R.id.edtMntNum)).getText() + "%' )";
+        if (((TextView) findViewById(R.id.edtMntCodi)).getText().length()!=0) {
+            Filtre += " and (Num like '%" + ((TextView) findViewById(R.id.edtMntCodi)).getText() + "%' )";
         }
         if (((TextView) findViewById(R.id.edtMntCurs)).getText().length()!=0) {
             Filtre += " and (Curs like '" + ((TextView) findViewById(R.id.edtMntCurs)).getText() + "%' )";
         }
-        if (((TextView) findViewById(R.id.edtMntSiCodi)).getText().length()!=0) {
-            Filtre += " and (Codi like '" + ((TextView) findViewById(R.id.edtMntSiCodi)).getText() + "' )";
+        if (((TextView) findViewById(R.id.edtMntGrup)).getText().length()!=0) {
+            Filtre += " and (Codi like '" + ((TextView) findViewById(R.id.edtMntGrup)).getText() + "' )";
         }
-        if (((TextView) findViewById(R.id.edtMntNoCodi)).getText().length()!=0) {
-            Filtre += " and not(Codi like '" + ((TextView) findViewById(R.id.edtMntNoCodi)).getText() + "' )";
+        if (((CheckBox) findViewById(R.id.chkMntSiImatge)).isChecked()) {
+            Filtre += " and (TeImatge <>0 )";
         }
-        if (((TextView) findViewById(R.id.edtMntSiGrup)).getText().length()!=0) {
-            Filtre += " and (Grup like '" + ((TextView) findViewById(R.id.edtMntSiGrup)).getText() + "' )";
-        }
-        if (((TextView) findViewById(R.id.edtMntNoGrup)).getText().length()!=0) {
-            Filtre += " and not(Grup like '" + ((TextView) findViewById(R.id.edtMntNoGrup)).getText() + "' )";
+        if (((CheckBox) findViewById(R.id.chkMntNoImatge)).isChecked()) {
+            Filtre += " and (TeImatge = 0 )";
         }
         if (((CheckBox) findViewById(R.id.chkMntSiAMem)).isChecked()) {
             Filtre += " and (AMemoritzar <>0 )";
@@ -71,12 +71,10 @@ public class act_manteniment_sel extends AppCompatActivity {
 
         int rb = ((RadioGroup) findViewById(R.id.grpOrdre)).getCheckedRadioButtonId();
         String Ordre;
-        if (rb==R.id.radNom ) {
-            Ordre = "Nom";
-        } else if (rb==R.id.radCognom ) {
-            Ordre = "Cognom";
-        } else if (rb==R.id.radCod ) {
-            Ordre = "Codi";
+        if (rb==R.id.radCognom ) {
+            Ordre = "Cognom,Nom";
+        } else if (rb==R.id.radCurs ) {
+            Ordre = "Curs,Grup,Num";
         } else {
             Ordre = "";
         }

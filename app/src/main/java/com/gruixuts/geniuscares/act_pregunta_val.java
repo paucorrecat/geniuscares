@@ -23,13 +23,13 @@ public class act_pregunta_val extends AppCompatActivity {
         TextView txtData = findViewById(R.id.txtValNextData);
         IdPers = getIntent().getIntExtra("IdPers",0);
         String Resposta = getIntent().getStringExtra("Resposta");
-        String Diccionari = getIntent().getStringExtra("Correcta");
+        String Persones = getIntent().getStringExtra("Correcta");
         String Pregunta = getIntent().getStringExtra("Pregunta");
         String NextTip = getIntent().getStringExtra("Prova");
         String NextDat = getIntent().getStringExtra("Next");
 
         txtResp.setText(Resposta);
-        txtDicc.setText(Diccionari);
+        txtDicc.setText(Persones);
         txtPreg.setText(Pregunta);
         txtTipus.setText(NextTip);
         txtData.setText(NextDat);

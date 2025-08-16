@@ -15,12 +15,7 @@ public class act_memoritzar_sel extends AppCompatActivity {
         ((TextView) findViewById(R.id.edtMmrId)).setText("");
         ((TextView) findViewById(R.id.edtMmrNom)).setText("");
         ((TextView) findViewById(R.id.edtMmrCognom)).setText("");
-        ((TextView) findViewById(R.id.edtMmrNum)).setText("");
         ((TextView) findViewById(R.id.edtMmrCurs)).setText("");
-        ((TextView) findViewById(R.id.edtMmrSiCodi)).setText("");
-        ((TextView) findViewById(R.id.edtMmrNoCodi)).setText("");
-        ((TextView) findViewById(R.id.edtMmrSiGrup)).setText("");
-        ((TextView) findViewById(R.id.edtMmrNoGrup)).setText("");
     }
 
 
@@ -30,30 +25,18 @@ public class act_memoritzar_sel extends AppCompatActivity {
             Filtre += " and (Id = " + ((TextView) findViewById(R.id.edtMmrId)).getText() + " )";
         }
         if (((TextView) findViewById(R.id.edtMmrNom)).getText().length()!=0) {
-            Filtre += " and (Nom like '" + ((TextView) findViewById(R.id.edtMmrNom)).getText() + "' )";
+            Filtre += " and (Nom like '" + ((TextView) findViewById(R.id.edtMmrNom)).getText() + "%' )";
         }
         if (((TextView) findViewById(R.id.edtMmrCognom)).getText().length()!=0) {
-            Filtre += " and (Cognom like '" + ((TextView) findViewById(R.id.edtMmrCognom)).getText() + "' )";
-        }
-        if (((TextView) findViewById(R.id.edtMmrNum)).getText().length()!=0) {
-            Filtre += " and (Num like '" + ((TextView) findViewById(R.id.edtMmrNum)).getText() + "' )";
+            Filtre += " and (Cognom like '" + ((TextView) findViewById(R.id.edtMmrCognom)).getText() + "%' )";
         }
         if (((TextView) findViewById(R.id.edtMmrCurs)).getText().length()!=0) {
-            Filtre += " and (Curs like '" + ((TextView) findViewById(R.id.edtMmrCurs)).getText() + "' )";
+            Filtre += " and (Curs like '" + ((TextView) findViewById(R.id.edtMmrCurs)).getText() + "%' )";
         }
-        if (((TextView) findViewById(R.id.edtMmrSiCodi)).getText().length()!=0) {
-            Filtre += " and (Codi like '" + ((TextView) findViewById(R.id.edtMmrSiCodi)).getText() + "' )";
+        if (((TextView) findViewById(R.id.edtMmrGrup)).getText().length()!=0) {
+            Filtre += " and not(Grup like '" + ((TextView) findViewById(R.id.edtMmrGrup)).getText() + "%' )";
         }
-        if (((TextView) findViewById(R.id.edtMmrNoCodi)).getText().length()!=0) {
-            Filtre += " and not(Codi like '" + ((TextView) findViewById(R.id.edtMmrNoCodi)).getText() + "' )";
-        }
-        if (((TextView) findViewById(R.id.edtMmrSiGrup)).getText().length()!=0) {
-            Filtre += " and (Grup like '" + ((TextView) findViewById(R.id.edtMmrSiGrup)).getText() + "' )";
-        }
-        if (((TextView) findViewById(R.id.edtMmrNoGrup)).getText().length()!=0) {
-            Filtre += " and not(Grup like '" + ((TextView) findViewById(R.id.edtMmrNoGrup)).getText() + "' )";
-        }
-        Filtre += " and (AMemoritzar <> 0  )";
+        Filtre += " and (AMemoritzar <> 0  )  and (TeImatge <> 0  )";
         Filtre += " and (NextTipus = 'a')";
 
         if (Filtre.length()>4) Filtre=Filtre.substring(4);
