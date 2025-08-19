@@ -121,9 +121,7 @@ public class act_import_export extends AppCompatActivity {
 
 
     public void ImportarDB(View view) {
-        //exportar(view);
-        //TODO: Tornar a posar exportar
-        //ImportaBaseDeDadesAmbSAF();
+        exportar(view);
         iniciarImportacio();
     }
 

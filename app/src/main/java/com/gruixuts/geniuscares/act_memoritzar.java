@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.SystemClock;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.documentfile.provider.DocumentFile;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -25,7 +27,7 @@ public class act_memoritzar extends AppCompatActivity {
     ArrayList<classPersones> Llista;
     SimpleDateFormat frmtData = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     GestorDB db;
-    classPersones ParaulaActual;
+    classPersones PersonaActual;
     classProves Prova = null;
     String Filtre="";
     Integer IdPers;
@@ -37,13 +39,14 @@ public class act_memoritzar extends AppCompatActivity {
     TextView txtCognom;
     TextView txtNum;
     TextView txtCurs;
+    TextView txtGrup;
     TextView edtMemPAV;
     TextView edtMemComentaris;
     ImageView Imatges;
 
-    private String CarpetaImatges; // Inicialitzada dinàmicament amb FileUtils
+    private DocumentFile CarpetaImatges; // Inicialitzada dinàmicament amb FileUtils
     private Integer NumImg;
-    private String nomImatge[];
+    private DocumentFile nomsImatges[];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,46 +55,46 @@ public class act_memoritzar extends AppCompatActivity {
         setContentView(R.layout.activity_memoritzar);
         
         // Inicialitzar carpeta d'imatges amb FileUtils (compatible Android 11+)
-        CarpetaImatges = FileUtils.getCarpetaImatges(this);
+        CarpetaImatges = classGlobal.carpetaImatges;
         
         txtNom = (TextView) findViewById(R.id.txtMemNom);
         txtCognom = (TextView) findViewById(R.id.txtMemCognom);
-        txtNum = (TextView) findViewById(R.id.txtMemNum);
         txtCurs = (TextView) findViewById(R.id.txtMemCurs);
+        txtGrup = (TextView) findViewById(R.id.txtMemGrup);
+        txtNum = (TextView) findViewById(R.id.txtMemNum);
         edtMemPAV = (TextView) findViewById(R.id.edtMemPAV);
         edtMemComentaris = (TextView) findViewById(R.id.edtMemComentaris);
         Imatges = (ImageView) findViewById(R.id.imgImatges);
         Filtre = getIntent().getStringExtra("Filtre");
         db=  GestorDB.getInstance(getApplicationContext());
         Llista = db.selPersones(Filtre,"");
-        Actual=-1;
+        Actual=-1;  //Així la següent és la primera
         TempsIniciProva = SystemClock.currentThreadTimeMillis();
         PreguntaSeguent();
 
     }
 
     private void PreguntaSeguent() {
-        // Mostla seguent paraula a memoritzar
+        // Mostla seguent persona a memoritzar
 
         Actual++;
         if (Actual<Llista.size()) {
-            ParaulaActual=Llista.get(Actual);
-            IdPers= ParaulaActual.getId();
-            File carpeta = new File(CarpetaImatges + "/" + ParaulaActual.getImatges());
-            NumImg = 0;
-            if (carpeta.exists()) {
-                nomImatge = carpeta.list();
-                if (nomImatge.length != 0) {
-                    NumImg = 1;
-                }
+            PersonaActual=Llista.get(Actual);
+            IdPers= PersonaActual.getId();
+            File carpeta = new File(CarpetaImatges + "/" + PersonaActual.getImatges());
+            nomsImatges = LlistaImatgesSAF(PersonaActual.getImatges());
+            if (nomsImatges.length != 0) {
+                NumImg = 1;
+            } else {
+                NumImg = 0;
             }
             fotoPrimera();
-            txtNom.setText(ParaulaActual.getNom());
-            txtCognom.setText(ParaulaActual.getCognom());
-            txtNum.setText(ParaulaActual.getNum());
-            txtCurs.setText(ParaulaActual.getCurs());
-            edtMemPAV.setText(ParaulaActual.getPAV());
-            edtMemComentaris.setText(ParaulaActual.getComentaris());
+            txtNom.setText(PersonaActual.getNom());
+            txtCognom.setText(PersonaActual.getCognom());
+            txtNum.setText(PersonaActual.getNum());
+            txtCurs.setText(PersonaActual.getCurs());
+            edtMemPAV.setText(PersonaActual.getPAV());
+            edtMemComentaris.setText(PersonaActual.getComentaris());
             TextView txtCompt = (TextView) findViewById(R.id.txtCompt);
             txtCompt.setText("Actual: " + (Actual + 1) + "/" + Llista.size());
             TempsIniciPregunta = SystemClock.currentThreadTimeMillis();
@@ -119,25 +122,73 @@ public class act_memoritzar extends AppCompatActivity {
 
     }
 
-    public void fotoPrimera() {
-        if (NumImg==0) {
-            ((ImageView) findViewById(R.id.imgImatges)).setImageResource(R.drawable.ic_launcher_foreground);
+    private DocumentFile[] LlistaImatgesSAF(String nomSubcarpeta) {
+
+        // Si nom està buit
+        if (nomSubcarpeta==null || nomSubcarpeta.isEmpty()) {
+            classGlobal.mostraError(this,"Error","Aquesta persona no té nom de carpeta d'imatges");
+            return new DocumentFile[0];
+        }
+        // Miro si existeix
+        DocumentFile carpImg = classGlobal.carpetaImatges.findFile(nomSubcarpeta);
+        if (carpImg==null) {
+            return new DocumentFile[0]; // Si no existeix, torno llista buida
+        }
+
+        return carpImg.listFiles();
+    }
+
+
+    public void mostraFoto(Integer numImg) {
+        ImageView iv = findViewById(R.id.imgImatges);
+
+        if (nomsImatges == null || nomsImatges.length == 0 || NumImg <= 0 || nomsImatges.length < NumImg) {
+            iv.setImageResource(R.drawable.ic_launcher_foreground);
+            return;
+        }
+
+        DocumentFile f = nomsImatges[NumImg - 1];
+        if (f != null) {
+            iv.setImageURI(f.getUri());  // <- content://... del DocumentFile
         } else {
-            Drawable d = Drawable.createFromPath(CarpetaImatges + "/" + ParaulaActual.getImatges() + "/" + nomImatge[NumImg - 1]);
-            ((ImageView) findViewById(R.id.imgImatges)).setImageDrawable(d);
+            iv.setImageResource(R.drawable.ic_launcher_foreground);
         }
     }
+    public void fotoPrimera() {
+        mostraFoto(1);
+    }
     public void fotoSeguent(View view) {
-        if ((NumImg < nomImatge.length) && (NumImg>0) ) {
+        if ((NumImg < nomsImatges.length) && (NumImg>0) ) {
             NumImg++;
-            Drawable d = Drawable.createFromPath(CarpetaImatges + "/" + ParaulaActual.getImatges() + "/" + nomImatge[NumImg - 1]);
-            ((ImageView) findViewById(R.id.imgImatges)).setImageDrawable(d);
+            mostraFoto(NumImg);
         }
     }
     public void fotoAnterior(View view) {
+        if ((NumImg > 1) ) {
+            NumImg--;
+            mostraFoto(NumImg);
+        }
+    }
+
+    public void fotoPrimera_ant() {
+        if (NumImg==0) {
+            ((ImageView) findViewById(R.id.imgImatges)).setImageResource(R.drawable.ic_launcher_foreground);
+        } else {
+            Drawable d = Drawable.createFromPath(CarpetaImatges + "/" + PersonaActual.getImatges() + "/" + nomsImatges[NumImg - 1]);
+            ((ImageView) findViewById(R.id.imgImatges)).setImageDrawable(d);
+        }
+    }
+    public void fotoSeguent_ant(View view) {
+        if ((NumImg < nomsImatges.length) && (NumImg>0) ) {
+            NumImg++;
+            Drawable d = Drawable.createFromPath(CarpetaImatges + "/" + PersonaActual.getImatges() + "/" + nomsImatges[NumImg - 1]);
+            ((ImageView) findViewById(R.id.imgImatges)).setImageDrawable(d);
+        }
+    }
+    public void fotoAnterior_ant(View view) {
         if (NumImg > 1 ) {
             NumImg--;
-            Drawable d = Drawable.createFromPath(CarpetaImatges + "/" + ParaulaActual.getImatges() + "/" + nomImatge[NumImg - 1]);
+            Drawable d = Drawable.createFromPath(CarpetaImatges + "/" + PersonaActual.getImatges() + "/" + nomsImatges[NumImg - 1]);
             ((ImageView) findViewById(R.id.imgImatges)).setImageDrawable(d);
         }
     }
@@ -148,12 +199,12 @@ public class act_memoritzar extends AppCompatActivity {
         Date Ara = cal.getTime();
         db.open();
         // Persones
-        ParaulaActual.setNextTipus("1h");
+        PersonaActual.setNextTipus("1h");
         cal.add(Calendar.HOUR,1);
-        ParaulaActual.setNextData(cal.getTime());
-        ParaulaActual.setPAV(((TextView) findViewById(R.id.edtMemPAV)).getText().toString());
-        ParaulaActual.setComentaris(((TextView) findViewById(R.id.edtMemComentaris)).getText().toString());
-        db.actPersones(ParaulaActual);
+        PersonaActual.setNextData(cal.getTime());
+        PersonaActual.setPAV(((TextView) findViewById(R.id.edtMemPAV)).getText().toString());
+        PersonaActual.setComentaris(((TextView) findViewById(R.id.edtMemComentaris)).getText().toString());
+        db.actPersones(PersonaActual);
         // Prova
         if (Prova == null) {
             Prova = new classProves();
@@ -171,10 +222,10 @@ public class act_memoritzar extends AppCompatActivity {
         classResultats rslt = new classResultats();
         rslt.setDia(Ara);
         rslt.setIdProva(Prova.getId());
-        rslt.setIdPers(ParaulaActual.getId());
-//Todo:1        rslt.setPregunta(ParaulaActual.getCatala());
-//Todo:1        rslt.setResposta(ParaulaActual.getBasc());
-//Todo:1        rslt.setCorrecta(ParaulaActual.getBasc());
+        rslt.setIdPers(PersonaActual.getId());
+//Todo:1        rslt.setPregunta(PersonaActual.getCatala());
+//Todo:1        rslt.setResposta(PersonaActual.getBasc());
+//Todo:1        rslt.setCorrecta(PersonaActual.getBasc());
         rslt.setTemps((Long) (SystemClock.currentThreadTimeMillis() - TempsIniciPregunta));
         rslt.setValoracio(classResultats.VAL_PERFECTE);
         db.insResultat(rslt);
