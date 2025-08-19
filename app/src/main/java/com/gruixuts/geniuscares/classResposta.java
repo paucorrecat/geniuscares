@@ -25,9 +25,9 @@ public class classResposta {
         assert(ll.length==6);
         nom_ = ll[1];
         cognom_ = ll[2];
-        curs_ = ll[4];
-        grup_ = ll[3];
-        num_ = ll[4];
+        curs_ = ll[3];
+        grup_ = ll[4];
+        num_ = ll[5];
     }
 
     public String getNom() {
