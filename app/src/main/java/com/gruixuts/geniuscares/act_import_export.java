@@ -7,7 +7,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.documentfile.provider.DocumentFile;
 
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -27,6 +26,7 @@ import java.util.Locale;
 
 import android.net.Uri;
 import android.provider.DocumentsContract;
+
 
 public class act_import_export extends AppCompatActivity {
 
@@ -52,6 +52,7 @@ public class act_import_export extends AppCompatActivity {
     DocumentFile carpImportTxt = null;
 
     // Boolean permisosOk = true; // Sempre true per Android 11+
+    private GestorDB db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +101,8 @@ public class act_import_export extends AppCompatActivity {
             carpImportTxt = carpExt.createDirectory(CONFIG_IMPORT_TXT);
         }
         // carpetaCopiaDades ja està creada
+       db = GestorDB.getInstance(this);
+
 
     }
 
@@ -118,12 +121,14 @@ public class act_import_export extends AppCompatActivity {
 
 
     public void ImportarDB(View view) {
-        exportar(view);
-        ImportaBaseDeDadesAmbSAF();
+        //exportar(view);
+        //TODO: Tornar a posar exportar
+        //ImportaBaseDeDadesAmbSAF();
+        iniciarImportacio();
     }
 
     public void ImportarTxt(View view) {
-        GestorDB db = new GestorDB(getApplicationContext());
+        GestorDB db = GestorDB.getInstance(getApplicationContext());
         TextView elim = findViewById(R.id.edtEliminarOk);
         TextView estat = findViewById(R.id.txtEstat);
         TextView nomfit = findViewById(R.id.edtNomFitxerImport);
@@ -133,7 +138,7 @@ public class act_import_export extends AppCompatActivity {
 
         // tEMPORAL, PER A FER PROVES
         nomfit.setText(CONFIG_AIMPORTAR_TXT);
-        nomfit.setText(CONFIG_AIMPORTAR_TXT);
+        // Temporal
         elim.setText("ELIMINAR");
 
         if (!"ELIMINAR".equals(elim.getText().toString())) return;
@@ -204,211 +209,8 @@ public class act_import_export extends AppCompatActivity {
         }
     }
 
-    public void ImportarTxt_vell(View view) {
-        GestorDB db = new GestorDB(getApplicationContext());
-        TextView elim = findViewById(R.id.edtEliminarOk);
-        TextView estat = findViewById(R.id.txtEstat);
-        TextView nomfit = findViewById(R.id.edtNomFitxerImport);
-        String[] camps;
-        File fitxer;
-        BufferedReader Buf; // Buffer del fitxer
-        String txt; // On es llegeix cada línia
-        long NumLin = 0;
 
-        // Provisional, per a fer proves:
-        nomfit.setText(CONFIG_AIMPORTAR_TXT);
-        elim.setText("ELIMINAR");
-        // Miro si s'ha escrit la paraula ELIMINAR (per seguretat)
-        if (elim.getText().toString().compareTo("ELIMINAR") == 0) {
-            estat.setText("Buscant fitxers");
-            try {
-                // Controlem que el fitxer existeix
-                fitxer = new File(CarpetaCopies,nomfit.getText().toString());
-                if (!fitxer.exists()) {
-                    estat.setText("El fitxer no existeix");
-                    return;
-                }
-            } catch (Exception e) {
-                estat.setText("Error al mirar si el fitxer existeix: " + e.getMessage());
-                return;
-            }
-
-            estat.setText("Important de " + nomfit.getText().toString());
-
-            try {
-                // Llegim les dades
-                Buf = new BufferedReader((new InputStreamReader(new FileInputStream(fitxer))));
-                db.open();
-                db.delPersones();  //Buidem tot lo anterior
-                while ((txt = Buf.readLine()) != null) {
-                    // Todo: Posar nº de línia en el missatges d'error
-                    NumLin++;
-                    camps = txt.split(Separador);
-                    switch (camps[0]) {
-                        case "V": // Versió
-                            break; // Mentre no fem noves versions, no cal
-                        case "A": // Alumne o persona a recordar
-                            db.insPersones(new classPersones(
-                                    ANum(camps[1]), //Id
-                                    camps[2],                   //Imatges
-                                    camps[3],                   //Nom
-                                    camps[4],                   //Cognom
-                                    camps[5],                   //Num
-                                    camps[6],                   //Curs
-                                    camps[7],                   //Codi
-                                    camps[8],                   //PAV
-                                    camps[9],                   //Comentaris
-                                    camps[10],                   //Grup
-                                    camps[11],                   //NextTipus
-                                    camps[12].equals("") ? null : frmtData.parse(camps[12]), //NextData
-                                    camps[13].equals("true"),
-                                    camps[14].equals("true"))
-                            );  //urgent: revisar l'estructura de import per a que contingui TeImatge
-                            break; // Mentre no fem noves versions, no cal
-                        case "P": // Proves
-                            /*
-                            try {
-                                num1 = Integer.parseInt(camps[0]);
-                            } catch (Exception e) {
-                                num1 = Integer.parseInt(camps[0].substring(1));
-                            }
-                            try {
-                                num2 = Integer.parseInt(camps[4]);
-                            } catch (Exception e) {
-                                num2 = Integer.parseInt(camps[4].substring(1));
-                            }
-                            try {
-                                num3 = Integer.parseInt(camps[5]);
-                            } catch (Exception e) {
-                                num3 = Integer.parseInt(camps[5].substring(1));
-                            }
-                            try {
-                                num4 = Long.parseLong(camps[6]);
-                            } catch (Exception e) {
-                                num4 = Long.parseLong(camps[6].substring(1));
-                            }
-                            Boolean p = camps[13].equals("True");
-                            db.insProves(new classProves(
-                                    num1,                        //Id
-                                    GestorDB.AData(camps[1]),                   //Dia
-                                    camps[2],                   //TipusProva
-                                    camps[3],                   //Seleccio
-                                    num2,                   //NumPreguntes
-                                    num3,                   //NumRespostes
-                                    num4,                   //Temps
-                                    !camps[9].equals("0"))
-                            );*/
-                            break;
-                        case "R":  // Resultats
-                            /*
-                            Resultat = new classResultats(txt, Separador);
-                            db.insResultat(Resultat);
-                            */
-                            break;
-                        default:
-                            estat.setText("Error al llegir la línia, tipus de registre no conegut " );
-
-                    }
-                }
-                db.close();
-            } catch (Exception e) {
-                estat.setText("Dades no carregades: " + e.getMessage());
-            }
-
-            estat.setText("Tot importat correctament de " + nomfit.getText().toString());
-
-
-        } else {
-            estat.setText("No s'ha posat ELIMINAR");
-        }
-    }
-
-    public void ImportarNou(View view) {
-        GestorDB db = new GestorDB(getApplicationContext());
-        TextView estat = findViewById(R.id.txtEstat);
-
-        String[] camps;
-        String Carpeta = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Pau";
-        File fitxer;
-        BufferedReader Buf;
-        int NumVer = 1;
-        String txtVer = "001";
-        int Id;
-        String txt;
-        classPersones nPers;
-        classPersones antPers;
-        String Tip;
-
-        estat.setText("Buscant fitxers");
-        try {
-            // Buscant la versió correcta
-            fitxer = new File(Carpeta, "PcPersones001.txt");
-            while (!fitxer.exists() && NumVer < 1000) {
-                NumVer++;
-                txtVer = ("000" + NumVer);
-                txtVer = txtVer.substring(txtVer.length() - 3, txtVer.length());
-                fitxer = new File(Carpeta, "PcPersones" + txtVer + ".txt");
-            }
-            while (fitxer.exists() && NumVer < 1000) {
-                NumVer++;
-                txtVer = ("000" + NumVer);
-                txtVer = txtVer.substring(txtVer.length() - 3, txtVer.length());
-                fitxer = new File(Carpeta, "PcPersones" + txtVer + ".txt");
-            }
-            if (NumVer < 1000) {
-                txtVer = ("000" + (NumVer - 1));
-                txtVer = txtVer.substring(txtVer.length() - 3, txtVer.length());
-            } else {
-                return;
-            }
-        } catch (Exception e) {
-            estat.setText("Error al buscar fitxers: " + e.getMessage());
-        }
-        estat.setText("Important de PcPersones" + txtVer + ".txt");
-        try {
-            // Persones
-            fitxer = new File(Carpeta, "PcPersones" + txtVer + ".txt");
-            Buf = new BufferedReader((new InputStreamReader(new FileInputStream(fitxer))));
-            db.open();
-            while ((txt = Buf.readLine()) != null) {
-                camps = txt.split(Separador);
-                try {
-                    Id = Integer.parseInt(camps[0]);
-                } catch (Exception e) {
-                    Id = Integer.parseInt(camps[0].substring(1));
-                }
-                antPers = db.selPers(Id);
-                    if (camps[2].length() == 0) {
-                        Tip = "t";
-                    } else {
-                        Tip = "a";
-                    }
-                    db.creaPersones(new classPersones(
-                            Id,                        //Id
-                            camps[1],                   //Imatges
-                            camps[2],                   //Nom
-                            camps[3],                   //Cognom
-                            camps[4],                   //Num
-                            camps[5],                   //Curs
-                            camps[6],                   //Codi
-                            camps[7],                   //PAV
-                            camps[8],                   //Comentaris
-                            camps[9],                   //Grup
-                            Tip,                        //NextTipus
-                            null,             //NextData
-                            camps[12].equals("true"),    // AMemoritzar
-                            camps[13].equals("true")));  // TeImatge
-            }
-            db.close();
-        } catch (Exception e) {
-            estat.setText("Persones no carregat: " + e.getMessage());
-        }
-        estat.setText("Importat de PcPersones" + txtVer + ".txt");
-
-
-    }
-
-    void copiarBaseDeDadesAmbSAF() {
+    void exportFitxerBaseDeDades() {  //Exportació
         String nomFitxer = "GeniusCares_" +
                 new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date()) +
                 ".db";
@@ -424,9 +226,17 @@ public class act_import_export extends AppCompatActivity {
 
             if (carpCopiaDades != null) {
                 // 2. Obrir la base de dades local (forma correcta)
-                File dbFile = new File(getApplicationInfo().dataDir + "/databases/GeniusCares.db");
+                //File dbFile = new File(getApplicationInfo().dataDir + "/databases/GeniusCares.db");
+                File dbFile = getDatabasePath("GeniusCares.db");
                 InputStream input = new FileInputStream(dbFile);
-                OutputStream output = getContentResolver().openOutputStream(carpCopiaDades.getUri());
+//                OutputStream output = getContentResolver().openOutputStream(carpCopiaDades.getUri());
+
+                DocumentFile fitxer = carpCopiaDades.createFile(
+                        "application/octet-stream", // mime type genèric per binaris
+                                                        // també podria ser "application/vnd.sqlite3"
+                        nomFitxer);
+
+                OutputStream output = getContentResolver().openOutputStream(fitxer.getUri());
 
                 // 3. Copiar el contingut
                 byte[] buf = new byte[1024];
@@ -440,7 +250,7 @@ public class act_import_export extends AppCompatActivity {
                 output.close();
 
                 Log.i(classGlobal.TAG, "Còpia feta correctament a: " + nomFitxer);
-                estat.setText("Base de dades copiada a " + nomFitxer);
+                estat.setText("Base de dades copiada a " + carpCopiaDades.getName() + "/" + nomFitxer);
             }
         } catch (Exception e) {
             Log.e(classGlobal.TAG, "Error copiant la base de dades: " + e.getMessage());
@@ -448,46 +258,87 @@ public class act_import_export extends AppCompatActivity {
         }
     }
 
+    // Aquesta funció es crida des del botó
+    public void iniciarImportacio() {
+        // Mostra un missatge a l'usuari
+        estat.setText("Important dades...");
 
-    void ImportaBaseDeDadesAmbSAF() {
+        // Tanca qualsevol connexió a la BD que pugui estar oberta
+        // Això és CRUCIAL fer-ho abans de començar
+        if (db != null) {
+            db.close();
+            Log.d("Importacio", "GestorDB tancat abans de la còpia.");
+        }
+
+        // Crida a la funció de còpia
+        boolean exit = importFitxerBaseDeDades();
+
+        // Gestiona el resultat
+        if (exit) {
+            estat.setText("Importació completada amb èxit.");
+            Log.i("Importacio", "El fitxer s'ha copiat correctament.");
+
+            // Ara, per veure les dades, has de refrescar la teva vista.
+            // Aquesta acció forçarà a GestorDB a obrir el nou fitxer.
+            // Ex: carregarLlistaDePersones();
+
+        } else {
+            estat.setText("Error durant la importació.");
+            Log.e("Importacio", "La còpia del fitxer ha fallat.");
+        }
+    }
+
+    // Aquesta és la funció que NOMÉS copia el fitxer
+    private boolean importFitxerBaseDeDades() {
         if (carpImportDades == null) {
-            estat.setText("Error: carpeta d'importació no inicialitzada.");
-            return;
+            Log.e("Importacio", "La carpeta d'importació és nul·la.");
+            return false;
         }
 
-        DocumentFile AImportar= carpImportDades.findFile(CONFIG_AIMPORTAR_DB);
+        DocumentFile aImportar = carpImportDades.findFile(CONFIG_AIMPORTAR_DB);
 
-        if (AImportar==null) {
-            classGlobal.mostraError(this,"Error","Cal posar AImportar.db a /Pau/GeniusCares/ImportDades");
-            return;
+        if (aImportar == null || !aImportar.exists() || aImportar.length() == 0) {
+            Log.e("Importacio", "El fitxer AImportar.db no es troba o està buit.");
+            return false;
         }
 
-        try {
-            File destiBD = new File(getApplicationInfo().dataDir + "/databases/GeniusCares.db");
-            InputStream input = getContentResolver().openInputStream(AImportar.getUri());
-            OutputStream output = new FileOutputStream(destiBD, false);
+        File destiBD = getDatabasePath("GeniusCares.db");
 
-            byte[] buf = new byte[1024];
+        // Utilitzem try-with-resources per assegurar que els streams es tanquen sempre
+        try (InputStream input = getContentResolver().openInputStream(aImportar.getUri());
+             OutputStream output = new FileOutputStream(destiBD)) {
+
+            if (input == null) {
+                Log.e("Importacio", "El InputStream és nul. No es pot llegir el fitxer d'origen.");
+                return false;
+            }
+
+            byte[] buf = new byte[8192];
             int len;
             while ((len = input.read(buf)) > 0) {
                 output.write(buf, 0, len);
             }
 
-            input.close();
-            output.close();
+            output.flush(); // Forcem l'escriptura de qualsevol buffer restant
+
         } catch (Exception e) {
-            classGlobal.mostraError(this,"Error","Error al llegir o escrure la base de dades");
-            estat.setText("Base de dades no importada.");
-            return;
+            Log.e("Importacio", "EXCEPCIÓ durant la còpia del fitxer", e); // Mostrem l'error complet
+            return false;
         }
 
-        estat.setText("Base de dades importada correctament.");
-        Log.i(classGlobal.TAG, "Base de dades importada des de AImportar.db");
+        // Verificació final
+        if (destiBD.exists() && destiBD.length() > 0) {
+            Log.i("Importacio", "Verificació correcta. El fitxer destí existeix i no està buit. Mida: " + destiBD.length());
+            return true;
+        } else {
+            Log.e("Importacio", "Verificació fallida. El fitxer destí no existeix o està buit després de la còpia.");
+            return false;
+        }
     }
 
 
     public void exportar(View view) {
-        GestorDB db = new GestorDB(getApplicationContext());
+        GestorDB db = GestorDB.getInstance(getApplicationContext());
         ArrayList<classPersones> LlistaPersones;
         ArrayList<classProves> LlistaProves;
         ArrayList<classResultats> LlistaResultats;
@@ -618,7 +469,7 @@ public class act_import_export extends AppCompatActivity {
         }
 
         // Copiar la base de dades
-        copiarBaseDeDadesAmbSAF();
+        exportFitxerBaseDeDades();
     }
 
 }

@@ -40,7 +40,7 @@ public class act_pregunta extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pregunta);
-        db = new GestorDB(getApplicationContext());
+        db = GestorDB.getInstance(getApplicationContext());
         String Filtre = getIntent().getStringExtra("Filtre");
         TipusProva = getIntent().getStringExtra("Tipus");
         Integer Top = Integer.parseInt(getIntent().getStringExtra("Top"));
@@ -49,7 +49,6 @@ public class act_pregunta extends AppCompatActivity {
         Date Avui = new Date();
         Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("Europe/Madrid"));
         String Ref = frmtData.format(new Date(cal.getTimeInMillis()));
-        db.open();
         NumProva = db.UltimaProva() + 1;
         TempsProva = 0L;
 
@@ -72,7 +71,6 @@ public class act_pregunta extends AppCompatActivity {
                 0L,
                 false);
         db.insProves(ProvaActual);
-        db.close();
         Actual = -1;
         PreguntaSeguent();
 
@@ -95,9 +93,7 @@ public class act_pregunta extends AppCompatActivity {
             bt.setEnabled(false);
             edtBasc.setEnabled(false);
             ProvaActual.setAcabada(true);
-            db.open();
             db.actProves(ProvaActual);
-            db.close();
         }
     }
 
@@ -253,7 +249,6 @@ public class act_pregunta extends AppCompatActivity {
         Result.setTemps(TempsPregunta);
         Result.setValoracio(Resultat);
 
-        db.open();
         db.insResultat(Result);
         // Actualitza Prova
         ProvaActual.setTemps(TempsProva);
@@ -299,8 +294,6 @@ public class act_pregunta extends AppCompatActivity {
             db.actPersones(Pers);
         }
         // si és VAL_REVISIO no s'ha de gravar res
-
-        db.close();
     }
 
     public void PregEdit(View view) {

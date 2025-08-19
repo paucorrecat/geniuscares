@@ -21,8 +21,7 @@ public class act_estadistica extends AppCompatActivity {
         Integer N1;
         Integer N2;
 
-        db = new GestorDB(getApplicationContext());
-        db.open();
+        db = GestorDB.getInstance(getApplicationContext());
         N1=db.selPersones("","").size();
         ((TextView) findViewById(R.id.TauTotal)).setText(""+N1);
 
@@ -78,8 +77,6 @@ public class act_estadistica extends AppCompatActivity {
         N2=db.selPersones("((NextTipus='6m') and (NextData < '" + frmtData.format(new Date()) + "'))","").size();
         ((TextView) findViewById(R.id.TauRp6mM)).setText(""+N2);
         ((TextView) findViewById(R.id.TauRp6mB)).setText(""+(N1-N2));
-
-        db.close();
 
     }
 }

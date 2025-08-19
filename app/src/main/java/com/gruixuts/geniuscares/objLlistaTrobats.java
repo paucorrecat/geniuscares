@@ -37,11 +37,9 @@ public class objLlistaTrobats {
         ITEMS.clear();
         ITEM_MAP.clear();
         GestorDB db;
-        db= new GestorDB(c);
+        db= GestorDB.getInstance(c);
         ArrayList<classPersones> Llista;
-        db.open();
         Llista = db.selPersones(filtre,ordre);
-        db.close();
         for (Integer i = 1; i <= Llista.size(); i++) {
             addItem(i.toString(), Llista.get(i-1));
         }

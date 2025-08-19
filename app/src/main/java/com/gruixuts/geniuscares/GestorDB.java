@@ -22,8 +22,9 @@ import java.util.TimeZone;
 
 public class GestorDB {
 
-
-    public static final int DATABASE_VERSION = 6;
+    // 1. Variable estàtica per guardar la única instància
+    private static GestorDB instance;
+    public static final int DATABASE_VERSION = 7;
     public static final String DATABASE_NAME = "GeniusCares.db";
 
     public static SimpleDateFormat frmtData = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -134,10 +135,12 @@ public class GestorDB {
 
         public DBHandler(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
+            Log.w("GestorDB_LIFECYCLE", "DBHandler: S'està creant una nova instància de l'Helper.");
         }
 
         @Override
         public void onCreate(SQLiteDatabase db) {
+            Log.e("GestorDB_LIFECYCLE", "DBHandler: onCreate() S'ESTÀ EXECUTANT! ES CREARAN TAULES BUIDES.");
             db.execSQL(Persones_TABLE_CREATE);
             db.execSQL(Proves_TABLE_CREATE);
             db.execSQL(Resultats_TABLE_CREATE);
@@ -145,6 +148,7 @@ public class GestorDB {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            Log.e("GestorDB_LIFECYCLE", "DBHandler: onUpgrade() S'ESTÀ EXECUTANT! S'ESBORRARAN LES DADES.");
             db.execSQL("DROP TABLE IF EXISTS " + PersonaDef.TABLE_NAME);
             db.execSQL("DROP TABLE IF EXISTS " + ProvesDef.TABLE_NAME);
             db.execSQL("DROP TABLE IF EXISTS " + ResultatsDef.TABLE_NAME);
@@ -157,27 +161,79 @@ public class GestorDB {
     private DBHandler openHelper; //Gestor de base de datos
 
     public GestorDB(Context context) {
-        this.context = context;
+        Log.d("GestorDB_Singleton", "Creant la ÚNICA instància de GestorDB.");
+        this.context = context.getApplicationContext();  // Utilitza el context de l'aplicació
         this.openHelper = new DBHandler(this.context);
     }
 
+    // Mètode públic i estàtic per obtenir la única instància
+    public static synchronized GestorDB getInstance(Context context) {
+        if (instance == null) {
+            instance = new GestorDB(context);
+        }
+        return instance;
+    }
     //Obrir i tancar la base de dades
 
     public GestorDB open() {
-        this.db = openHelper.getWritableDatabase(); //Crea/abre la base de datos para la lectura/escritura
+        // Si la connexió ja està oberta, no facis res.
+        // Si està tancada o és nul·la, obre-la.
+        if (this.db == null || !this.db.isOpen()) {
+            Log.d("GestorDB_LIFECYCLE", "La connexió és nul·la o tancada. Cridant a getWritableDatabase()...");
+            this.db = openHelper.getWritableDatabase();
+            Log.d("GestorDB_LIFECYCLE", "getWritableDatabase() cridat.");
+        }
         return this;
     }
 
     public void close() {
-        this.db.close();
+        // Sincronitzem per evitar problemes si es crida des de diferents fils
+        synchronized(this) {
+            if (this.db != null && this.db.isOpen()) {
+                this.db.close();
+                Log.w("GestorDB_Singleton", "La connexió a la base de dades ha estat tancada.");
+            }
+            if (this.openHelper != null) {
+                this.openHelper.close();
+                Log.w("GestorDB_Singleton", "L'SQLiteOpenHelper ha estat tancat.");
+            }
+            // Important: posem la nostra instància estàtica a null
+            // perquè la propera crida a getInstance() la recreï des de zero.
+            // Això completa el "reset" total.
+            instance = null;
+            Log.w("GestorDB_Singleton", "La instància Singleton ha estat destruïda (reset).");
+        }
     }
 
     // Función públiques d'accés a les dades
 
+    /**
+     * Tanca completament la connexió actual a la base de dades.
+     * S'ha de cridar DESPRÉS d'una operació externa com una importació
+     * per forçar que la propera crida a open() obri el nou fitxer.
+     */
+    public void resetConnection() {
+        Log.d("GestorDB", "Reiniciant la connexió a la base de dades.");
+        // Primer, tanca la connexió existent de manera segura.
+        if (this.db != null && this.db.isOpen()) {
+            this.db.close();
+        }
+        // Després, tanca l'helper, que gestiona el fitxer.
+        if (this.openHelper != null) {
+            this.openHelper.close();
+        }
+
+        // Finalment, recreem l'helper. Això és crucial.
+        // La propera vegada que es cridi a open(), aquest nou helper
+        // obrirà una connexió fresca al fitxer (que acabem d'importar).
+        this.openHelper = new DBHandler(this.context);
+        this.db = null; // Assegurem que la propera crida a open() la reobri.
+    }
 
     //Selecció
 
     public ArrayList<classPersones> selPersones(String Filtre, String Ordre) {
+        open();
         ArrayList<classPersones> list = new ArrayList<classPersones>();
         String SQLtxt;
 
@@ -212,6 +268,7 @@ public class GestorDB {
     }
 
     public classPersones selPers(Integer Id) {
+        open();
         String SQLtxt;
 
         SQLtxt = "Select " + PersonaDef.LLISTA_CAMPS + " from " + PersonaDef.TABLE_NAME + " where Id=" + Id + ";";
@@ -233,6 +290,7 @@ public class GestorDB {
     }
 
     public ArrayList<classPersones> selPersonesAntiguetat(String Filtre, String Ordre, Integer NumEntrades) {
+        open();
         ArrayList<classPersones> list = new ArrayList<classPersones>();
         String SQLtxt;
 
@@ -277,6 +335,7 @@ public class GestorDB {
 
 
     public ArrayList<classPersones> selPersonesRevisar(String Filtre, String Ordre, Integer NumEntrades) {
+        open();
         ArrayList<classPersones> list = new ArrayList<classPersones>();
         String SQLtxt;
         Cursor cursor;
@@ -323,6 +382,7 @@ public class GestorDB {
 
 
     public ArrayList<classPersones> selPersonesSeguir() {
+        open();
         ArrayList<classPersones> list = new ArrayList<classPersones>();
         String SQLtxt;
         Cursor cursor;
@@ -373,6 +433,7 @@ public class GestorDB {
 
 
     public ArrayList<classProves> selProves(String Filtre, String Ordre) {
+        open();
         ArrayList<classProves> list = new ArrayList<classProves>();
         String SQLtxt;
 
@@ -403,6 +464,7 @@ public class GestorDB {
     }
 
     public ArrayList<classResultats> selResultats(String Filtre, String Ordre) {
+        open();
         ArrayList<classResultats> list = new ArrayList<classResultats>();
         String SQLtxt;
 
@@ -435,6 +497,7 @@ public class GestorDB {
 
  
     public ArrayList<classPersones> selExamenFallosUlt() {
+        open();
         ArrayList<classPersones> list = new ArrayList<classPersones>();
         String SQLtxt;
         Integer UltProva;
@@ -470,6 +533,7 @@ public class GestorDB {
     }
 
     private ArrayList<classPersones> Desordena(ArrayList<classPersones> list) {
+        open();
         ArrayList<classPersones> result = new ArrayList<classPersones>();
         Random rand = new Random();
 
@@ -481,6 +545,7 @@ public class GestorDB {
 
 
     public Integer UltimaProva() {
+        open();
         String SQLtxt = "select max(IdProva) from " + ResultatsDef.TABLE_NAME;
         Cursor cursor = this.db.rawQuery(SQLtxt, null);
         cursor.moveToFirst();
@@ -488,6 +553,7 @@ public class GestorDB {
     }
 
     public Integer QuantsRep(String TipRep) {
+        open();
         String[] Camps = new String[2];
         String Selec;
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));
@@ -509,20 +575,25 @@ public class GestorDB {
 
     //Eliminació
     public void delPersones() {
+        open();
         db.delete(PersonaDef.TABLE_NAME, "-1", null);
     }
     public void delPers(Integer Id) {
+        open();
         db.delete(PersonaDef.TABLE_NAME, "Id=" + Id, null);
     }
     public void delProves() {
+        open();
         db.delete(ProvesDef.TABLE_NAME, "-1", null);
     }
     public void delResultats() {
+        open();
         db.delete(ResultatsDef.TABLE_NAME, "-1", null);
     }
 
     //Insertar
     public void insPersones(classPersones ent) {
+        open();
         ContentValues values = new ContentValues();
 
         // Parells clau-valor
@@ -549,6 +620,7 @@ public class GestorDB {
     }
 
     public void insProves(classProves prova) {   // Per importació
+        open();
         ContentValues values = new ContentValues();
         values.put(ProvesDef.Id, prova.getId());
         values.put(ProvesDef.Dia, prova.getDiaTxt() );
@@ -572,6 +644,7 @@ public class GestorDB {
 
      */
     public classProves insNovaProvaAprendre(String sel, Integer numpreg, Long temps) {
+        open();
         String SQLtxt = "select max(Id) from " + ProvesDef.TABLE_NAME;
         Cursor cursor = this.db.rawQuery(SQLtxt, null);
         classProves Prova;
@@ -584,6 +657,7 @@ public class GestorDB {
     }
 
     public Integer NumNovaProva() {
+        open();
         String SQLtxt = "select max(Id) from " + ProvesDef.TABLE_NAME;
         Cursor cursor = this.db.rawQuery(SQLtxt, null);
         cursor.moveToFirst();
@@ -591,6 +665,7 @@ public class GestorDB {
     }
 
     public void insResultat(classResultats Rslt) {
+        open();
         ContentValues values = new ContentValues();
 
         // Parells clau-valor
@@ -609,6 +684,7 @@ public class GestorDB {
     }
 
     public void creaPersones(classPersones ent) {
+        open();
         Cursor cursor;
         if (ent.getId() != 0) {
             String SQLtxt = "select Id from " + PersonaDef.TABLE_NAME + " where (Id=" + ent.getId() + ")" ;
@@ -629,6 +705,7 @@ public class GestorDB {
 
     //Actualitzar
     public void actRepassat(int IdEntrada, String Dia) {
+        open();
         ContentValues values = new ContentValues();
         String[] Camps = {"Apres", "Repas1h", "Repas1d", "Repas1s", "Repas1m", "Repas6m"};
         Cursor cursor = db.query(PersonaDef.TABLE_NAME, Camps, "Id=" + IdEntrada, null, null, null, null);
@@ -666,6 +743,7 @@ public class GestorDB {
 
 
     public void actPersones(classPersones ent) {
+        open();
         ContentValues values = new ContentValues();
         values.put(PersonaDef.Imatges, ent.getImatges());
         values.put(PersonaDef.Nom, ent.getNom());
@@ -696,6 +774,7 @@ public class GestorDB {
 
 
     public void actProves(classProves prova) {   // Per importació
+        open();
         ContentValues values = new ContentValues();
         //values.put(ProvesDef.Id, prova.getId());
         values.put(ProvesDef.Dia, prova.getDiaTxt() );

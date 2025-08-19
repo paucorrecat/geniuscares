@@ -35,23 +35,19 @@ public class act_manteniment_llista extends AppCompatActivity {
     public void GrAll(View view) {
         List<classPersones> items = objLlistaTrobats.ITEMS;
         String strNouGrup =  "" + ((TextView) findViewById(R.id.edtMmrGrTxt)).getText() ;
-        db.open();
         for ( classPersones itm : items) {
             itm.setGrup(strNouGrup);
             db.actPersones(itm);
         }
-        db.close();
     }
 
     public void GrDel(View view) {
         List<classPersones> items = objLlistaTrobats.ITEMS;
         String strNouGrup =  "" + ((TextView) findViewById(R.id.edtMmrGrTxt)).getText() ;
-        db.open();
         for ( classPersones itm : items) {
             itm.setGrup("");
             db.actPersones(itm);
         }
-        db.close();
     }
 
     @Override
@@ -63,7 +59,7 @@ public class act_manteniment_llista extends AppCompatActivity {
         setSupportActionBar(toolbar);
         setTitle("Trobats: " + objLlistaTrobats.ITEMS.size());
         toolbar.setTitle(getTitle());
-        db=  new GestorDB(getApplicationContext());
+        db=  GestorDB.getInstance(getApplicationContext());
         /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +122,7 @@ public class act_manteniment_llista extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mIdView.setText(mValues.get(position).getId().toString());
-            holder.mCodiView.setText(mValues.get(position).getCodi());
+            holder.mCodiView.setText(mValues.get(position).getCurs()+mValues.get(position).getGrup()+mValues.get(position).getNum());
             holder.mCatalaView.setText(mValues.get(position).getNom());
             holder.mBascView.setText(mValues.get(position).getCognom());
 

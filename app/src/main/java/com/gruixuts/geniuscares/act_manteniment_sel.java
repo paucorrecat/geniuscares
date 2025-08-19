@@ -2,13 +2,22 @@ package com.gruixuts.geniuscares;
 
 import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.documentfile.provider.DocumentFile;
+
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class act_manteniment_sel extends AppCompatActivity {
+
+    private DocumentFile carpetaImatges = classGlobal.carpetaImatges;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,9 +26,9 @@ public class act_manteniment_sel extends AppCompatActivity {
         ((TextView) findViewById(R.id.edtMntId)).setText("");
         ((TextView) findViewById(R.id.edtMntNom)).setText("");
         ((TextView) findViewById(R.id.edtMntCognom)).setText("");
-        ((TextView) findViewById(R.id.edtMntCodi)).setText("");
         ((TextView) findViewById(R.id.edtMntCurs)).setText("");
         ((TextView) findViewById(R.id.edtMntGrup)).setText("");
+        ((TextView) findViewById(R.id.edtMntNum)).setText("");
         ((CheckBox) findViewById(R.id.chkMntSiImatge)).setChecked(false);
         ((CheckBox) findViewById(R.id.chkMntNoImatge)).setChecked(false);
         ((CheckBox) findViewById(R.id.chkMntSiAMem)).setChecked(false);
@@ -27,7 +36,10 @@ public class act_manteniment_sel extends AppCompatActivity {
         ((CheckBox) findViewById(R.id.chkMntSiApres)).setChecked(false);
         ((CheckBox) findViewById(R.id.chkMntNoApres)).setChecked(false);
         ((RadioGroup) findViewById(R.id.grpOrdre)).clearCheck();
+
+
     }
+
 
 
     public void MntBusca(View view) {
@@ -41,14 +53,14 @@ public class act_manteniment_sel extends AppCompatActivity {
         if (((TextView) findViewById(R.id.edtMntCognom)).getText().length()!=0) {
             Filtre += " and (Cognom like '" + ((TextView) findViewById(R.id.edtMntCognom)).getText() + "%' )";
         }
-        if (((TextView) findViewById(R.id.edtMntCodi)).getText().length()!=0) {
-            Filtre += " and (Num like '%" + ((TextView) findViewById(R.id.edtMntCodi)).getText() + "%' )";
-        }
         if (((TextView) findViewById(R.id.edtMntCurs)).getText().length()!=0) {
-            Filtre += " and (Curs like '" + ((TextView) findViewById(R.id.edtMntCurs)).getText() + "%' )";
+            Filtre += " and (Curs like '" + ((TextView) findViewById(R.id.edtMntCurs)).getText() + "' )";
         }
         if (((TextView) findViewById(R.id.edtMntGrup)).getText().length()!=0) {
-            Filtre += " and (Codi like '" + ((TextView) findViewById(R.id.edtMntGrup)).getText() + "' )";
+            Filtre += " and (Grup like '" + ((TextView) findViewById(R.id.edtMntGrup)).getText() + "' )";
+        }
+        if (((TextView) findViewById(R.id.edtMntNum)).getText().length()!=0) {
+            Filtre += " and (Num like '%" + ((TextView) findViewById(R.id.edtMntNum)).getText() + "%' )";
         }
         if (((CheckBox) findViewById(R.id.chkMntSiImatge)).isChecked()) {
             Filtre += " and (TeImatge <>0 )";
@@ -95,4 +107,38 @@ public class act_manteniment_sel extends AppCompatActivity {
         startActivity(myIntent);
 
     }
+
+    public void MntRevisaTeImatge(View view) {
+
+        GestorDB db;
+        db = GestorDB.getInstance(getApplicationContext());
+        classPersones per = null;
+
+        ArrayList<classPersones> llista = db.selPersones("","");
+
+        try {
+            for (classPersones p : llista) {
+                per = p;
+                long id = p.getId();                 // adapta getters si cal
+                String imatges = p.getImatges();       // camp "Imatge" (text)
+                boolean te = comprovaTeImatge(imatges);
+                p.setTeImatge(te);
+                db.actPersones(p);
+            }
+        } catch (Exception e) {
+            classGlobal.mostraError(this,"Error","Error al fer el llistat de les persones (" + per.getImatges() + ")" );
+            e.printStackTrace();
+        }
+            finally {
+        }
+        classGlobal.mostraError(this,"Fet!","Actualitzades les " + llista.size() + " persones" );
+    }
+
+    private boolean comprovaTeImatge(String carpImatges) {
+        if (carpImatges == null || carpImatges.trim().isEmpty()) return false;
+        DocumentFile carpImg = carpetaImatges.findFile(carpImatges);
+        if (carpImg==null) return false;
+        return (carpImg.listFiles().length>0);
+    }
+
 }

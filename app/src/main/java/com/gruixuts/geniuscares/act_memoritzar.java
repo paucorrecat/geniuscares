@@ -62,10 +62,8 @@ public class act_memoritzar extends AppCompatActivity {
         edtMemComentaris = (TextView) findViewById(R.id.edtMemComentaris);
         Imatges = (ImageView) findViewById(R.id.imgImatges);
         Filtre = getIntent().getStringExtra("Filtre");
-        db=  new GestorDB(getApplicationContext());
-        db.open();
+        db=  GestorDB.getInstance(getApplicationContext());
         Llista = db.selPersones(Filtre,"");
-        db.close();
         Actual=-1;
         TempsIniciProva = SystemClock.currentThreadTimeMillis();
         PreguntaSeguent();
@@ -115,9 +113,7 @@ public class act_memoritzar extends AppCompatActivity {
             bt3.setEnabled(false);
             if (Prova != null) {
                 Prova.setAcabada(true);
-                db.open();
                 db.actProves(Prova);
-                db.close();
             }
         }
 
@@ -182,7 +178,6 @@ public class act_memoritzar extends AppCompatActivity {
         rslt.setTemps((Long) (SystemClock.currentThreadTimeMillis() - TempsIniciPregunta));
         rslt.setValoracio(classResultats.VAL_PERFECTE);
         db.insResultat(rslt);
-        db.close();
         PreguntaSeguent();
     }
 

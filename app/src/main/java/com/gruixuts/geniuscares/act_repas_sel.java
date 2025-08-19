@@ -23,19 +23,17 @@ public class act_repas_sel extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repas_sel);
 
-        db = new GestorDB(getApplicationContext());
+        db = GestorDB.getInstance(getApplicationContext());
         TextView txtr1h = findViewById(R.id.txtRep1h);
         TextView txtr1d = findViewById(R.id.txtRep1d);
         TextView txtr1s = findViewById(R.id.txtRep1s);
         TextView txtr1m = findViewById(R.id.txtRep1m);
         TextView txtr6m = findViewById(R.id.txtRep6m);
-        db.open();
         txtr1h.setText(db.QuantsRep("1h").toString());
         txtr1d.setText(db.QuantsRep("1d").toString());
         txtr1s.setText(db.QuantsRep("1s").toString());
         txtr1m.setText(db.QuantsRep("1m").toString());
         txtr6m.setText(db.QuantsRep("6m").toString());
-        db.close();
 
     }
 

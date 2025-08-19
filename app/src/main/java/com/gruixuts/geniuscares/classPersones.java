@@ -100,7 +100,7 @@ public class classPersones {
      * @param id identificador
      * @param imatges nom de carpeta d'imatges
      * @param nom nom de l'alumne
-     * @param Cognom primer cognom
+     * @param cognom primer cognom
      * @param num número d'ordre (com a string)
      * @param curs curs escolar
      * @param codi codi identificador

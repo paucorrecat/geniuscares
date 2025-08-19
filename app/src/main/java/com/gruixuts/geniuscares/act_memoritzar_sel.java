@@ -12,18 +12,15 @@ public class act_memoritzar_sel extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_memoritzar_sel);
-        ((TextView) findViewById(R.id.edtMmrId)).setText("");
         ((TextView) findViewById(R.id.edtMmrNom)).setText("");
         ((TextView) findViewById(R.id.edtMmrCognom)).setText("");
         ((TextView) findViewById(R.id.edtMmrCurs)).setText("");
+        ((TextView) findViewById(R.id.edtMmrGrup)).setText("");
     }
 
 
     public void MmrBusca(View view) {
         String Filtre = "";
-        if (((TextView) findViewById(R.id.edtMmrId)).getText().length()!=0) {
-            Filtre += " and (Id = " + ((TextView) findViewById(R.id.edtMmrId)).getText() + " )";
-        }
         if (((TextView) findViewById(R.id.edtMmrNom)).getText().length()!=0) {
             Filtre += " and (Nom like '" + ((TextView) findViewById(R.id.edtMmrNom)).getText() + "%' )";
         }

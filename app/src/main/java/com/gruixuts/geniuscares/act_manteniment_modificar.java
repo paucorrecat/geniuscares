@@ -87,7 +87,7 @@ public class act_manteniment_modificar extends AppCompatActivity {
 
         ResetApres = false;
         String Clau = getIntent().getStringExtra(ARG_ITEM_ID);
-        db = new GestorDB(getApplicationContext());
+        db = GestorDB.getInstance(getApplicationContext());
         db.open();
         if (Clau.length() > 0) {
             mItem = db.selPers(Integer.parseInt(Clau));
@@ -216,11 +216,9 @@ public class act_manteniment_modificar extends AppCompatActivity {
         builder.setCancelable(false);
         builder.setNegativeButton("No", (dialog, id) -> dialog.cancel());
         builder.setPositiveButton("Sí", (dialog, id) -> {
-            db.open();
             if (mItem.getId() != 0) {
                 db.delPers(mItem.getId());
             }
-            db.close();
             dialog.cancel();
             finish();
         });
@@ -228,7 +226,6 @@ public class act_manteniment_modificar extends AppCompatActivity {
     }
 
     public void Grava(View view) {
-        db.open();
         mItem.setNom(((TextView) findViewById(R.id.edtModNom)).getText().toString());
         mItem.setCognom(((TextView) findViewById(R.id.edtModCognom)).getText().toString());
         mItem.setNum(((TextView) findViewById(R.id.edtModNum)).getText().toString());
@@ -267,7 +264,6 @@ public class act_manteniment_modificar extends AppCompatActivity {
         if (mItem.getId() == 0) db.creaPersones(mItem);
         else db.actPersones(mItem);
 
-        db.close();
         finish();
     }
 

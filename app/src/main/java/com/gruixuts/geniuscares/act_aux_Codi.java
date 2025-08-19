@@ -41,16 +41,14 @@ public class act_aux_Codi extends ListActivity {
     @SuppressLint("ResourceType")
     protected void VeureCodis(String Pare) {
         ArrayList<classPersones> Llista;
-        GestorDB db = new GestorDB(getApplicationContext());
+        GestorDB db = GestorDB.getInstance(getApplicationContext());
         String Filtre;
         llistaVisible = new ArrayList();
         llistaCodis = new ArrayList();
         classPersones Pers;
         Integer n;
-        db.open();
         Filtre = "Codi like " + Pare + "_";
         Llista = db.selPersones(Filtre, "Codi");
-        db.close();
 
         if (Llista.size() > 0) {
             for (n = 0; n < Llista.size(); n++) {
