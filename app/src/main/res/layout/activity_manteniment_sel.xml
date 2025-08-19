@@ -32,7 +32,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:text="0"
+                    android:hint="Id"
                     android:singleLine="true"
                     android:imeOptions="actionDone"
                     android:textAppearance="@android:style/TextAppearance.Material.Medium" />
@@ -56,7 +56,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:text="Nom"
+                    android:hint="Nom"
                     android:singleLine="true"
                     android:imeOptions="actionDone"
                     android:textAppearance="@android:style/TextAppearance.Material.Medium" />
@@ -79,30 +79,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="5dp"
-                    android:text="Cognom"
-                    android:singleLine="true"
-                    android:imeOptions="actionDone"
-                    android:textAppearance="@android:style/TextAppearance.Material.Medium" />
-            </TableRow>
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:text="Codi:"
-                    android:textAppearance="@android:style/TextAppearance.Material.Small" />
-
-                <EditText
-                    android:id="@+id/edtMntCodi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp"
-                    android:text="Codi"
+                    android:hint="Cognom"
                     android:singleLine="true"
                     android:imeOptions="actionDone"
                     android:textAppearance="@android:style/TextAppearance.Material.Medium" />
@@ -125,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="5dp"
-                    android:text="Curs"
+                    android:hint="Curs"
                     android:singleLine="true"
                     android:imeOptions="actionDone"
                     android:textAppearance="@android:style/TextAppearance.Material.Medium" />
@@ -148,7 +125,30 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="5dp"
-                    android:text="Grup"
+                    android:hint="Grup"
+                    android:singleLine="true"
+                    android:imeOptions="actionDone"
+                    android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+            </TableRow>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:text="Num:"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small" />
+
+                <EditText
+                    android:id="@+id/edtMntNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:hint="Num"
                     android:singleLine="true"
                     android:imeOptions="actionDone"
                     android:textAppearance="@android:style/TextAppearance.Material.Medium" />
@@ -304,16 +304,21 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:orientation="horizontal">
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="MntBusca"
-            android:text="Busca"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="MntBusca"
+                android:text="Busca"/>
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="MntCrea"
                 android:text="Crea"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="MntRevisaTeImatge"
+                android:text="Revisa Te Imatge"/>
         </LinearLayout>
 
     </LinearLayout>
