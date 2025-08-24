@@ -23,23 +23,23 @@ public class act_estadistica extends AppCompatActivity {
 
         db = GestorDB.getInstance(getApplicationContext());
         N1=db.selPersones("","").size();
-        ((TextView) findViewById(R.id.TauTotal)).setText(""+N1);
+        ((TextView) findViewById(R.id.TauTotal)).setText(""+N1);  //Número total de persona a a dB
 
-        N2=db.selPersones("AMemoritzar","").size();  // TODO: Estadístiques
+        N2=db.selPersones("AMemoritzar","").size();  // Número de persona a memoritzar
         ((TextView) findViewById(R.id.TauTrbSi)).setText("" + N2);
 
         ((TextView) findViewById(R.id.TauTrbNo)).setText("" + (N1-N2));
 
-        N1=db.selPersones("((Basc <> '') and Traduible)","").size();
+        N1=db.selPersones("AMemoritzar and TeImatge","").size();
         ((TextView) findViewById(R.id.TauTraSi)).setText(""+N1);
 
-        N2=db.selPersones("((Basc = '') and Traduible)","").size();
+        N2=db.selPersones("AMemoritzar and NOT TeImatge","").size();
         ((TextView) findViewById(R.id.TauTraNo)).setText("" + N2);
 
-        N1=db.selPersones("((Basc <> '') and NextTipus='a')","").size();
+        N1=db.selPersones("AMemoritzar and TeImatge and NextTipus='a'","").size();
         ((TextView) findViewById(R.id.TauAprNo)).setText(""+N1);
 
-        N2=db.selPersones("((Basc <> '') and NextTipus<>'a')","").size();
+        N2=db.selPersones("AMemoritzar and TeImatge and (NextTipus IN ('1h', '1d', '1s', '1m', '6m'))","").size();
         ((TextView) findViewById(R.id.TauAprSi)).setText("" + N2);
 
         /*

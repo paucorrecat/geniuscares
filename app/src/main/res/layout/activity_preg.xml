@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.gruixuts.geniuscares.act_preg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:text="Id:"
+            style="@style/TextAppearance.AppCompat.Small" />
+
+        <TextView
+            android:id="@+id/txtPregId"
+            android:layout_width="237dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:text="0"
+            style="@style/TextAppearance.AppCompat.Medium" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imgImatges"
+            android:layout_width="340dp"
+            android:layout_height="331dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/cmdPregAntFoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/arrow_left_circle_outline"
+                android:onClick="fotoAnterior"
+                android:text="Ant" />
+
+            <ImageButton
+                android:id="@+id/cmdPregSegFoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/arrow_right_circle_outline"
+                android:onClick="fotoSeguent"
+                android:text=">" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:text="Nom:"
+                style="@style/TextAppearance.AppCompat.Small" />
+
+            <EditText
+                android:id="@+id/edtPregNom"
+                style="@style/Widget.AppCompat.EditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:imeOptions="actionDone"
+                android:keyboardNavigationCluster="false"
+                android:singleLine="true"
+                android:hint="Nom" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:text="Cgnm:"
+                style="@style/TextAppearance.AppCompat.Small" />
+
+            <EditText
+                android:id="@+id/edtPregCognom"
+                style="@style/Widget.AppCompat.EditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:imeOptions="actionDone"
+                android:keyboardNavigationCluster="false"
+                android:singleLine="true"
+                android:hint="Cognom" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:text="Curs:" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="0dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/edtPregCurs"
+                    style="@style/Widget.AppCompat.EditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:imeOptions="actionDone"
+                    android:keyboardNavigationCluster="false"
+                    android:singleLine="true"
+                    android:hint="Curs" />
+                <EditText
+                    android:id="@+id/edtPregGrup"
+                    style="@style/Widget.AppCompat.EditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:imeOptions="actionDone"
+                    android:keyboardNavigationCluster="false"
+                    android:singleLine="true"
+                    android:hint="Grup" />
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:text="Num:"
+                style="@style/TextAppearance.AppCompat.Small" />
+
+            <EditText
+                android:id="@+id/edtPregNum"
+                style="@style/Widget.AppCompat.EditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:imeOptions="actionDone"
+                android:keyboardNavigationCluster="false"
+                android:singleLine="true"
+                android:hint="Num"  />
+        </TableRow>
+    </TableLayout>
+
+    <TextView
+        android:id="@+id/txtPregCompta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="25dp"
+        android:text="Pregunta 0 de 0"
+        style="@style/TextAppearance.AppCompat.Small" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="25dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/cmdPregGrava"
+            android:layout_width="62dp"
+            android:layout_height="wrap_content"
+            android:onClick="cmd_Ok"
+            android:src="@drawable/check_bold"
+            android:text="Ok" />
+
+        <ImageButton
+            android:id="@+id/cmdPregVeu"
+            android:layout_width="62dp"
+            android:layout_marginLeft="20dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/account_voice"
+            android:onClick="cmd_Veu"
+            android:text="Veu" />
+
+        <ImageButton
+            android:id="@+id/cmdPregEdita"
+            android:layout_width="100dp"
+            android:layout_marginLeft="20dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/pencil_outline"
+            android:onClick="cmd_Edita"
+            android:text="Edita" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

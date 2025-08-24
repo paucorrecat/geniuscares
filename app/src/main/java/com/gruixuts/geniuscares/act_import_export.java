@@ -432,6 +432,7 @@ public class act_import_export extends AppCompatActivity {
                 for (int n = 0; n < LlistaResultats.size(); n++) {
                     try {
                         fout.write("R" + Separador);
+                        /* TODO: Compte! comentat provisional
                         fout.write(LlistaResultats.get(n).getDiaTxt().toString() + Separador);
                         fout.write(LlistaResultats.get(n).getIdProva().toString() + Separador);
                         fout.write(LlistaResultats.get(n).getIdPers().toString() + Separador);
@@ -439,6 +440,7 @@ public class act_import_export extends AppCompatActivity {
                         fout.write(LlistaResultats.get(n).getResposta().toString() + Separador);
                         fout.write(LlistaResultats.get(n).getCorrecta().toString() + Separador);
                         fout.write(LlistaResultats.get(n).getTemps().toString() + Separador);
+                        */
                         fout.write(LlistaResultats.get(n).getValoracio().toString() + "\r\n");
                         fout.flush();
                     } catch (Exception e) {

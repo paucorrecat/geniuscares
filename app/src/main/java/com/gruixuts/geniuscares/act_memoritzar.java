@@ -91,8 +91,9 @@ public class act_memoritzar extends AppCompatActivity {
             fotoPrimera();
             txtNom.setText(PersonaActual.getNom());
             txtCognom.setText(PersonaActual.getCognom());
-            txtNum.setText(PersonaActual.getNum());
             txtCurs.setText(PersonaActual.getCurs());
+            txtGrup.setText(PersonaActual.getGrup());
+            txtNum.setText(PersonaActual.getNum());
             edtMemPAV.setText(PersonaActual.getPAV());
             edtMemComentaris.setText(PersonaActual.getComentaris());
             TextView txtCompt = (TextView) findViewById(R.id.txtCompt);
@@ -107,8 +108,9 @@ public class act_memoritzar extends AppCompatActivity {
             Button bt3 = (Button) findViewById(R.id.cmdMemEdit);
             txtNom.setText("");
             txtCognom.setText("");
-            txtNum.setText("");
             txtCurs.setText("");
+            txtGrup.setText("");
+            txtNum.setText("");
             edtMemPAV.setText("");
             edtMemComentaris.setText("");
             bt1.setEnabled(false);
@@ -222,7 +224,7 @@ public class act_memoritzar extends AppCompatActivity {
         classResultats rslt = new classResultats();
         rslt.setDia(Ara);
         rslt.setIdProva(Prova.getId());
-        rslt.setIdPers(PersonaActual.getId());
+//Todo:2        rslt.setIdPers(PersonaActual.getId());
 //Todo:1        rslt.setPregunta(PersonaActual.getCatala());
 //Todo:1        rslt.setResposta(PersonaActual.getBasc());
 //Todo:1        rslt.setCorrecta(PersonaActual.getBasc());

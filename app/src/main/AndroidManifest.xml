@@ -39,6 +39,12 @@
             android:name=".act_pregunta_val"
             android:exported="false" />
         <activity
+            android:name=".act_preg"
+            android:exported="false" />
+        <activity
+            android:name=".act_preg_aval"
+            android:exported="false" />
+        <activity
             android:name=".act_memoritzar"
             android:screenOrientation="portrait"
             android:exported="false" />

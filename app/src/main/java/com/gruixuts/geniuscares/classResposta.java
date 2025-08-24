@@ -22,7 +22,7 @@ public class classResposta {
         ll = ("i"+Separador+Llista+Separador+"f").split(Separador);
         // ll = Llista.split(Separador);
         // Es fa així per si ve una llista buida, que split no inclou les buides d'inici ni de final
-        assert(ll.length==6);
+        assert(ll.length==7);
         nom_ = ll[1];
         cognom_ = ll[2];
         curs_ = ll[3];
@@ -72,7 +72,7 @@ public class classResposta {
 
     public void setNum(String num) {
         assert(num.indexOf(Separador)==-1);
-        grup_ = num;
+        num_ = num;
     }
 
     public String toString() {

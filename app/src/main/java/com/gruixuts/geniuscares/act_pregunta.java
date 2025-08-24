@@ -160,12 +160,12 @@ public class act_pregunta extends AppCompatActivity {
                 TextView txtCnt = findViewById(R.id.txtPrePer);
                 NumBe++;
                 txtCnt.setText("Bé: " + NumBe);
-
+/*
             } else if (Resultat.equals(classResultats.VAL_REVISAR)) {
                 TextView txtCnt = findViewById(R.id.txtPreRev);
                 NumRev++;
                 txtCnt.setText("A Revisar: " + NumRev);
-
+*/
             } else if (Resultat.equals(classResultats.VAL_APRES)) {
                 TextView txtCnt = findViewById(R.id.txtPreApr);
                 NumApr++;
@@ -231,6 +231,7 @@ public class act_pregunta extends AppCompatActivity {
     }
 
     private void RegistraResultat(String Resultat) {
+        /*
         classResultats Result = new classResultats();
         EditText edtBasc = (EditText) findViewById(R.id.edtBasc);
         TextView txtCat = (TextView) findViewById(R.id.txtCatala);
@@ -294,6 +295,8 @@ public class act_pregunta extends AppCompatActivity {
             db.actPersones(Pers);
         }
         // si és VAL_REVISIO no s'ha de gravar res
+        */
+
     }
 
     public void PregEdit(View view) {

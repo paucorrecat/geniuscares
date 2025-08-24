@@ -38,7 +38,7 @@ public class act_pregunta_val extends AppCompatActivity {
     }
 
     public void rstPer(View view) {returnParams(classResultats.VAL_PERFECTE);}
-    public void rstRev(View view) {returnParams(classResultats.VAL_REVISAR);}
+    //public void rstRev(View view) {returnParams(classResultats.VAL_REVISAR);}
     public void rstApr(View view) {returnParams(classResultats.VAL_APRES);}
     public void rstObl(View view) {returnParams(classResultats.VAL_OBLIDAT);}
 

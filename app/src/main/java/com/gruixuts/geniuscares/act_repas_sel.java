@@ -55,15 +55,30 @@ public class act_repas_sel extends AppCompatActivity {
         if (Filtre.length() > 0) {
             Filtre =  Filtre.substring(3);
         } else {
-            Filtre =  "-1";
+            classGlobal.mostraError(this,"Informació","No has seleccionat res");
+            return;
         }
-        Filtre = "((" + Filtre + ") and ( NextData < '" +  frmtData.format(cal.getTime()) + "'))";
-            Intent myIntent = new Intent(act_repas_sel.this, act_pregunta.class);
-            myIntent.putExtra("Filtre", Filtre); //Optional parameters
-            myIntent.putExtra("Tipus", classProves.TIP_REPAS); //Optional parameters
-            myIntent.putExtra("Top", "0"); //Optional parameters
-            myIntent.putExtra("Ordre", ""); //Optional parameters
-            startActivity(myIntent);
+        Filtre = "((" + Filtre + ") and ( NextData < '" +  frmtData.format(cal.getTime()) + "') and NOT ( NextData =''))";
+        objLlistaTrobats.NouSQLtxt(Filtre,"",getApplicationContext());
+
+        if (objLlistaTrobats.ITEMS.size()==0) {
+            classGlobal.mostraError(this,"Informació","No hi ha items a revisar");
+            return;
+        }
+
+        classProves Prova = new classProves();
+        Prova.setId(db.UltimaProva()+1);
+        Prova.setTipusProva(classProves.TIP_REPAS);
+        Prova.setDia(cal.getTime());
+        Prova.setSeleccio(Filtre);
+        Prova.setNumPreguntes(objLlistaTrobats.ITEMS.size());
+        Prova.setNumRespostes(0);
+        Prova.setTemps(0L);
+        Prova.setAcabada(false);
+        db.insProves(Prova);
+        Intent myIntent = new Intent(this, act_preg.class);
+        myIntent.putExtra(act_preg.ARG_NUM_PROVA, "" + Prova.getId()); //Optional parameters
+        startActivity(myIntent);
     }
 
 }

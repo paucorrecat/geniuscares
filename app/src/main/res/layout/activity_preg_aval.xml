@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imgImatges"
+            android:layout_width="340dp"
+            android:layout_height="331dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/cmdModAntFoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="fotoAnterior"
+                android:src="@drawable/arrow_left_circle_outline"
+                android:text="Ant" />
+
+            <ImageButton
+                android:id="@+id/cmdModSegFoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="fotoSeguent"
+                android:src="@drawable/arrow_right_circle_outline"
+                android:text=">" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+    <TextView
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Correcte  --  Respost"
+        android:textAppearance="@android:style/TextAppearance.Material.Small" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_marginTop="0dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nom: "
+            android:textAppearance="@android:style/TextAppearance.Material.Small" />
+        <TextView
+            android:id="@+id/txtValNomOk"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nom Correcte"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="--"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+        <TextView
+            android:id="@+id/txtValNomRsp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nom resposta"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+    </LinearLayout>
+
+    <RadioGroup
+        android:id="@+id/rdgNom"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+
+        <RadioButton
+            android:id="@+id/rdNomBe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:text="Bé"
+            android:textColor="@color/green"/>
+
+        <RadioButton
+            android:id="@+id/rdNomRev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="A Revisar"
+            android:textColor="@color/orange" />
+
+        <RadioButton
+            android:id="@+id/rdNomApres"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Après"
+            android:textColor="@color/red" />
+
+        <RadioButton
+            android:id="@+id/rdNomOblid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Oblidat"
+            android:textColor="@color/brown" />
+
+    </RadioGroup>
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cgnm:"
+            android:textAppearance="@android:style/TextAppearance.Material.Small" />
+        <TextView
+            android:id="@+id/txtValCgnmOk"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nom Correcte"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="--"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+        <TextView
+            android:id="@+id/txtValCgnmRsp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nom resposta"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+    </LinearLayout>
+
+    <RadioGroup
+        android:id="@+id/rdgCgnm"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+
+        <RadioButton
+            android:id="@+id/rdCgnmBe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:text="Bé"
+            android:textColor="@color/green"/>
+
+        <RadioButton
+            android:id="@+id/rdCgnmRev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="A Revisar"
+            android:textColor="@color/orange" />
+
+        <RadioButton
+            android:id="@+id/rdCgnmApres"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Après"
+            android:textColor="@color/red" />
+
+        <RadioButton
+            android:id="@+id/rdCgnmOblid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Oblidat"
+            android:textColor="@color/brown" />
+
+    </RadioGroup>
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Curs:"
+            android:textAppearance="@android:style/TextAppearance.Material.Small" />
+        <TextView
+            android:id="@+id/txtValCursOk"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nom Correcte"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="--"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+        <TextView
+            android:id="@+id/txtValCursRsp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nom resposta"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+    </LinearLayout>
+
+    <RadioGroup
+        android:id="@+id/rdgCurs"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+
+        <RadioButton
+            android:id="@+id/rdCursBe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:text="Bé"
+            android:textColor="@color/green"/>
+
+        <RadioButton
+            android:id="@+id/rdCursRev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="A Revisar"
+            android:textColor="@color/orange" />
+
+        <RadioButton
+            android:id="@+id/rdCursApres"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Après"
+            android:textColor="@color/red" />
+
+        <RadioButton
+            android:id="@+id/rdCursOblid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Oblidat"
+            android:textColor="@color/brown" />
+
+    </RadioGroup>
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Grup:"
+            android:textAppearance="@android:style/TextAppearance.Material.Small" />
+        <TextView
+            android:id="@+id/txtValGrupOk"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nom Correcte"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="--"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+        <TextView
+            android:id="@+id/txtValGrupRsp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nom resposta"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+    </LinearLayout>
+
+    <RadioGroup
+        android:id="@+id/rdgGrup"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+
+        <RadioButton
+            android:id="@+id/rdGrupBe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:text="Bé"
+            android:textColor="@color/green"/>
+
+        <RadioButton
+            android:id="@+id/rdGrupRev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="A Revisar"
+            android:textColor="@color/orange" />
+
+        <RadioButton
+            android:id="@+id/rdGrupApres"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Après"
+            android:textColor="@color/red" />
+
+        <RadioButton
+            android:id="@+id/rdGrupOblid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Oblidat"
+            android:textColor="@color/brown" />
+
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Num:"
+            android:textAppearance="@android:style/TextAppearance.Material.Small" />
+        <TextView
+            android:id="@+id/txtValNumOk"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nom Correcte"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="--"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+        <TextView
+            android:id="@+id/txtValNumRsp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nom resposta"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+    </LinearLayout>
+
+    <RadioGroup
+        android:id="@+id/rdgNum"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+
+        <RadioButton
+            android:id="@+id/rdNumBe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:text="Bé"
+            android:textColor="@color/green"/>
+
+        <RadioButton
+            android:id="@+id/rdNumRev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="A Revisar"
+            android:textColor="@color/orange" />
+
+        <RadioButton
+            android:id="@+id/rdNumApres"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Après"
+            android:textColor="@color/red" />
+
+        <RadioButton
+            android:id="@+id/rdNumOblid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Oblidat"
+            android:textColor="@color/brown" />
+
+    </RadioGroup>
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tall de veu:"
+            android:textAppearance="@android:style/TextAppearance.Material.Small" />
+        <TextView
+            android:id="@+id/txtValVeuRsp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Resposta de veu"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/cmdAvalOk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:src="@drawable/check_bold"
+            android:onClick="cmd_Ok"
+            android:text="Ok" />
+
+        <ImageButton
+            android:id="@+id/cmdAvalEdita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+
+            android:src="@drawable/pencil"
+            android:onClick="cmd_Edita"
+            android:text="Edita" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

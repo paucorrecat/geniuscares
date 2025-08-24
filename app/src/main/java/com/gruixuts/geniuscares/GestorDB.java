@@ -664,6 +664,14 @@ public class GestorDB {
         return (cursor.getInt(0)+1);
     }
 
+    public classProves getProva(Integer NumProva) {
+
+        String SQLtxt = "Select "+ProvesDef.LLISTA_CAMPS + " from " + ProvesDef.TABLE_NAME + " where (Id = " + NumProva.toString() + ");";
+        Cursor cursor = this.db.rawQuery(SQLtxt, null);
+        cursor.moveToFirst();
+        return new classProves(cursor);
+    }
+
     public void insResultat(classResultats Rslt) {
         open();
         ContentValues values = new ContentValues();
@@ -671,7 +679,7 @@ public class GestorDB {
         // Parells clau-valor
         values.put(ResultatsDef.Dia, Rslt.getDiaTxt());
         values.put(ResultatsDef.IdProva, Rslt.getIdProva());
-        values.put(ResultatsDef.IdPers, Rslt.getIdPers());
+        // values.put(ResultatsDef.IdPers, Rslt.getIdPers()); TODO: Compte! Revisar
         //values.put(ResultatsDef.Pregunta, Rslt.getPregunta());
         values.put(ResultatsDef.Resposta, Rslt.getResposta());
         //values.put(ResultatsDef.Correcta, Rslt.getCorrecta());
